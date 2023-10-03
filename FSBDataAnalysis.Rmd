@@ -1,0 +1,108 @@
+---
+title: "FSB Data Analysis Group 17b"
+author: "Jake Holroyd, Brendan Beattie"
+date: "`r Sys.Date()`"
+output:
+  html_document:
+    code_folding: show
+    df_print: paged
+    number_sections: yes
+    theme: readable
+    toc: yes
+    toc_float: yes
+    code_download: yes
+  word_document:
+    toc: no
+---
+
+------------------------------------------------------------------------
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+# FSB Data Analysis: Group 17b {.unnumbered}
+
+# "What are the macro placement and salay trends FSB is seeing over the past three years" {.unnumbered}
+
+-   Are our placement results going up / down / steady?
+-   Salary trends?
+-   Kirk would like to see this for FSB overall as well as by major
+
+# Business Value Proposition {.unnumbered}
+
+We have created a business value proposition for Kirk Bogard and the FSB Careers Center. Kirk is the Associate Vice President for Development and External Relations in FSB, and he is interested in how the FSB Careers advising team can more effectively direct their efforts to properly serve the almost 5,000 students in FSB.
+
+### Define the client or audience for your data analysis solution. {.unnumbered}
+
+Kirk Bogard, Associate Vice President for Development and External Relations in FSB We are tasked with assisting Mr. Bogard by providing insight and recommendations on how he and the careers department can best advise FSB undergraduate students In context, he would like us to explore the macro placement and salary trends FSB has seeing over the past three years
+
+## Visualization {.unnumbered}
+
+![](images/FSBDataBVP.png)
+
+## Text {.unnumbered}
+
+**1. Define the client or audience for your data analysis solution.**
+
+- Kirk Bogard, Associate Vice President for Development and External Relations in FSB.
+
+- We are tasked with assisting Mr. Bogard by providing insight and recommendations on how he and the careers department can best advise FSB undergraduate students.
+
+- In context, he would like us to explore the macro placement and salary trends FSB has seeing over the past three years.
+
+**2. Define the client jobs. What jobs are your clients trying to get done? Use a separate bullet point for each job you intend to help your customer get done. Be specific.**
+
+- Adjusting advising efforts to reflect placement and salary trends.
+
+- Effectively aid students in their pursuit of careers.
+
+- Understand how students of various majors differ in job placement and expected salary.
+
+- Develop solutions that equip FSB students to place well and earn high.
+
+**3. Add pains. What are the pains before, during, and after your customer is trying to get their jobs done? Create a bullet point for every specific pain.**
+
+- There are about 5,000 students in FSB and the staff tasked with advising them is significantly smaller (4) so it is impossible to adequately and thoroughly advise all 5,000 students.
+
+- Some majors may have an easier time placing in jobs or earning higher salaries, FSB would like to know which ones, or else they can't focus on those in the most need.
+
+- FSB careers can't prepare students who may have a more difficult time in their job search or inform students with accurate salary expectations if they don't know which majors are experiencing hiring surges or hiring decreases based on recent trends.
+
+**4. Describe your intended solution. Give a bullet point for each major element of your product or solution.**
+
+- Develop a time series analysis of both job placement trends and salary trends of the time range specified.
+
+- Deliver time series to show job placement and salary trends over the entirety of FSB, as well as drilling down to explore results by major.
+
+- Create visualizations that illustrate these trends in an understandable and digestible way to show changes in trends by major and be able to easily compare the most recent differences in the department.
+
+**5. What are the painkillers from your solution? List out those things in your solution that can kill the pain points of your client.**
+
+- Creating understandable and easily comparable visualizations allows the small team of career advisers to more effectively and efficiently direct their efforts across the vast student body.
+
+- Deliver a sound understanding of placement result trends by major by creating visualizations that compare changes and reveal trends over the three years, informing FSB of which majors are most in need of advising.
+
+- Be able to provide students with relevant job market information based on trends identified in the past three years to help students understand personal market value based on their major and education at FSB.
+
+**6. Add gains. What are the gains that your customer expects to get or will be surprised to benefit from your solution?**
+
+- FSB careers will be able to equip students with the necessary insights and information to prepare them for their job search.
+
+- Advising efforts will be efficiently targeted toward students in the most need.
+
+- Student expectations regarding career search will be more accurate to reality, ideally resulting in less reliance on the advising team, allowing them time to help even more students.
+
+**7. What are the gain creators? List out the items that will add additional value to your customer, above and beyond addressing their current pain points.**
+
+- The time series and subsequent visualizations will be easily reproducible. FSB will be able to routinely update them year after year with fresh data to track the placement and salary trends well into the future as needed. 
+
+- The time series and visualizations will allow FSB to track their own progress in their efforts, providing feedback if used over time on how their newly directed efforts have impacted placement and salary trends.
+
+
+
+```{r}
+
+print(FSB_BI_Survey_2019_2021)
+```
+
