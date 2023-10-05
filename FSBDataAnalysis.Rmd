@@ -102,4 +102,14 @@ We have created a business value proposition for the FSB Career Services that re
 
 - The analysis over time and visualizations will allow Career Services to track their own progress in their efforts, providing feedback if used over time on how their newly directed efforts have impacted placement and salary trends.
 
+```{r}
+## LOADING DATA##
+FSB  = readRDS("FSB_BI_Survey_2019_2021.rds")
+
+head(FSB)
+
+summary(FSB)
+
+```
+
 
