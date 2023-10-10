@@ -113,4 +113,43 @@ summary(FSB)
 ```
 
 
-No project test
+Dropping Unnecessary variables
+```{r}
+FSB1 = subset(FSB, select = -c(`Business Direct Admit`, `Dean's List`, `First Generation College Stdnt`, `FSB Scholars`, `Honors Program`, `President's List`, `Study Abroad Courtesy Account`, `Transfer Work (Pre-Banner)`, `Cum Laude`, `Magna Cum Laude`, `Summa Cum Laude`, `University Honors`, `UniversityHonors w/Distinction`, `minor1`, `minor2`, `IPEDS.Race.Ethnicity`, `Gender`, `latin_honors`, `survey_company`, `survey_gradprogram`, `survey_gradschool`, `survey_internfour`, `survey_internone`, `survey_internthree`, `survey_interntwo` , `survey_state`))
+head(FSB1)
+```
+
+We decided to remove the columns that were not going to be used and would have added complexity to the data frame we would be working with. 
+This helps us to only see variables that could effect job placement, salary, and major. We decided to keep city data to hold constant in our analysis. We did this because we believe that location could have a major effect on salary. We also kept GPA range to hold constant and we believed that it also would have a large effect on placement and salary. 
+
+
+```{r}
+unique(FSB1$survey_city)
+```
+```{r}
+state_mapping = c("ohio" = "OH", "Ohio" = "OH")
+```
+
+
+counting number of NAs in salary
+```{r}
+sum(is.na(FSB1$survey_salary))
+```
+
+Imputing mean salary by major
+```{r}
+pacman::p_load("dplyr")
+FSB2 <- FSB1 %>%
+  group_by(major1) %>%
+  dplyr::mutate( survey_salary= ifelse(is.na(survey_salary), mean(survey_salary, na.rm = TRUE), survey_salary)) %>%
+  ungroup()
+```
+
+From looking at our data we found that about half of our data for salary was NA. With this being such an important part of our analysis we felt it would be inappropriate to remove the observations with missing salary data. We know that common practice is to impute the mean of numerical variables and so we imputed salary based on the mean by major of the student. We chose to impute by major to cover for the variation in salary influenced by major.
+
+
+Printing our session infomation
+```{r}
+sessionInfo()
+```
+
