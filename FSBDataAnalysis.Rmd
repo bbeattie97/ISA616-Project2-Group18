@@ -118,7 +118,7 @@ We have been given three years of data representing FSB graduates, including gra
 6.  Combined Cacc and Masters: binary, OBIEE, combined degree student
 7.  Dean's List: binary, OBIEE, achieve dean's list status at least once
 8.  First Generation College Stdnt: binary, OBIEE, first generation student status
-9.  FSB Scholars: binary, OBIEE, FSB scholars program
+9.   FSB Scholars: binary, OBIEE, FSB scholars program
 10.  Honors Program: binary, OBIEE, member of University honors program
 11.  President's list: binary, OBIEE, achieved president's list at least once
 12.  Study Abroud Courtesy Account: binary, OBIEE, do not know meaning
@@ -286,6 +286,42 @@ FSB_job = FSB_job |>
 # check missing
 sapply(FSB_job, function(x) sum(is.na(x)))
 ```
+
+toupper(data$variable)
+
+## Cleaning Non-standard responses
+
+```{r}
+FSB_job$survey_city = toupper(FSB_job$survey_city)
+
+city = FSB_job$survey_city
+top20city = as.data.frame(table(city))
+citysorted = top20city[order(-top20city$Freq), ]
+top20_city_names = citysorted$city[1:20]
+
+# View the vector or list of top 20 company names
+print(top20_city_names)
+```
+
+
+
+
+```{r}
+FSB_job$survey_company = toupper(FSB_job$survey_company)
+
+company = FSB_job$survey_company
+top20company = as.data.frame(table(company))
+companysorted = top20company[order(-top20company$Freq), ]
+top20_company_names = companysorted$company[1:20]
+
+# View the vector or list of top 20 company names
+print(top20_company_names)
+```
+
+```{r}
+
+```
+
 
 
 
