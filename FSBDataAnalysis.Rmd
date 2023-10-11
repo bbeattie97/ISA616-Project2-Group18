@@ -23,7 +23,9 @@ knitr::opts_chunk$set(echo = TRUE)
 
 # FSB Data Analysis: Group 17b {.unnumbered}
 
-# "What are the macro placement and salay trends FSB is seeing over the past three years" {.unnumbered}
+# Research Question {.unnumbered}
+
+**"What are the macro placement and salay trends FSB is seeing over the past three years"**
 
 -   Are our placement results going up / down / steady?
 -   Salary trends?
@@ -102,50 +104,189 @@ We have created a business value proposition for the FSB Career Services that re
 
 - The analysis over time and visualizations will allow Career Services to track their own progress in their efforts, providing feedback if used over time on how their newly directed efforts have impacted placement and salary trends.
 
+# The Data {.unnumbered}
+
+## Data Sources {.unnumbered}
+
+We have been given three years of data representing FSB graduates, including graduates in 2019, 2020, and 2021. The data set provided had 42 variables.  The source is either derived by Dr. Jones-Farmer during data cleaning/merging, from the Oracle Business Intelligence Enterprise Edition (OBIEE) maintained by Miami administration, or from the self reported senior survey.  Dr. Jones-Farmer has cleaned and merged the files into one file.  
+
+1.  major: numeric,derived, the number of majors 
+2.  major1: text, OBIEE, first major
+3.  major 2: text, OBIEE, second major
+4.  BBRJ: binary, OBIEE, an attribute of a student, but we do not know what this stands for
+5.  Business Direct Admit: binary, OBIEE, a direct admit to FSB as a first year
+6.  Combined Cacc and Masters: binary, OBIEE, combined degree student
+7.  Dean's List: binary, OBIEE, achieve dean's list status at least once
+8.  First Generation College Stdnt: binary, OBIEE, first generation student status
+9.  FSB Scholars: binary, OBIEE, FSB scholars program
+10.  Honors Program: binary, OBIEE, member of University honors program
+11.  President's list: binary, OBIEE, achieved president's list at least once
+12.  Study Abroud Courtesy Account: binary, OBIEE, do not know meaning
+13.  Transfer Work: binary, OBIEE, do not know exact meaning
+14.  Cum Laude: binary, OBIEE, graduated Cum Laude
+15.  Magna Cum Laude: binary, OBIEE, graduated Magna Cum Laude
+16.  Summa Cum Laude: binary, OBIEE, graduated Summa Cum Laude
+17.  University Honors: binary, OBIEE, graduated with University Honors
+18.  University Honors w/Distinction: binary, OBIEE, graduated with University Honors with Distinction
+19.  minor1: text, OBIEE, first listed minor
+20.  minor2: text, OBIEE, second listed minor
+21.  IPEDS.Race.Ethnicity: text, OBIEE, race/ethnicity
+22.  Gender: text, OBIEE, sex
+23.  GPA.Range: text, OBIEE, GPA within a .5 range
+24.  Term.Code: numberic, OBIEE, First four digits are the physcal year (beginning in July, e.g. July 2020 is FY 2021).  Last two digits is the term (10=fall, 15=winter, 20=spring, 30=summer).
+25.  Year.x: text, derived, first four digits of Term.Code stored as a character variable
+26.  latin_honors: text, survey, latin honors designation
+27.  survey_city: text, survey, student reported city in which their job is located
+28.  survey_company: text, survey, student reported company in which they accepted a job
+29.  survey_deptfunc: text, survey, student reported job function
+30.  survey_gradprogram: text, survey, student reported graduate program they will be attending
+31.  survey_gradschool: text, survey, stuent reported graduate school they will be attending
+32.  survey_internfour: text, survey, student reported fourth internship they held during college
+33.  survey_internthree: text, survey, student reported third internship they held during college
+34.  survey_interntwo: text, survey, student reported second internship they held during college
+35.  survey_internone: text, survey, student reported first internship they held during college
+36.  Survey_internships: text, survey, Student reported number of internships they held during college
+37.  survey_offers: text, survey, student reported number of offers for full time employment received
+38.  survey_plans: text, survey, student reported plans after graduation
+39.  survey_pref_field: text, survey, student reported whether working in preferred field
+40.  survey_pref_loc: text, survey, student reported whether working in preferred location
+41.  survey_salary: numeric, survey, student reported salary
+42.  survey_state: text, survey, student reported state in which job is located
+
+
+## Data Cleaning {.unnumbered}
+
 ```{r}
 ## LOADING DATA##
 FSB  = readRDS("FSB_BI_Survey_2019_2021.rds")
 
 head(FSB)
-
-summary(FSB)
-
 ```
 
-
-Dropping Unnecessary variables
-```{r}
-###FSB1 = subset(FSB, select = -c(`Business Direct Admit`, `Dean's List`, `First Generation College Stdnt`, `FSB Scholars`, `Honors Program`, `President's List`, `Study Abroad Courtesy Account`, `Transfer Work (Pre-Banner)`, `Cum Laude`, `Magna Cum Laude`, `Summa Cum Laude`, `University Honors`, `UniversityHonors w/Distinction`, `minor1`, `minor2`, `IPEDS.Race.Ethnicity`, `Gender`, `latin_honors`, `survey_company`, `survey_gradprogram`, `survey_gradschool`, `survey_internfour`, `survey_internone`, `survey_internthree`, `survey_interntwo` , `survey_state`))
-head(FSB)
-```
-
-## We decided to remove the columns that were not going to be used and would have added complexity to the data frame we would be working with. 
-This helps us to only see variables that could effect job placement, salary, and major. We decided to keep city data to hold constant in our analysis. We did this because we believe that location could have a major effect on salary. We also kept GPA range to hold constant and we believed that it also would have a large effect on placement and salary. 
-
+For the purposes of our analysis, we are looking at the job placement and salary trends for FSB graduates as a whole and by major. For this, we should only be looking at students who are intending to enter the workforce and exclude those who's plans deviate from that course (i.e. continuing their education). 
 
 ```{r}
-unique(FSB$survey_city)
+unique(FSB$survey_plans)
 ```
+
+## Exploring Context {.unnumbered}
+We want to look at various response to evaluate what context they provide to our analysis and whether they would be useful to keep in the final data set we use.
+
+Primarily, we want to look at responses in the survey_plans field because we believe that will be a strong way to filter out observations that have no correlation to the job placement and salary trends. 
+
+For example: "seeking continuing education", "continuing education", "not seeking employment", NA are assumed not relevant to our purposes. If an individual is not actively trying to get a job or accepting a job, then the data they provide will not be useful in determining job placement and salary trends.
+
+Contrarily: "seeking employment", "accepted parttime job" and "accepted fulltime job" are assumed relevant to our purposes and will be included in the analysis. The data they provide will grant us insight on job placement and salary trends because they are actively attempting to secure jobs. We will need to impute missing values and clean any non-standardized responses (i.e. the company or city fields that have various capitilazation and spelling differences)
 ```{r}
-state_mapping = c("ohio" = "OH", "Ohio" = "OH")
+## Exploring responses to evaluate context ##
+
+FSB_self = FSB |> dplyr::filter(FSB$survey_plans == "self employed") 
+# Does not appear relevant for our purposes. Only one response with this designation and it does not include values in the fields necessary for our analysis.
+
+FSB_other = FSB |> dplyr::filter(FSB$survey_plans == "other") 
+# Does not appear relevant for our purposes. No values for preferred field, location, salary, etc.
+
+FSB_mil = FSB |> dplyr::filter(FSB$survey_plans == "military service")
+# Does not appear relevant for our purposes. No values for preferred field, location, salary, and though they technically work for the military they have very limited responses in the company field
+
+# remove unnecessary dfs
+remove(FSB_other)
+remove(FSB_self)
+remove(FSB_mil)
+
 ```
 
+Now that we have our list of response values we would like to filter on, we will now create our new data set
 
-counting number of NAs in salary
 ```{r}
-sum(is.na(FSB$survey_salary))
+# create a new data set that filters out irrelevant observations
+FSB_job = FSB |> dplyr::filter(FSB$survey_plans %in%
+                                 c("seeking employment", "accepted parttime job",
+                                   "accepted fulltime job"))
 ```
 
-Imputing mean salary by major
+
+
+
+## Counting Missing by Variable {.unnumbered}
+```{r}
+sapply(FSB_job, function(x) sum(is.na(x)))
+```
+It seems clear that the survey responses contain a substantial amount of observations with missing values across the entirety of the survey fields. It is our conclusion that to omit responses with missing values would destroy any chance of pulling any meaningful analysis from the data. With that assumption, we will instead clean and impute missing values for fields necessary for our analysis.
+
+
+## Imputation {.unnumbered}
+
+### Mean Salary by Major {.unnumbered}
+
+After examining the missing value counts, we noticed that survey_salary had a significant portion of missing values. With this being such an important part of our analysis, we felt it would be inappropriate to remove the observations with missing salary data. We know that common practice is to impute the mean of numerical variables and so we will impute salary based on the mean salary reported by major of the student. We chose to impute by major to account for the variation in salary influenced by major (some majors may have a higher average salary).
+
+
 ```{r}
 pacman::p_load("dplyr")
-FSB1 <- FSB %>%
-  group_by(major1) %>%
-  dplyr::mutate( survey_salary= ifelse(is.na(survey_salary), mean(survey_salary, na.rm = TRUE), survey_salary)) %>%
+FSB_job = FSB_job |> 
+  group_by(major1) |> 
+  dplyr::mutate( survey_salary = ifelse(is.na(survey_salary), mean(survey_salary, na.rm = TRUE), survey_salary)) |> 
   ungroup()
 ```
 
-From looking at our data we found that about half of our data for salary was NA. With this being such an important part of our analysis we felt it would be inappropriate to remove the observations with missing salary data. We know that common practice is to impute the mean of numerical variables and so we imputed salary based on the mean by major of the student. We chose to impute by major to cover for the variation in salary influenced by major.
+Now, since we included the reported plan value of "seeking employment, any observation with that plan value will have a null value for salary. Since these individuals do not have jobs, we will impute $0 as their salary.
+
+```{r}
+FSB_job = FSB_job |> 
+  dplyr::mutate( survey_salary = ifelse(survey_plans == "seeking employment", 0, survey_salary))
+```
+
+We will check our missing count for salary once again
+
+```{r}
+sum(is.na(FSB_job$survey_salary))
+```
+
+There is still one missing value in this column. We will subset to find this observation
+
+```{r}
+print(FSB_job[which(is.na(FSB_job$survey_salary)), ])
+```
+```{r}
+# view a collection of observations with this specific major1 value
+MandO = FSB_job |> dplyr::filter(FSB_job$major1 == "Management and Organizations") 
+```
+
+It appears that the missing value that remains is due to the fact that only one observation with this given major1 value is recorded, and they failed to report their salary. This means that mean imputation by major will not be able to fill in their salary and therefore the data this observation provides is not relevant to our purposes. We will remove this observation.
+
+```{r}
+# remove unnecessary df
+remove(MandO)
+
+# drop the observation
+FSB_job =  FSB_job[-(which(is.na(FSB_job$survey_salary))), ]
+
+# check missing
+sum(is.na(FSB_job$survey_salary))
+```
+**NEED TO DECIDE ON survey_offers**
+
+
+
+### Imputing Categorical {.unnumbered}
+
+For the remainder of relevant variables with missing values, we will impute the value of "Missing" to fill any null values.
+
+```{r}
+FSB_job = FSB_job |> 
+  dplyr::mutate(
+    survey_city = ifelse(is.na(survey_city), "Missing", survey_city),
+    survey_company = ifelse(is.na(survey_company), "Missing", survey_company),
+    survey_pref_field = ifelse(is.na(survey_pref_field), "Missing", survey_pref_field),
+    survey_pref_loc = ifelse(is.na(survey_pref_loc), "Missing", survey_pref_loc),
+    survey_state = ifelse(is.na(survey_state), "Missing", survey_state)
+    )
+
+# check missing
+sapply(FSB_job, function(x) sum(is.na(x)))
+```
+
 
 
 Printing our session infomation
