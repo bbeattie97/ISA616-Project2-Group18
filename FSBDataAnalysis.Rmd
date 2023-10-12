@@ -1,5 +1,5 @@
 ---
-title: "FSB Data Analysis Group 17b"
+title: "FSB Data Analysis Group 18"
 author: "Jake Holroyd, Brendan Beattie"
 date: "`r Sys.Date()`"
 output:
@@ -21,7 +21,7 @@ output:
 knitr::opts_chunk$set(echo = TRUE)
 ```
 
-# FSB Data Analysis: Group 17b {.unnumbered}
+# FSB Data Analysis: Group 18 {.unnumbered}
 
 # Research Question {.unnumbered}
 
