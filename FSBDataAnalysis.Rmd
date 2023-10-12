@@ -215,7 +215,245 @@ sapply(FSB_job, function(x) sum(is.na(x)))
 It seems clear that the survey responses contain a substantial amount of observations with missing values across the entirety of the survey fields. It is our conclusion that to omit responses with missing values would destroy any chance of pulling any meaningful analysis from the data. With that assumption, we will instead clean and impute missing values for fields necessary for our analysis.
 
 
-## Imputation {.unnumbered}
+## Imputation (companies) {.unnumbered}
+
+```{r}
+FSB_job$survey_company = toupper(FSB_job$survey_company)
+
+company = FSB_job$survey_company
+top20company = as.data.frame(table(company))
+companysorted = top20company[order(-top20company$Freq), ]
+top20_company_names = companysorted$company[1:20]
+
+# View the vector or list of top 20 company names
+print(top20_company_names)
+```
+
+## Imputation (Cities)
+
+We will repeat the same standardization process with cities collected from our survey. First we idenify the top 20 cities to focus on. 
+```{r}
+FSB_job$survey_city = toupper(FSB_job$survey_city)
+
+city = FSB_job$survey_city
+top20city = as.data.frame(table(city))
+citysorted = top20city[order(-top20city$Freq), ]
+top20_city_names = citysorted$city[1:20]
+
+# View the vector or list of top 20 company names
+print(top20_city_names)
+```
+### Imputing Categorical {.unnumbered}
+
+For the remainder of relevant variables with missing values, we will impute the value of "Missing" to fill any null values.
+
+```{r}
+FSB_job = FSB_job |> 
+  dplyr::mutate(
+    survey_city = ifelse(is.na(survey_city), "Missing", survey_city),
+    survey_company = ifelse(is.na(survey_company), "Missing", survey_company),
+    survey_pref_field = ifelse(is.na(survey_pref_field), "Missing", survey_pref_field),
+    survey_pref_loc = ifelse(is.na(survey_pref_loc), "Missing", survey_pref_loc),
+    survey_state = ifelse(is.na(survey_state), "Missing", survey_state)
+    )
+
+# check missing
+sapply(FSB_job, function(x) sum(is.na(x)))
+```
+
+## Cleaning Non-standard responses
+
+##Standardization (Companies)
+One of the major roadblocks we identified with the response data is how often students entered different spellings of the same words. To solve this issue we need to standardize our data to ensure that all of the data is standardized. We decided to focus on the 20 most popular cities and companies to standardize. First we want to see what the top 20 companies are so we know which companies to standardize.
+
+```{r}
+print(top20_company_names)
+```
+
+Now that we know which companies we are going to focus on, it is time to standardize our data. To do this we will be printing all of the companies from out data set that start with the letter of the company in question. Next we will observe all of the various entries and change then all to have the same spelling.
+
+```{r}
+##EY MAPPING
+jobs_e = FSB_job[grep('^E', FSB_job$survey_company),]
+table(jobs_e$survey_company)
+EY_map = c("ERNST & YOUNG (EY)" = "EY", 
+           "ERNST AND YOUNG" = "EY",
+           "ERNST & YOUNG" = "EY")
+```
+
+```{r}
+##DELOITTE MAPPING
+jobs_d = FSB_job[grep('^D', FSB_job$survey_company),]
+table(jobs_d$survey_company)
+DELOITTE_mapping = c("DELOITTE CONSULTING" = "DELOITTE",
+                 "DELOITTE LLP"= "DELOITTE",
+                 "DELOITTE TAX"= "DELOITTE",
+                 "DELOITTE, CHINA" = "DELOITTE")
+
+## DHL SUPPLY CHAIN MAPPING
+DHL_SC_mapping = c("DHL SUPPLY CHAIN" = "DHL")
+```
+
+```{r}
+##PWC MAPPING
+jobs_p = FSB_job[grep('^P', FSB_job$survey_company),]
+table(jobs_p$survey_company)
+PWC_mapping = c( "PWC CORPORATE FINANCE"= "PWC",
+             "PRICEWATERHOUSE COOPERS" = "PWC",
+             "PWC CORPORATE FINANCE LLC" = "PWC", 
+             "PRICEWATERHOUSECOOPERS" = "PWC")
+
+## PEPSICO MAPPING
+PepsiCo_mapping = c("PEPSICO-FRITO LAY" = "PEPSICO",
+                    "PEPSICO FRITO-LAY" = "PEPSICO",
+                    "FRITO LAY"  = "PEPSICO",
+                    "FRITO-LAY" = "PEPSICO")
+## PROTIVITI MAPPING NOT NEEDED
+```
+
+```{r}
+##TEXTRON MAPPING
+jobs_t = FSB_job[grep('^T', FSB_job$survey_company),]
+table(jobs_t$survey_company)
+Textron_mapping = c("TEXTRON AVIATION" = "TEXTRON",
+                "TEXTRON SYSTEMS: LYCOMING ENGINES"= "TEXTRON",
+                 "TEXTRON SPECIALIZED VEHICLES" = "TEXTRON",
+                "TEXTRON SYSTEMS" = "TEXTRON"
+                )
+##TERILLIUM MAPPING
+Terillium_mapping = c("TERRILIUM" = "TERILLIUM")
+```
+
+```{r}
+##ABERCROMBIE & FITCH MAPPING
+jobs_a = FSB_job[grep('^A', FSB_job$survey_company),]
+table(jobs_a$survey_company)
+A_and_F_mapping = c("ABERCROMBIE & FITCH" = "ABERCROMBIE")
+##ARRIVE LOGISTICS MAPPING NOT NEEDED
+```
+
+```{r}
+jobs_j = FSB_job[grep('^J', FSB_job$survey_company),]
+table(jobs_j$survey_company)
+JP_Morgan_Chase_mapping = c("J.P. MORGAN U.S. PRIVATE BANK" = "JP MORGAN",
+                       "JPMORGAN CHASE" = "JP MORGAN",
+                       "J.P MORGAN" = "JP MORGAN", 
+                       "JP MORGAN & CO." = "JP MORGAN",
+                       "J.P. MORGAN" = "JP MORGAN",
+                       "JP MORGAN AND CHASE" = "JP MORGAN",
+                       "JP MORGAN CHASE" = "JP MORGAN")
+
+```
+
+```{r}
+## COYOTE LOGISTICS MAPPING
+jobs_c = FSB_job[grep('^C', FSB_job$survey_company),]
+table(jobs_c$survey_company)
+coyote_mapping = c("COYOTE LOGISTICS" = "COYOTE")
+## CDW MAPPING NOT NEEDED
+
+##CROWE LLP MAPPING
+Crowe_mapping = c("CROWE LLP" = "CROWE")
+```
+
+```{r}
+## FIFTH THIRD BANK MAPPING
+jobs_f = FSB_job[grep('^F', FSB_job$survey_company),]
+table(jobs_f$survey_company)
+Fifth_Third_Bank_mapping = c("FIFTH-THIRD BANK" = "FIFTH THIRD BANK")
+```
+
+Now that we have created mapping variables for all of the companies that needed standardizing, it is time to commit the desired changes to our data set. We will do this by replacing all of the other spellings to our desired choice that we created in our mapping. 
+
+```{r}
+## Updating Data set with standardized companies
+FSB_job$survey_company = str_replace_all(FSB_job$survey_company, A_and_F_mapping)
+FSB_job$survey_company = str_replace_all(FSB_job$survey_company, coyote_mapping)
+FSB_job$survey_company = str_replace_all(FSB_job$survey_company, Crowe_mapping)
+FSB_job$survey_company = str_replace_all(FSB_job$survey_company, DELOITTE_mapping)
+FSB_job$survey_company = str_replace_all(FSB_job$survey_company, DHL_SC_mapping)
+FSB_job$survey_company = str_replace_all(FSB_job$survey_company, EY_map)
+FSB_job$survey_company = str_replace_all(FSB_job$survey_company, Fifth_Third_Bank_mapping)
+FSB_job$survey_company = str_replace_all(FSB_job$survey_company, JP_Morgan_Chase_mapping)
+FSB_job$survey_company = str_replace_all(FSB_job$survey_company, PepsiCo_mapping)
+FSB_job$survey_company = str_replace_all(FSB_job$survey_company, PWC_mapping)
+FSB_job$survey_company = str_replace_all(FSB_job$survey_company, Terillium_mapping)
+FSB_job$survey_company = str_replace_all(FSB_job$survey_company, Textron_mapping)
+```
+
+Next, we want to change all of the companies that are outside of our top 20 to "other". 
+```{r}
+
+top_companies = c("DELOITTE", "EY", "TEXTRON", "PWC", "JP MORGAN", "KPMG", "ABERCROMBIE", "PEPSICO", "DHL", "RSM", "COYOTE", "ARRIVE LOGISTICS", "CDW", "FIFTH THIRD BANK", "TERILLIUM", "WEST MONROE PARTNERS", "PROTIVITI", "CROWE", "INSIGHT2PROFIT", "KEYBANK")
+
+FSB_job$survey_company <-  ifelse(!(toupper(FSB_job$survey_company) %in% toupper(top_companies)), "OTHER", toupper(FSB_job$survey_company ))
+table(FSB_job$survey_company)
+```
+
+## Standardization (Cities)
+
+We will repeat the same standardization process with cities collected from our survey. First we idenify the top 20 cities to focus on. 
+```{r}
+print(top20_city_names)
+```
+
+```{r}
+print(top20_city_names)
+```
+
+We then create mapping for our standardization.
+```{r}
+## CINCINNATI MAPPING
+city_c = FSB_job[grep('^C', FSB_job$survey_city),]
+table(city_c$survey_city)
+
+Cincinnati_mapping = c("CINCINATTI" = "CINCINNATI",
+                       "CINCINNATI, OH" = "CINCINNATI",
+                       "CINCINNNATI" = "CINCINNATI")
+## COLUMBUS MAPPING
+Columbus_mapping = c("COLUBMUS" = "COLUMBUS")
+```
+```{r}
+## NEW YORK MAPPING
+city_n = FSB_job[grep('^N', FSB_job$survey_city),]
+table(city_n$survey_city)
+
+New_York_mapping = c("NEW YORK CITY" = "NEW YORK",
+                     "NYC" = "NEW YORK")
+```
+```{r}
+## INDIANAPOLIS MAPPING
+city_i = FSB_job[grep('^I', FSB_job$survey_city),]
+table(city_i$survey_city)
+
+Indianapolis_mapping = c("INDIANPOLIS" = "INDIANAPOLIS")
+```
+```{r}
+## MILLWAUKEE MAPPING
+city_m = FSB_job[grep('^M', FSB_job$survey_city),]
+table(city_m$survey_city)
+
+Milwaukee_mapping = c("MILWAUKWEE" = "MILWAUKEE")
+```
+
+Now we update our main data set with our newly created standardized mapping.
+```{r}
+## Updating Data set with standardized cities
+FSB_job$survey_city = str_replace_all(FSB_job$survey_city, Cincinnati_mapping)
+FSB_job$survey_city = str_replace_all(FSB_job$survey_city, Columbus_mapping)
+FSB_job$survey_city = str_replace_all(FSB_job$survey_city, Indianapolis_mapping)
+FSB_job$survey_city = str_replace_all(FSB_job$survey_city, Milwaukee_mapping)
+FSB_job$survey_city = str_replace_all(FSB_job$survey_city, New_York_mapping)
+
+```
+
+Since we are only looking at the top 20 cities, we decided to change all of the cities outside of the top 20 to other. 
+```{r}
+top_cities = c("CHICAGO", "CINCINNATI", "COLUMBUS", "CLEVELAND", "NEW YORK", "INDIANAPOLIS", "DENVER", "BOSTON", "PITTSBURGH", "DAYTON", "CHARLOTTE", "DETROIT", "MINNEAPOLIS", "SAN FRANCISCO", "DUBLIN", "MILWAUKEE", "AKRON", "TOLEDO", "ATLANTA", "LOS ANGELES")
+
+FSB_job$survey_city <-  ifelse(!(toupper(FSB_job$survey_city) %in% toupper(top_cities)), "OTHER", toupper(FSB_job$survey_city ))
+table(FSB_job$survey_city)
+```
 
 ### Mean Salary by Major {.unnumbered}
 
@@ -268,64 +506,9 @@ sum(is.na(FSB_job$survey_salary))
 **NEED TO DECIDE ON survey_offers**
 
 
-
-### Imputing Categorical {.unnumbered}
-
-For the remainder of relevant variables with missing values, we will impute the value of "Missing" to fill any null values.
-
-```{r}
-FSB_job = FSB_job |> 
-  dplyr::mutate(
-    survey_city = ifelse(is.na(survey_city), "Missing", survey_city),
-    survey_company = ifelse(is.na(survey_company), "Missing", survey_company),
-    survey_pref_field = ifelse(is.na(survey_pref_field), "Missing", survey_pref_field),
-    survey_pref_loc = ifelse(is.na(survey_pref_loc), "Missing", survey_pref_loc),
-    survey_state = ifelse(is.na(survey_state), "Missing", survey_state)
-    )
-
-# check missing
-sapply(FSB_job, function(x) sum(is.na(x)))
-```
-
 toupper(data$variable)
 
-## Cleaning Non-standard responses
-
-```{r}
-FSB_job$survey_city = toupper(FSB_job$survey_city)
-
-city = FSB_job$survey_city
-top20city = as.data.frame(table(city))
-citysorted = top20city[order(-top20city$Freq), ]
-top20_city_names = citysorted$city[1:20]
-
-# View the vector or list of top 20 company names
-print(top20_city_names)
-```
-
-
-
-
-```{r}
-FSB_job$survey_company = toupper(FSB_job$survey_company)
-
-company = FSB_job$survey_company
-top20company = as.data.frame(table(company))
-companysorted = top20company[order(-top20company$Freq), ]
-top20_company_names = companysorted$company[1:20]
-
-# View the vector or list of top 20 company names
-print(top20_company_names)
-```
-
-```{r}
-
-```
-
-
-
-
-Printing our session infomation
+Printing our session information
 ```{r}
 sessionInfo()
 ```
