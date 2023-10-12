@@ -169,7 +169,7 @@ For the purposes of our analysis, we are looking at the job placement and salary
 unique(FSB$survey_plans)
 ```
 
-## Exploring Context {.unnumbered}
+### Exploring Context {.unnumbered}
 We want to look at various response to evaluate what context they provide to our analysis and whether they would be useful to keep in the final data set we use.
 
 Primarily, we want to look at responses in the survey_plans field because we believe that will be a strong way to filter out observations that have no correlation to the job placement and salary trends. 
@@ -208,31 +208,14 @@ FSB_job = FSB |> dplyr::filter(FSB$survey_plans %in%
 
 
 
-## Counting Missing by Variable {.unnumbered}
+### Counting Missing by Variable {.unnumbered}
 ```{r}
 sapply(FSB_job, function(x) sum(is.na(x)))
 ```
 It seems clear that the survey responses contain a substantial amount of observations with missing values across the entirety of the survey fields. It is our conclusion that to omit responses with missing values would destroy any chance of pulling any meaningful analysis from the data. With that assumption, we will instead clean and impute missing values for fields necessary for our analysis.
 
-### Imputing Categorical {.unnumbered}
 
-For the remainder of relevant variables with missing values, we will impute the value of "Missing" to fill any null values.
-
-```{r}
-FSB_job = FSB_job |> 
-  dplyr::mutate(
-    survey_city = ifelse(is.na(survey_city), "Missing", survey_city),
-    survey_company = ifelse(is.na(survey_company), "Missing", survey_company),
-    survey_pref_field = ifelse(is.na(survey_pref_field), "Missing", survey_pref_field),
-    survey_pref_loc = ifelse(is.na(survey_pref_loc), "Missing", survey_pref_loc),
-    survey_state = ifelse(is.na(survey_state), "Missing", survey_state)
-    )
-
-# check missing
-sapply(FSB_job, function(x) sum(is.na(x)))
-```
-
-## Cleaning Non-standard responses
+### Cleaning Non-standard responses {.unnumbered}
 
 Before we make standardize our city and company variables, we need to clean them. First we made all of the responses all capitalized. This will take out the need to correct capitalization issues when we standardize the data. Next we will sort the responses by frequency and collect the top 20. These lists of 20 will be the variables we will focus in our data set.
 ```{r}
@@ -258,7 +241,9 @@ top20_city_names = citysorted$city[1:20]
 # View the vector or list of top 20 company names
 print(top20_city_names)
 ```
-## Standardization (Companies)
+
+
+#### Standardization (Companies) {.unnumbered}
 One of the major roadblocks we identified with the response data is how often students entered different spellings of the same words. To solve this issue we need to standardize our data to ensure that all of the data is standardized. We decided to focus on the 20 most popular cities and companies to standardize. First we want to see what the top 20 companies are so we know which companies to standardize.
 
 ```{r}
@@ -386,7 +371,7 @@ FSB_job$survey_company <-  ifelse(!(toupper(FSB_job$survey_company) %in% toupper
 table(FSB_job$survey_company)
 ```
 
-## Standardization (Cities)
+#### Standardization (Cities) {.unnumbered}
 
 We will repeat the same standardization process with cities collected from our survey. First we idenify the top 20 cities to focus on. 
 ```{r}
@@ -451,7 +436,29 @@ FSB_job$survey_city <-  ifelse(!(toupper(FSB_job$survey_city) %in% toupper(top_c
 table(FSB_job$survey_city)
 ```
 
-### Mean Salary by Major {.unnumbered}
+### Imputation {.unnumbered}
+
+
+#### Imputing Categorical {.unnumbered}
+
+For the remainder of relevant variables with missing values, we will impute the value of "Missing" to fill any null values.
+
+```{r}
+FSB_job = FSB_job |> 
+  dplyr::mutate(
+    survey_city = ifelse(is.na(survey_city), "Missing", survey_city),
+    survey_company = ifelse(is.na(survey_company), "Missing", survey_company),
+    survey_pref_field = ifelse(is.na(survey_pref_field), "Missing", survey_pref_field),
+    survey_pref_loc = ifelse(is.na(survey_pref_loc), "Missing", survey_pref_loc),
+    survey_state = ifelse(is.na(survey_state), "Missing", survey_state)
+    )
+
+# check missing
+sapply(FSB_job, function(x) sum(is.na(x)))
+```
+
+
+#### Mean Salary by Major {.unnumbered}
 
 After examining the missing value counts, we noticed that survey_salary had a significant portion of missing values. With this being such an important part of our analysis, we felt it would be inappropriate to remove the observations with missing salary data. We know that common practice is to impute the mean of numerical variables and so we will impute salary based on the mean salary reported by major of the student. We chose to impute by major to account for the variation in salary influenced by major (some majors may have a higher average salary).
 
@@ -499,12 +506,10 @@ FSB_job =  FSB_job[-(which(is.na(FSB_job$survey_salary))), ]
 # check missing
 sum(is.na(FSB_job$survey_salary))
 ```
-**NEED TO DECIDE ON survey_offers**
+Now our data is clean and ready for use in the analysis. The purpose of setting the data up the way we did is that now any visualizations we create will be easily understandable in context, and will have to most relevant data contributing to their creation. We attempted to limit ambiguity and interference 
 
 
-toupper(data$variable)
-
-Printing our session information
+## Printing our session information {.unnumbered}
 ```{r}
 sessionInfo()
 ```
