@@ -214,35 +214,6 @@ sapply(FSB_job, function(x) sum(is.na(x)))
 ```
 It seems clear that the survey responses contain a substantial amount of observations with missing values across the entirety of the survey fields. It is our conclusion that to omit responses with missing values would destroy any chance of pulling any meaningful analysis from the data. With that assumption, we will instead clean and impute missing values for fields necessary for our analysis.
 
-
-## Imputation (companies) {.unnumbered}
-
-```{r}
-FSB_job$survey_company = toupper(FSB_job$survey_company)
-
-company = FSB_job$survey_company
-top20company = as.data.frame(table(company))
-companysorted = top20company[order(-top20company$Freq), ]
-top20_company_names = companysorted$company[1:20]
-
-# View the vector or list of top 20 company names
-print(top20_company_names)
-```
-
-## Imputation (Cities)
-
-We will repeat the same standardization process with cities collected from our survey. First we idenify the top 20 cities to focus on. 
-```{r}
-FSB_job$survey_city = toupper(FSB_job$survey_city)
-
-city = FSB_job$survey_city
-top20city = as.data.frame(table(city))
-citysorted = top20city[order(-top20city$Freq), ]
-top20_city_names = citysorted$city[1:20]
-
-# View the vector or list of top 20 company names
-print(top20_city_names)
-```
 ### Imputing Categorical {.unnumbered}
 
 For the remainder of relevant variables with missing values, we will impute the value of "Missing" to fill any null values.
@@ -263,7 +234,31 @@ sapply(FSB_job, function(x) sum(is.na(x)))
 
 ## Cleaning Non-standard responses
 
-##Standardization (Companies)
+Before we make standardize our city and company variables, we need to clean them. First we made all of the responses all capitalized. This will take out the need to correct capitalization issues when we standardize the data. Next we will sort the responses by frequency and collect the top 20. These lists of 20 will be the variables we will focus in our data set.
+```{r}
+FSB_job$survey_company = toupper(FSB_job$survey_company)
+
+company = FSB_job$survey_company
+top20company = as.data.frame(table(company))
+companysorted = top20company[order(-top20company$Freq), ]
+top20_company_names = companysorted$company[1:20]
+
+# View the vector or list of top 20 company names
+print(top20_company_names)
+```
+
+```{r}
+FSB_job$survey_city = toupper(FSB_job$survey_city)
+
+city = FSB_job$survey_city
+top20city = as.data.frame(table(city))
+citysorted = top20city[order(-top20city$Freq), ]
+top20_city_names = citysorted$city[1:20]
+
+# View the vector or list of top 20 company names
+print(top20_city_names)
+```
+## Standardization (Companies)
 One of the major roadblocks we identified with the response data is how often students entered different spellings of the same words. To solve this issue we need to standardize our data to ensure that all of the data is standardized. We decided to focus on the 20 most popular cities and companies to standardize. First we want to see what the top 20 companies are so we know which companies to standardize.
 
 ```{r}
@@ -367,6 +362,7 @@ Now that we have created mapping variables for all of the companies that needed 
 
 ```{r}
 ## Updating Data set with standardized companies
+library(tidyverse)
 FSB_job$survey_company = str_replace_all(FSB_job$survey_company, A_and_F_mapping)
 FSB_job$survey_company = str_replace_all(FSB_job$survey_company, coyote_mapping)
 FSB_job$survey_company = str_replace_all(FSB_job$survey_company, Crowe_mapping)
