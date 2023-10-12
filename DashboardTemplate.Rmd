@@ -1,0 +1,103 @@
+---
+title: "DashboardTemplate"
+author: "Jake Holroyd, Brendan Beattie"
+date: "`r Sys.Date()`"
+output: 
+  flexdashboard::flex_dashboard:
+    orientation: rows
+---
+
+```{r setup, include=FALSE,echo=FALSE}
+knitr::opts_chunk$set(echo = TRUE,message=FALSE,warning=FALSE)
+
+#package intialization
+if(require(pacman)==FALSE) install.packages("pacman")
+pacman::p_load(tidyverse, #for data manipulation
+               plotly, #for interactive plots
+               flexdashboard, #to make a dashboard
+               fontawesome, #for icons
+               DT #for better tables
+               )
+
+#read in data
+```
+
+# Analysis Overview {data-orientation=columns}
+
+Overview of analysis, the question we're trying to answer, and our insights (linked to the pages that contain their respective visualizations)
+  
+## row {data-width=300}
+
+### Overview of Analysis
+
+```{r, echo = FALSE}
+
+```
+
+### Our Research Question
+
+```{r,echo=FALSE}
+
+```   
+ 
+
+## row {data-height=600}
+
+### Insight Description (potentially chopped up into separated boxes by insight)
+
+```{r,echo=FALSE}
+
+```
+
+# Job Placement Trends {data-orientation=columns}
+
+## Column {data-width=400}
+
+### Job Placement Rate across FSB (Bar Chart, Overall placement by year)
+
+```{r,echo=FALSE}
+
+```
+
+### Job Placement Rate by Major (Stacked line chart, Overall placement by year, lines encoded by major)
+
+```{r,echo=FALSE}
+
+```
+
+
+## Column {data-width=600}
+
+### Job Placement Rate by Major (Bar chart, overall placement by year, facet wrap by major, potentially add in extra fill by count of offers)
+
+```{r,echo=FALSE}
+
+```
+
+
+# Salary Trends {data-orientation=columns}
+
+## Column {data-width=400}
+
+### Salary across FSB (Box Plots by of Salary, side-by-side for each year)
+
+```{r,echo=FALSE}
+
+```
+
+
+### Salary by Major (Segmented Bar chart of salary by major)
+
+```{r,echo=FALSE}
+
+```
+
+
+## Column {data-width=600}
+
+### Salary by Major by Year (Box Plots of Salary, side-by-side for each year, facet wrap by major)
+
+```{r}
+
+```
+

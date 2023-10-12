@@ -193,7 +193,6 @@ FSB_mil = FSB |> dplyr::filter(FSB$survey_plans == "military service")
 remove(FSB_other)
 remove(FSB_self)
 remove(FSB_mil)
-
 ```
 
 Now that we have our list of response values we would like to filter on, we will now create our new data set
