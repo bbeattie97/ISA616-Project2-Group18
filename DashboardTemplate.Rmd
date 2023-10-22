@@ -56,7 +56,12 @@ Overview of analysis, the question we're trying to answer, and our insights (lin
 ### Job Placement Rate across FSB (Bar Chart, Overall placement by year)
 
 ```{r,echo=FALSE}
+job_count = count(as.numeric(FSB_job$survey_offers))
 
+FSB_placement_bar = ggplot(FSB_job, aes(x = year.x, y = job_count, fill = year.x))+
+  geom_bar(position="dodge", stat="identity")+ xlab("Year")+ylab("Salary")+ labs(fill = "Year")
+
+FSB_placement_bar
 ```
 
 ### Job Placement Rate by Major (Stacked line chart, Overall placement by year, lines encoded by major)
