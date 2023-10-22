@@ -71,7 +71,14 @@ Overview of analysis, the question we're trying to answer, and our insights (lin
 ### Job Placement Rate by Major (Bar chart, overall placement by year, facet wrap by major, potentially add in extra fill by count of offers)
 
 ```{r,echo=FALSE}
+library(ggplot2)
+library(plotly)
 
+sal_by_major_bar = ggplot(FSB_job1, aes(x = year.x, y = survey_salary, fill = year.x))+
+  geom_bar(position="dodge", stat="identity")+ xlab("Year")+ylab("Salary")+ labs(fill = "Year")
+  
+sal_by_major_bar + facet_wrap(~ major1)
+sal_by_major_bar <- ggplotly(sal_by_major_bar)
 ```
 
 
