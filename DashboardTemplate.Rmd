@@ -82,7 +82,16 @@ Overview of analysis, the question we're trying to answer, and our insights (lin
 ### Salary across FSB (Box Plots by of Salary, side-by-side for each year)
 
 ```{r,echo=FALSE}
+library(ggplot2)
+library(plotly)
 
+fsb_ovr_box = ggplot(FSB_job, aes(x = year.x, y = survey_salary, color = year.x))+
+  xlab("Year")+ylab("Salary")+ labs(color = "Year")+
+  geom_boxplot()
+
+fsb_ovr_box <- ggplotly(fsb_ovr_box, tooltip = "y")
+
+fsb_ovr_box
 ```
 
 
@@ -90,6 +99,17 @@ Overview of analysis, the question we're trying to answer, and our insights (lin
 
 ```{r,echo=FALSE}
 
+FSB_job1 <- subset(FSB_job, !(major1 == "Interdisciplinary Bus Managemt" | major1 == "Management and Organizations"))
+
+## med_sal = median(FSB_job$survey_salary), trying to use either mean or median but wont graph when i do , my understanding is that it is currently using the max
+
+sal_major_bar = ggplot(FSB_job1, aes(fill= year.x, y=survey_salary, x= major1)) + 
+    geom_bar(position="dodge", stat="identity")+xlab("Major")+ylab("Salary")+ labs(fill = "Year")+
+  theme(axis.text.x = element_text(angle = 90))
+
+fsb_ovr_box <- ggplotly(sal_major_bar)
+
+sal_major_bar
 ```
 
 
@@ -98,6 +118,10 @@ Overview of analysis, the question we're trying to answer, and our insights (lin
 ### Salary by Major by Year (Box Plots of Salary, side-by-side for each year, facet wrap by major)
 
 ```{r}
+fsb_mjr_sal_box = ggplot(FSB_job1, aes(x = year.x, y = survey_salary, color = year.x))+
+  xlab("Year")+ylab("Salary")+ labs(color = "Year")+
+  geom_boxplot()
 
+fsb_mjr_sal_box + facet_wrap(~ major1)
 ```
 
