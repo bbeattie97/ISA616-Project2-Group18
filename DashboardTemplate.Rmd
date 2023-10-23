@@ -23,15 +23,13 @@ FSB_job$year.x = factor(FSB_job$year.x, levels = unique(FSB_job$year.x))
 ```
 
 # Analysis Overview {data-orientation=columns}
-
-Overview of analysis, the question we're trying to answer, and our insights (linked to the pages that contain their respective visualizations)
   
 ## row {data-width=300}
 
 ### Overview of Analysis
 
-We compare the data of both job placement trends and salary trends over the three year time period provided. Deliver an analysis to show job placement and salary trends over time across the entirety of FSB, as well as drilling down to explore results by major.
-Create visualizations that illustrate these trends in an understandable and digestible way to show changes in trends by major and be able to easily compare the most recent differences in the department.
+We compared the data of both job placement trends and salary trends over the three year time period provided. We have delivered an analysis to show job placement and salary trends over time across the entirety of FSB, as well as drilling down to explore results by major.
+To accomplish this, we created visualizations that illustrate these trends in an understandable and digestible way to show changes in trends by major and be able to easily compare the most recent differences in the department.
 
 ### Our Research Question
 
@@ -48,7 +46,17 @@ Create visualizations that illustrate these trends in an understandable and dige
 
 ### Insight Description (potentially chopped up into separated boxes by insight)
 
-We evaluated job placement rates across FSB by examining the number of job offers received as reported on the survey. We were able to identify that the proportion of students with 0 job offers in 2021 has dropped from the count in 2020, but it is double that of the count in 2019. Additionally, students appear less likely to receive more than 4 job offers now than in years prior
+We evaluated job placement rates across FSB by examining the number of job offers received as reported on the survey. We were able to identify that while the proportion of students with 0 job offers in 2021 has dropped from the count in 2020, it is double that of the count in 2019. 
+
+By major, we found that majors that saw an dramatic increase in graduate numbers (like Business Analytics or Business Economics) were able to decrease rates of 0 offers, while more established majors saw either no shift (Marketing/Finance) or increases in 0 offer rates (Accounting/Supply Chain). 
+
+Overall, the job placement rate seems to remain steady across the entirety of FSB. By major, it would be pertinent to focus advising efforts toward the more established FSB majors. Students in these majors should be enlightened of the apparent increased challenge in the job search when compared to their peers. It may be beneficial to more strongly encourage these individuals to seek the counseling of FSB Career Services.
+
+
+We also evaluated salary trends across FSB. We found that there is evidence of a very slight positive trend in salary rates when examining salary's 5-number-summary.
+
+By major, we found that the salary trends seem to remain fairly stable across the 3 years. Notable exceptions include Business Analytics and HCM&L which both seem to have improved rates that are more centered around 
+
 
 # Job Placement Trends {data-orientation=columns}
 
@@ -104,9 +112,7 @@ ggplotly(offers_by_major_bar)
 ```
 
 
-# Salary Trends {data-orientation=columns}
-
-## Column {data-width=400}
+# Salary Trends (1/3)
 
 ### Salary across FSB (Box Plots by of Salary, side-by-side for each year)
 
@@ -126,14 +132,14 @@ ggplotly(fsb_ovr_box, tooltip = "y")
 ```
 
 
+
+
+
+# Salary Trends (2/3)
+
 ### Salary by Major (Segmented Bar chart of salary by major)
 
 ```{r,echo=FALSE}
-
-
-
-## med_sal = median(FSB_job$survey_salary), trying to use either mean or median but wont graph when i do , my understanding is that it is currently using the max
-
 sal_major_bar = FSB_job_1 |> 
   mutate(year.x = fct_relevel(year.x, "2019", "2020", "2021")) |> 
   ggplot(aes(fill= year.x, y=survey_salary, x= major1)) + 
@@ -147,12 +153,13 @@ ggplotly(sal_major_bar)
 ```
 
 
-## Column {data-width=600}
+# Salary Trends (3/3)
 
-### Salary by Major by Year (Box Plots of Salary, side-by-side for each year, facet wrap by major)
+### Salary Trend by Major by Year (Box Plots of Salary, side-by-side for each year, facet wrap by major)
 
 ```{r, echo=FALSE}
 fsb_mjr_sal_box = FSB_job_1 |> 
+  mutate(year.x = fct_relevel(year.x, "2019", "2020", "2021")) |> 
   ggplot(aes(x = year.x, y = survey_salary, color = year.x))+
   xlab("Year")+
   ylab("Salary")+
@@ -163,3 +170,4 @@ fsb_mjr_sal_box = FSB_job_1 |>
 
 ggplotly(fsb_mjr_sal_box )
 ```
+

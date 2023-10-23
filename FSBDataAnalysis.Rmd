@@ -507,13 +507,19 @@ sum(is.na(FSB_job$survey_salary))
 ```
 Now our data is clean and ready for use in the analysis. The purpose of setting the data up the way we did is that now any visualizations we create will be easily understandable in context, and will have to most relevant data contributing to their creation. We attempted to limit ambiguity and interference 
 
-```{r, echo=FALSE}
-write.csv(FSB_job, 'FSB_job.csv', row.names = FALSE)
+```{r}
+str(FSB_job$year.x)
 ```
+
+
+
+```{r}
+write.csv(FSB_job, 'FSB_job.csv', row.names = )
+```
+
 
 
 ## Printing our session information {.unnumbered}
 ```{r}
 sessionInfo()
 ```
-
