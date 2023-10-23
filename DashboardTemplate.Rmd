@@ -19,7 +19,7 @@ pacman::p_load(tidyverse, #for data manipulation
                DT #for better tables
                )
 
-#read in data
+FSB_job = read.csv('FSB_job.csv')
 ```
 
 # Analysis Overview {data-orientation=columns}
