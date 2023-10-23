@@ -18,8 +18,8 @@ pacman::p_load(tidyverse, #for data manipulation
                fontawesome, #for icons
                DT #for better tables
                )
-
 FSB_job = read.csv('FSB_job.csv')
+FSB_job$year.x = factor(FSB_job$year.x, levels = unique(FSB_job$year.x))
 ```
 
 # Analysis Overview {data-orientation=columns}
@@ -30,24 +30,25 @@ Overview of analysis, the question we're trying to answer, and our insights (lin
 
 ### Overview of Analysis
 
-```{r, echo = FALSE}
-
-```
+We compare the data of both job placement trends and salary trends over the three year time period provided. Deliver an analysis to show job placement and salary trends over time across the entirety of FSB, as well as drilling down to explore results by major.
+Create visualizations that illustrate these trends in an understandable and digestible way to show changes in trends by major and be able to easily compare the most recent differences in the department.
 
 ### Our Research Question
 
-```{r,echo=FALSE}
+**"What are the macro placement and salary trends FSB is seeing over the past three years"** 
 
-```   
- 
+-   Are our placement results going up / down / steady?
+
+-   Salary trends?
+
+-   We explore these trends both across FSB overall, as well as by major
+
 
 ## row {data-height=600}
 
 ### Insight Description (potentially chopped up into separated boxes by insight)
 
-```{r,echo=FALSE}
-
-```
+We evaluated job placement rates across FSB by examining the number of job offers received as reported on the survey. We were able to identify that the proportion of students with 0 job offers in 2021 has dropped from the count in 2020, but it is double that of the count in 2019. Additionally, students appear less likely to receive more than 4 job offers now than in years prior
 
 # Job Placement Trends {data-orientation=columns}
 
@@ -65,41 +66,41 @@ FSB_job_1 <- subset(FSB_job, !(major1 == "Interdisciplinary Bus Managemt" |
                                survey_offers == "NA" |  
                                survey_offers == "na" | 
                                survey_offers == "multiple" |
-                               survey_offers == "+2"))
-
-FSB_job_1$survey_offers = as.numeric(FSB_job_1$survey_offers)
+                               survey_offers == "2+"))
 
 
 ##. This is currently only taking the max of each year rather than the total 
-FSB_placement_bar = ggplot(FSB_job_1, aes(x = year.x, y = survey_offers, fill = year.x))+
-  geom_bar(position="dodge", stat="identity")+ xlab("Year")+ylab("offers")+ labs(fill = "Year")
+FSB_placement_bar = FSB_job_1 |> 
+  mutate(survey_offers = fct_relevel(survey_offers, "0", "1", "2", "3", "4", "5", "6", "7", "8", "9", "10"),
+         year.x = fct_relevel(year.x, "2019", "2020", "2021")) |> 
+  ggplot(aes(x = year.x, fill = survey_offers)) +
+  geom_bar() +
+  xlab("Year") +
+  ylab("Number of Students") +
+  theme_bw() + 
+  theme(axis.text.x = element_text(angle = 90))
 
-FSB_placement_bar
+ggplotly(FSB_placement_bar)
 ```
-
-### Job Placement Rate by Major (Stacked line chart, Overall placement by year, lines encoded by major)
-
-```{r,echo=FALSE}
-
-## having trouble graphing the line chart, i dont know why its so ugly
-
-lines_by_major = ggplot(FSB_job_1, aes(x = year.x, y = survey_offers, color = major1,fill = major1, group = major1)) +geom_line(size=1) + geom_point()
-
-lines_by_major
-```
-
 
 ## Column {data-width=600}
 
-### Job Placement Rate by Major (Bar chart, overall placement by year, facet wrap by major, potentially add in extra fill by count of offers)
+### Job Placement Rate by Major 
 
 ```{r,echo=FALSE}
 
-sal_by_major_bar = ggplot(FSB_job_1, aes(x = year.x, y = survey_salary, fill = year.x))+
-  geom_bar(position="dodge", stat="identity")+ xlab("Year")+ylab("Salary")+ labs(fill = "Year")
-  
-sal_by_major_bar + facet_wrap(~ major1)
-sal_by_major_bar <- ggplotly(sal_by_major_bar)
+offers_by_major_bar =  FSB_job_1 |> 
+  mutate(survey_offers = fct_relevel(survey_offers, "0", "1", "2", "3", "4", "5", "6", "7", "8", "9", "10"),
+         year.x = fct_relevel(year.x, "2019", "2020", "2021")) |> 
+  ggplot(aes(x = year.x, fill = survey_offers)) +
+  geom_bar() +
+  xlab("Year") +
+  ylab("Number of Students") +
+  theme_bw() + 
+  theme(axis.text.x = element_text(angle = 90))+
+  facet_wrap(~ major1)
+
+ggplotly(offers_by_major_bar)
 ```
 
 
@@ -113,13 +114,15 @@ sal_by_major_bar <- ggplotly(sal_by_major_bar)
 library(ggplot2)
 library(plotly)
 
-fsb_ovr_box = ggplot(FSB_job, aes(x = year.x, y = survey_salary, color = year.x))+
-  xlab("Year")+ylab("Salary")+ labs(color = "Year")+
+fsb_ovr_box = FSB_job_1 |> 
+  mutate(year.x = fct_relevel(year.x, "2019", "2020", "2021")) |> 
+  ggplot(aes(x = year.x, y = survey_salary, color = year.x))+
+  xlab("Year")+
+  ylab("Salary")+
+  labs(color = "Year")+
   geom_boxplot()
 
-fsb_ovr_box <- ggplotly(fsb_ovr_box, tooltip = "y")
-
-fsb_ovr_box
+ggplotly(fsb_ovr_box, tooltip = "y")
 ```
 
 
@@ -131,13 +134,16 @@ fsb_ovr_box
 
 ## med_sal = median(FSB_job$survey_salary), trying to use either mean or median but wont graph when i do , my understanding is that it is currently using the max
 
-sal_major_bar = ggplot(FSB_job_1, aes(fill= year.x, y=survey_salary, x= major1)) + 
-    geom_bar(position="dodge", stat="identity")+xlab("Major")+ylab("Salary")+ labs(fill = "Year")+
+sal_major_bar = FSB_job_1 |> 
+  mutate(year.x = fct_relevel(year.x, "2019", "2020", "2021")) |> 
+  ggplot(aes(fill= year.x, y=survey_salary, x= major1)) + 
+  geom_bar(position="dodge", stat="identity")+
+  xlab("Major")+
+  ylab("Salary")+
+  labs(fill = "Year")+
   theme(axis.text.x = element_text(angle = 90))
 
-fsb_ovr_box <- ggplotly(sal_major_bar)
-
-sal_major_bar
+ggplotly(sal_major_bar)
 ```
 
 
@@ -145,11 +151,15 @@ sal_major_bar
 
 ### Salary by Major by Year (Box Plots of Salary, side-by-side for each year, facet wrap by major)
 
-```{r}
-fsb_mjr_sal_box = ggplot(FSB_job_1, aes(x = year.x, y = survey_salary, color = year.x))+
-  xlab("Year")+ylab("Salary")+ labs(color = "Year")+
-  geom_boxplot()
+```{r, echo=FALSE}
+fsb_mjr_sal_box = FSB_job_1 |> 
+  ggplot(aes(x = year.x, y = survey_salary, color = year.x))+
+  xlab("Year")+
+  ylab("Salary")+
+  labs(color = "Year")+
+  geom_boxplot()+ 
+  facet_wrap(~ major1)
 
-fsb_mjr_sal_box + facet_wrap(~ major1)
+
+ggplotly(fsb_mjr_sal_box )
 ```
-
