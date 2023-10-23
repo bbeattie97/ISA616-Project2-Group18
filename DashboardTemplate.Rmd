@@ -42,20 +42,20 @@ To accomplish this, we created visualizations that illustrate these trends in an
 -   We explore these trends both across FSB overall, as well as by major
 
 
-## row {data-height=600}
+## row {data-height=700}
 
-### Insight Description (potentially chopped up into separated boxes by insight)
-
+### Insight Description 
 We evaluated job placement rates across FSB by examining the number of job offers received as reported on the survey. We were able to identify that while the proportion of students with 0 job offers in 2021 has dropped from the count in 2020, it is double that of the count in 2019. 
 
 By major, we found that majors that saw an dramatic increase in graduate numbers (like Business Analytics or Business Economics) were able to decrease rates of 0 offers, while more established majors saw either no shift (Marketing/Finance) or increases in 0 offer rates (Accounting/Supply Chain). 
 
-Overall, the job placement rate seems to remain steady across the entirety of FSB. By major, it would be pertinent to focus advising efforts toward the more established FSB majors. Students in these majors should be enlightened of the apparent increased challenge in the job search when compared to their peers. It may be beneficial to more strongly encourage these individuals to seek the counseling of FSB Career Services.
-
-
 We also evaluated salary trends across FSB. We found that there is evidence of a very slight positive trend in salary rates when examining salary's 5-number-summary.
 
-By major, we found that the salary trends seem to remain fairly stable across the 3 years. Notable exceptions include Business Analytics and HCM&L which both seem to have improved rates that are more centered around 
+By major, we found that the salary trends seem to remain fairly stable across the 3 years. Notable exceptions include Business Analytics and HCM&L which both seem to have improved rates that are more tightly distributed around their static mean rather than ranging to shallower lows. There are multiple other majors with less extreme iterations of this same trend or are simply remaining steady in their salary rates, but there are still those that appear to be trending downward. Business Economics and Marketing both seem to be increasing their variation of salary rates and include much lower values much more often than they have in years prior. 
+
+**Recommendations:**
+
+Overall, the job placement rate seems to remain steady across the entirety of FSB. By major, it would be pertinent to focus advising efforts toward the more established FSB majors. Students in these majors should be enlightened of the apparent increased challenge in the job search when compared to their peers. It may be beneficial to more strongly encourage these individuals to seek the counseling of FSB Career Services. When considering salary goals, students in Business Economics and Marketing should receive specific notice from the FSB Career Services team in an effort to curb these downward trends and prevent lower salary rates in these groups.
 
 
 # Job Placement Trends {data-orientation=columns}
