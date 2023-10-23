@@ -51,7 +51,7 @@ By major, we found that majors that saw an dramatic increase in graduate numbers
 
 We also evaluated salary trends across FSB. We found that there is evidence of a very slight positive trend in salary rates when examining salary's 5-number-summary.
 
-By major, we found that the salary trends seem to remain fairly stable across the 3 years. Notable exceptions include Business Analytics and HCM&L which both seem to have improved rates that are more tightly distributed around their static mean rather than ranging to shallower lows. There are multiple other majors with less extreme iterations of this same trend or are simply remaining steady in their salary rates, but there are still those that appear to be trending downward. Business Economics and Marketing both seem to be increasing their variation of salary rates and include much lower values much more often than they have in years prior. 
+By major, we found that most salary trends seem to remain fairly stable across the 3 years, with mean salary rarely moving more than a couple thousand dollars up or down. Notable exceptions include Business Analytics and HCM&L which both seem to have improved rates that are more tightly distributed around their fairly static mean rather than ranging to shallower lows. There are multiple other majors with less extreme iterations of this same trend or are simply remaining steady in their salary rates, but there are still those that appear to be trending downward. Business Economics and Marketing both seem to be increasing their variation of salary rates and include much lower values much more often than they have in years prior, even if their mean salary rates aren't changing significantly. 
 
 **Recommendations:**
 
@@ -142,8 +142,8 @@ ggplotly(fsb_ovr_box, tooltip = "y")
 ```{r,echo=FALSE}
 sal_major_bar = FSB_job_1 |> 
   mutate(year.x = fct_relevel(year.x, "2019", "2020", "2021")) |> 
-  ggplot(aes(fill= year.x, y=survey_salary, x= major1)) + 
-  geom_bar(position="dodge", stat="identity")+
+  ggplot(aes(fill = year.x, y=survey_salary, x= major1)) + 
+  geom_bar(position = "dodge", stat = "summary", fun.y = "mean")+
   xlab("Major")+
   ylab("Salary")+
   labs(fill = "Year")+
