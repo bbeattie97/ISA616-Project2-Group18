@@ -251,19 +251,27 @@ print(top20_company_names)
 
 Now that we know which companies we are going to focus on, it is time to standardize our data. To do this we will be printing all of the companies from out data set that start with the letter of the company in question. Next we will observe all of the various entries and change then all to have the same spelling.
 
-```{r}
-##EY MAPPING
+```{r, echo = FALSE, include = FALSE}
+## EY MAPPING
 jobs_e = FSB_job[grep('^E', FSB_job$survey_company),]
 table(jobs_e$survey_company)
+```
+
+```{r}
+## EY MAPPING
 EY_map = c("ERNST & YOUNG (EY)" = "EY", 
            "ERNST AND YOUNG" = "EY",
            "ERNST & YOUNG" = "EY")
 ```
 
-```{r}
-##DELOITTE MAPPING
+```{r, echo = FALSE, include = FALSE}
+## DELOITTE MAPPING
 jobs_d = FSB_job[grep('^D', FSB_job$survey_company),]
 table(jobs_d$survey_company)
+```
+
+```{r}
+## DELOITTE MAPPING
 DELOITTE_mapping = c("DELOITTE CONSULTING" = "DELOITTE",
                  "DELOITTE LLP"= "DELOITTE",
                  "DELOITTE TAX"= "DELOITTE",
@@ -273,10 +281,14 @@ DELOITTE_mapping = c("DELOITTE CONSULTING" = "DELOITTE",
 DHL_SC_mapping = c("DHL SUPPLY CHAIN" = "DHL")
 ```
 
-```{r}
-##PWC MAPPING
+```{r, echo = FALSE, include = FALSE}
+## PWC MAPPING
 jobs_p = FSB_job[grep('^P', FSB_job$survey_company),]
 table(jobs_p$survey_company)
+```
+
+```{r}
+## PWC MAPPING
 PWC_mapping = c( "PWC CORPORATE FINANCE"= "PWC",
              "PRICEWATERHOUSE COOPERS" = "PWC",
              "PWC CORPORATE FINANCE LLC" = "PWC", 
@@ -287,33 +299,50 @@ PepsiCo_mapping = c("PEPSICO-FRITO LAY" = "PEPSICO",
                     "PEPSICO FRITO-LAY" = "PEPSICO",
                     "FRITO LAY"  = "PEPSICO",
                     "FRITO-LAY" = "PEPSICO")
+
 ## PROTIVITI MAPPING NOT NEEDED
+
+```
+
+```{r, echo = FALSE, include = FALSE}
+##TEXTRON MAPPING
+jobs_t = FSB_job[grep('^T', FSB_job$survey_company),]
+table(jobs_t$survey_company)
 ```
 
 ```{r}
 ##TEXTRON MAPPING
-jobs_t = FSB_job[grep('^T', FSB_job$survey_company),]
-table(jobs_t$survey_company)
 Textron_mapping = c("TEXTRON AVIATION" = "TEXTRON",
                 "TEXTRON SYSTEMS: LYCOMING ENGINES"= "TEXTRON",
                  "TEXTRON SPECIALIZED VEHICLES" = "TEXTRON",
                 "TEXTRON SYSTEMS" = "TEXTRON"
                 )
+
+
 ##TERILLIUM MAPPING
 Terillium_mapping = c("TERRILIUM" = "TERILLIUM")
 ```
 
-```{r}
+```{r, echo = FALSE, include = FALSE}
 ##ABERCROMBIE & FITCH MAPPING
 jobs_a = FSB_job[grep('^A', FSB_job$survey_company),]
 table(jobs_a$survey_company)
-A_and_F_mapping = c("ABERCROMBIE & FITCH" = "ABERCROMBIE")
-##ARRIVE LOGISTICS MAPPING NOT NEEDED
 ```
 
 ```{r}
+##ABERCROMBIE & FITCH MAPPING
+A_and_F_mapping = c("ABERCROMBIE & FITCH" = "ABERCROMBIE")
+
+##ARRIVE LOGISTICS MAPPING NOT NEEDED
+```
+
+```{r, echo = FALSE, include = FALSE}
 jobs_j = FSB_job[grep('^J', FSB_job$survey_company),]
 table(jobs_j$survey_company)
+```
+
+```{r}
+## JP MORGAN CHASE MAPPINF
 JP_Morgan_Chase_mapping = c("J.P. MORGAN U.S. PRIVATE BANK" = "JP MORGAN",
                        "JPMORGAN CHASE" = "JP MORGAN",
                        "J.P MORGAN" = "JP MORGAN", 
@@ -324,21 +353,30 @@ JP_Morgan_Chase_mapping = c("J.P. MORGAN U.S. PRIVATE BANK" = "JP MORGAN",
 
 ```
 
-```{r}
+```{r, echo = FALSE, include = FALSE}
 ## COYOTE LOGISTICS MAPPING
 jobs_c = FSB_job[grep('^C', FSB_job$survey_company),]
 table(jobs_c$survey_company)
+```
+
+```{r}
+## COYOTE LOGISTICS MAPPING
 coyote_mapping = c("COYOTE LOGISTICS" = "COYOTE")
+
 ## CDW MAPPING NOT NEEDED
 
 ##CROWE LLP MAPPING
 Crowe_mapping = c("CROWE LLP" = "CROWE")
 ```
 
-```{r}
+```{r, echo = FALSE, include = FALSE}
 ## FIFTH THIRD BANK MAPPING
 jobs_f = FSB_job[grep('^F', FSB_job$survey_company),]
 table(jobs_f$survey_company)
+```
+
+```{r}
+## FIFTH THIRD BANK MAPPING
 Fifth_Third_Bank_mapping = c("FIFTH-THIRD BANK" = "FIFTH THIRD BANK")
 ```
 
@@ -382,37 +420,56 @@ print(top20_city_names)
 ```
 
 We then create mapping for our standardization.
-```{r}
+```{r, echo = FALSE, include = FALSE}
 ## CINCINNATI MAPPING
 city_c = FSB_job[grep('^C', FSB_job$survey_city),]
 table(city_c$survey_city)
+```
 
+```{r}
+## CINCINNATI MAPPING
 Cincinnati_mapping = c("CINCINATTI" = "CINCINNATI",
                        "CINCINNATI, OH" = "CINCINNATI",
                        "CINCINNNATI" = "CINCINNATI")
+
 ## COLUMBUS MAPPING
 Columbus_mapping = c("COLUBMUS" = "COLUMBUS")
 ```
-```{r}
+
+```{r, echo = FALSE, include = FALSE}
 ## NEW YORK MAPPING
 city_n = FSB_job[grep('^N', FSB_job$survey_city),]
 table(city_n$survey_city)
+```
 
+```{r}
+## NEW YORK MAPPING
 New_York_mapping = c("NEW YORK CITY" = "NEW YORK",
                      "NYC" = "NEW YORK")
 ```
-```{r}
+
+
+
+```{r, echo = FALSE, include=FALSE}
 ## INDIANAPOLIS MAPPING
 city_i = FSB_job[grep('^I', FSB_job$survey_city),]
 table(city_i$survey_city)
+```
 
+```{r}
+## INDIANAPOLIS MAPPING
 Indianapolis_mapping = c("INDIANPOLIS" = "INDIANAPOLIS")
 ```
-```{r}
+
+
+```{r, echo = FALSE, include=FALSE}
 ## MILLWAUKEE MAPPING
 city_m = FSB_job[grep('^M', FSB_job$survey_city),]
 table(city_m$survey_city)
+```
 
+```{r}
+## MILLWAUKEE MAPPING
 Milwaukee_mapping = c("MILWAUKWEE" = "MILWAUKEE")
 ```
 
@@ -434,6 +491,15 @@ top_cities = c("CHICAGO", "CINCINNATI", "COLUMBUS", "CLEVELAND", "NEW YORK", "IN
 FSB_job$survey_city <-  ifelse(!(toupper(FSB_job$survey_city) %in% toupper(top_cities)), "OTHER", toupper(FSB_job$survey_city ))
 table(FSB_job$survey_city)
 ```
+
+```{r, echo = FALSE}
+## clear excess objects from environment
+
+remove(A_and_F_mapping, Cincinnati_mapping, city, Columbus_mapping, company, coyote_mapping, Crowe_mapping, DELOITTE_mapping, DHL_SC_mapping, EY_map, Fifth_Third_Bank_mapping, Indianapolis_mapping, JP_Morgan_Chase_mapping, Milwaukee_mapping, New_York_mapping, PepsiCo_mapping, PWC_mapping, Terillium_mapping, Textron_mapping, top_cities, top_companies, top20_city_names, top20_company_names, city_c, city_i, city_m, city_n, citysorted, companysorted, jobs_a, jobs_c, jobs_d, jobs_e, jobs_f, jobs_j, jobs_p, jobs_t, top20city, top20company)
+```
+
+
+
 
 ### Imputation {.unnumbered}
 
@@ -514,7 +580,7 @@ str(FSB_job$year.x)
 
 
 ```{r}
-write.csv(FSB_job, 'FSB_job.csv', row.names = )
+#write.csv(FSB_job, 'FSB_job.csv', row.names = FALSE)
 ```
 
 

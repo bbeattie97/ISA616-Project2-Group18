@@ -11,7 +11,7 @@
 
 <meta name="author" content="Jake Holroyd, Brendan Beattie" />
 
-<meta name="date" content="2023-10-12" />
+<meta name="date" content="2023-10-26" />
 
 <title>FSB Data Analysis Group 18</title>
 
@@ -2878,7 +2878,7 @@ border-radius: 0px;
 
 <h1 class="title toc-ignore">FSB Data Analysis Group 18</h1>
 <h4 class="author">Jake Holroyd, Brendan Beattie</h4>
-<h4 class="date">2023-10-12</h4>
+<h4 class="date">2023-10-26</h4>
 
 </div>
 
@@ -3267,193 +3267,20 @@ to standardize our data. To do this we will be printing all of the
 companies from out data set that start with the letter of the company in
 question. Next we will observe all of the various entries and change
 then all to have the same spelling.</p>
-<pre class="r"><code>##EY MAPPING
-jobs_e = FSB_job[grep(&#39;^E&#39;, FSB_job$survey_company),]
-table(jobs_e$survey_company)</code></pre>
-<pre><code>## 
-##                         E &amp; J GALLO WINERY 
-##                                          1 
-##                                  E&amp;J GALLO 
-##                                          2 
-##                           E&amp;J GALLO WINERY 
-##                                          5 
-##                       E. &amp; J. GALLO WINERY 
-##                                          3 
-##             EAGLE ENGINEERED SOLUTIONS INC 
-##                                          1 
-##                      ECHO GLOBAL LOGISTICS 
-##                                          3 
-##                             ECHO LOGISTICS 
-##                                          2 
-##                          EDGEMONT PARTNERS 
-##                                          1 
-##                               EDWARD JONES 
-##                                          2 
-##                                   EJ GALLO 
-##                                          1 
-##             ELECTRONIC PERFORMANCE SYSTEMS 
-##                                          1 
-##                                  ELI LILLY 
-##                                          1 
-##                        ELI LILLY &amp; COMPANY 
-##                                          1 
-##                      ELI LILLY AND COMPANY 
-##                                          4 
-##                                    EMERSON 
-##                                          1 
-## EMERSON COMMERCIAL &amp; RESIDENTIAL SOLUTIONS 
-##                                          1 
-##                         EMPIRE COMMUNITIES 
-##                                          1 
-##                               ENFUSION LLC 
-##                                          1 
-##                    ENGS COMMERCIAL FIANNCE 
-##                                          1 
-##                      ENTERPRISE RENT-A-CAR 
-##                                          1 
-##                                       EPIC 
-##                                          3 
-##                    EPIC HEALTHCARE SYSTEMS 
-##                                          1 
-##                               EPIC SYSTEMS 
-##                                          3 
-##                   EPIC SYSTEMS CORPORATION 
-##                                          1 
-##                                 EQUITY INC 
-##                                          1 
-##                             EQUITY METHODS 
-##                                          1 
-##                              ERNST &amp; YOUNG 
-##                                          9 
-##                         ERNST &amp; YOUNG (EY) 
-##                                          1 
-##                            ERNST AND YOUNG 
-##                                          7 
-##                                 ETAINPOWER 
-##                                          1 
-##                EVEREST REINSURANCE COMPANY 
-##                                          1 
-##                                     EXELON 
-##                                          1 
-##                               EXOR AMERICA 
-##                                          1 
-##                                 EXP REALTY 
-##                                          1 
-##                                    EXPRESS 
-##                                          1 
-##                          EXPRESS CORPORATE 
-##                                          1 
-##                                         EY 
-##                                         90</code></pre>
-<pre class="r"><code>EY_map = c(&quot;ERNST &amp; YOUNG (EY)&quot; = &quot;EY&quot;, 
+<pre class="r"><code>## EY MAPPING
+EY_map = c(&quot;ERNST &amp; YOUNG (EY)&quot; = &quot;EY&quot;, 
            &quot;ERNST AND YOUNG&quot; = &quot;EY&quot;,
            &quot;ERNST &amp; YOUNG&quot; = &quot;EY&quot;)</code></pre>
-<pre class="r"><code>##DELOITTE MAPPING
-jobs_d = FSB_job[grep(&#39;^D&#39;, FSB_job$survey_company),]
-table(jobs_d$survey_company)</code></pre>
-<pre><code>## 
-##                         DAC            DANCER SOLUTIONS 
-##                           1                           1 
-##    DAUBY O&#39;CONNOR &amp; ZALESKI   DAUBY, O&#39;CONNOR &amp; ZALESKI 
-##                           1                           1 
-##              DAVID J JOSEPH             DAVID J. JOSEPH 
-##                           1                           1 
-##                DEANHOUSTON+          DELIGHT MINISTRIES 
-##                           1                           1 
-##                    DELL EMC           DELL TECHNOLOGIES 
-##                           2                           1 
-##                    DELOITTE         DELOITTE CONSULTING 
-##                          84                          22 
-##                DELOITTE LLP                DELOITTE TAX 
-##                           1                           1 
-##             DELOITTE, CHINA         DENTAL TECHNOLOGIES 
-##                           1                           1 
-##       DEPARTMENT OF JUSTICE                     DEPPAUL 
-##                           1                           1 
-##               DEWEY&#39;S PIZZA    DHARMA SOUND STUDIOS LLC 
-##                           1                           1 
-##                         DHL            DHL SUPPLY CHAIN 
-##                           9                          16 
-##       DICK&#39;S SPORTING GOODS            DIGITAL ADDITIVE 
-##                           2                           1 
-##   DIMENSIONAL FUND ADVISORS                      DISNEY 
-##                           1                           1 
-## DIVISIONS MAINTENANCE GROUP               DOEREN MAYHEW 
-##                           2                           1 
-##     DOUGHERTY &amp; COMPANY LLC                       DOVER 
-##                           1                           1 
-##           DSV SOLUTIONS LLC                         DSW 
-##                           1                           1 
-##               DUFF &amp; PHELPS 
-##                           2</code></pre>
-<pre class="r"><code>DELOITTE_mapping = c(&quot;DELOITTE CONSULTING&quot; = &quot;DELOITTE&quot;,
+<pre class="r"><code>## DELOITTE MAPPING
+DELOITTE_mapping = c(&quot;DELOITTE CONSULTING&quot; = &quot;DELOITTE&quot;,
                  &quot;DELOITTE LLP&quot;= &quot;DELOITTE&quot;,
                  &quot;DELOITTE TAX&quot;= &quot;DELOITTE&quot;,
                  &quot;DELOITTE, CHINA&quot; = &quot;DELOITTE&quot;)
 
 ## DHL SUPPLY CHAIN MAPPING
 DHL_SC_mapping = c(&quot;DHL SUPPLY CHAIN&quot; = &quot;DHL&quot;)</code></pre>
-<pre class="r"><code>##PWC MAPPING
-jobs_p = FSB_job[grep(&#39;^P&#39;, FSB_job$survey_company),]
-table(jobs_p$survey_company)</code></pre>
-<pre><code>## 
-##                                P&amp;G               P.L. MARKETING, INC. 
-##                                  1                                  1 
-##                              PARED            PARK PLACE TECHNOLOGIES 
-##                                  1                                  1 
-##      PARK PLACE TECHNOLOGIES, INC.                    PARKER HANNIFIN 
-##                                  1                                  3 
-##                   PARKING ADVISORS                   PARTNERS CAPITAL 
-##                                  1                                  1 
-##        PAVILION, A MERCER PRACTICE           PELOTON CONSULTING GROUP 
-##                                  1                                 11 
-##                      PELOTON GROUP           PELOTON GROUP CONSULTING 
-##                                  1                                  1 
-##               PENN NATIONAL GAMING                    PEOPLES BANCORP 
-##                                  2                                  1 
-##                       PEOPLES BANK                     PEP PROMOTIONS 
-##                                  2                                  1 
-##                            PEPSICO                  PEPSICO-FRITO LAY 
-##                                 14                                  1 
-##                  PEPSICO FRITO-LAY PERFORMANCE TRUST CAPITAL PARTNERS 
-##                                  7                                  1 
-##                                PFK               PFL - ORR FELLOWSHIP 
-##                                  1                                  1 
-##                   PGIM REAL ESTATE                                PHD 
-##                                  1                                  1 
-##                      PHD WORLDWIDE                    PIKE ELECTRICAL 
-##                                  1                                  1 
-##                           PILOT 44                     PILOT FLYING J 
-##                                  1                                  1 
-##                          PINTEREST                       PLANTE MORAN 
-##                                  1                                  7 
-##                                PNC                           PNC BANK 
-##                                  3                                  6 
-##             PNC FINANCIAL SERVICES       PNC FINANCIAL SERVICES GROUP 
-##                                  8                                  2 
-##                            POLYONE                POLYONE CORPORATION 
-##                                  1                                  1 
-##           PORTABLE SOLUTIONS GROUP                 POWER CONSTRUCTION 
-##                                  1                                  1 
-##                     PPG INDUSTRIES                  PRETIUM PACKAGING 
-##                                  1                                  1 
-##            PRICEWATERHOUSE COOPERS             PRICEWATERHOUSECOOPERS 
-##                                  2                                  3 
-##                   PROCTER &amp; GAMBLE                 PROCTER AND GAMBLE 
-##                                  9                                  2 
-##                          PROCURSYS              PROGRESSIVE INSURANCE 
-##                                  1                                  6 
-##                   PROLINK STAFFING             PROP OCEAN CORPORATION 
-##                                  1                                  1 
-##                          PROTIVITI                  PROVISIO PARTNERS 
-##                                 16                                  1 
-##           PRUDENTIAL CAPITAL GROUP         PRUDENTIAL PRIVATE CAPITAL 
-##                                  1                                  1 
-##                   PUBLICIS SAPIENT                                PWC 
-##                                  2                                 40 
-##              PWC CORPORATE FINANCE          PWC CORPORATE FINANCE LLC 
-##                                  1                                  1</code></pre>
-<pre class="r"><code>PWC_mapping = c( &quot;PWC CORPORATE FINANCE&quot;= &quot;PWC&quot;,
+<pre class="r"><code>## PWC MAPPING
+PWC_mapping = c( &quot;PWC CORPORATE FINANCE&quot;= &quot;PWC&quot;,
              &quot;PRICEWATERHOUSE COOPERS&quot; = &quot;PWC&quot;,
              &quot;PWC CORPORATE FINANCE LLC&quot; = &quot;PWC&quot;, 
              &quot;PRICEWATERHOUSECOOPERS&quot; = &quot;PWC&quot;)
@@ -3463,324 +3290,24 @@ PepsiCo_mapping = c(&quot;PEPSICO-FRITO LAY&quot; = &quot;PEPSICO&quot;,
                     &quot;PEPSICO FRITO-LAY&quot; = &quot;PEPSICO&quot;,
                     &quot;FRITO LAY&quot;  = &quot;PEPSICO&quot;,
                     &quot;FRITO-LAY&quot; = &quot;PEPSICO&quot;)
+
 ## PROTIVITI MAPPING NOT NEEDED</code></pre>
 <pre class="r"><code>##TEXTRON MAPPING
-jobs_t = FSB_job[grep(&#39;^T&#39;, FSB_job$survey_company),]
-table(jobs_t$survey_company)</code></pre>
-<pre><code>## 
-##                                    TARGET 
-##                                         4 
-##                             TD AMERITRADE 
-##                                         1 
-##                           TE CONNECTIVITY 
-##                                         1 
-##                          TECH FOR AMERICA 
-##                                         1 
-##                     TECHTRONIC INDUSTRIES 
-##                                         1 
-##                                      TEND 
-##                                         1 
-##         TENNESSEE DEPARTMENT OF EDUCATION 
-##                                         1 
-##                                 TERILLIUM 
-##                                        16 
-##                          TERRABOOST MEDIA 
-##                                         1 
-##                                 TERRILIUM 
-##                                         1 
-##                                     TESLA 
-##                                         1 
-##                                   TEXTRON 
-##                                        34 
-##                          TEXTRON AVIATION 
-##                                         5 
-##              TEXTRON SPECIALIZED VEHICLES 
-##                                         6 
-##                           TEXTRON SYSTEMS 
-##                                         5 
-##         TEXTRON SYSTEMS: LYCOMING ENGINES 
-##                                         1 
-##                             THE 811 GROUP 
-##                                         1 
-## THE CHAMBER OF GREATER SPRINGFIELD (OHIO) 
-##                                         1 
-##                     THE CHAMBERLAIN GROUP 
-##                                         1 
-##        THE CINCINNATI INSURANCE COMPANIES 
-##                                         1 
-##          THE CINCINNATI INSURANCE COMPANY 
-##                                         1 
-##                THE DAVID J JOSEPH COMPANY 
-##                                         2 
-##               THE DAVID J. JOSEPH COMPANY 
-##                                         1 
-##      THE GOODYEAR TIRE AND RUBBER COMPANY 
-##                                         1 
-##                         THE HACKETT GROUP 
-##                                         5 
-##                       THE HERSHEY COMPANY 
-##                                         5 
-##                         THE HILLMAN GROUP 
-##                                         1 
-##                            THE HOME DEPOT 
-##                                         1 
-##                      THE ISABELLA COMPANY 
-##                                         1 
-##                            THE KROGER CO. 
-##                                         1 
-##                 THE MARCUS GRAHAM PROJECT 
-##                                         1 
-##                          THE MATHER GROUP 
-##                                         1 
-##              THE MAYFIELD SAND RIDGE CLUB 
-##                                         1 
-##                     THE MCSHANE COMPANIES 
-##                                         1 
-##                     THE MOREY CORPORATION 
-##                                         1 
-##                       THE NIELSEN COMPANY 
-##                                         1 
-##                             THE NPD GROUP 
-##                                         2 
-##                         THE NRP GROUP LLC 
-##                                         1 
-##         THE REYNOLDS AND REYNOLDS COMPANY 
-##                                         1 
-##                           THE SCION GROUP 
-##                                         2 
-##            THE SCOTTS MIRACLE-GRO COMPANY 
-##                                         1 
-##                     THE SUPERLATIVE GROUP 
-##                                         1 
-##                         THE SYGMA NETWORK 
-##                                         1 
-##                      THE TECHNOLOGY HOUSE 
-##                                         1 
-##                         THE TJX COMPANIES 
-##                                         1 
-##                            THE TRADE DESK 
-##                                         1 
-##               THE UNIVERSITY OF EDINBURGH 
-##                                         1 
-##                   THE WALT DISNEY COMPANY 
-##                                         1 
-##                           THE WHITE HOUSE 
-##                                         1 
-##                            THINK PATENTED 
-##                                         1 
-##                         THOMPSON FLANAGAN 
-##                                         1 
-##                             TJX COMPANIES 
-##                                         1 
-##                   TOTAL QUALITY LOGISTICS 
-##                                         5 
-##                     TOTAL SYSTEM SERVICES 
-##                                         1 
-##                                       TQL 
-##                                         7 
-##                      TRANSPARENT PARTNERS 
-##                                         1 
-##              TRANSPERFECT LEGAL SOLUTIONS 
-##                                         1 
-##                        TRANSPORTATION ONE 
-##                                         1 
-##                                  TRANZACT 
-##                                         1 
-##                                 TRAVELERS 
-##                                         1 
-##                 TRI-COUNTY BAPTIST CHURCH 
-##                                         1 
-##                              TRIBALVISION 
-##                                         1 
-##                                 TRIG INC. 
-##                                         1 
-##                                   TRIMBLE 
-##                                         1 
-##               TRISTATE FINANCIAL ADVISORS 
-##                                         1 
-##                    TS TECH AMERICAS, INC. 
-##                                         1 
-##                       TURNER CONSTRUCTION 
-##                                         1 
-##                          TURQUOISE YACHTS 
-##                                         1</code></pre>
-<pre class="r"><code>Textron_mapping = c(&quot;TEXTRON AVIATION&quot; = &quot;TEXTRON&quot;,
+Textron_mapping = c(&quot;TEXTRON AVIATION&quot; = &quot;TEXTRON&quot;,
                 &quot;TEXTRON SYSTEMS: LYCOMING ENGINES&quot;= &quot;TEXTRON&quot;,
                  &quot;TEXTRON SPECIALIZED VEHICLES&quot; = &quot;TEXTRON&quot;,
                 &quot;TEXTRON SYSTEMS&quot; = &quot;TEXTRON&quot;
                 )
+
+
 ##TERILLIUM MAPPING
 Terillium_mapping = c(&quot;TERRILIUM&quot; = &quot;TERILLIUM&quot;)</code></pre>
 <pre class="r"><code>##ABERCROMBIE &amp; FITCH MAPPING
-jobs_a = FSB_job[grep(&#39;^A&#39;, FSB_job$survey_company),]
-table(jobs_a$survey_company)</code></pre>
-<pre><code>## 
-##                                     A J GALLAGHER 
-##                                                 1 
-##                                            AARETE 
-##                                                 1 
-##                                            ABBOTT 
-##                                                 3 
-##                                  ABBOTT NUTRITION 
-##                                                 3 
-##                                            ABBVIE 
-##                                                 1 
-##                                       ABERCROMBIE 
-##                                                 1 
-##                               ABERCROMBIE &amp; FITCH 
-##                                                28 
-##                                         ACCENTURE 
-##                                                 8 
-##                                           ACCUITY 
-##                                                 1 
-##                                      ACE HARDWARE 
-##                                                 1 
-## ADVANTAGE SOLUTIONS: SALES, MARKETING, TECHNOLOGY 
-##                                                 1 
-##                                           AEROTEK 
-##                                                 2 
-##                                             AETNA 
-##                                                 1 
-##                                        AGS GAMING 
-##                                                 1 
-##                                           AHALOGY 
-##                                                 2 
-##                                               AIG 
-##                                                 1 
-##                        AIR FORCE CIVILIAN SERVICE 
-##                                                 1 
-##                     AIR FORCE RESEARCH LABORATORY 
-##                                                 1 
-##                                              ALDI 
-##                                                 2 
-##                                           ALDI US 
-##                                                 2 
-##                                          ALDI USA 
-##                                                 1 
-##                                  ALIGHT SOLUTIONS 
-##                                                 1 
-##                                     ALLEGION, PLC 
-##                                                 1 
-##                                     ALLIANCE DATA 
-##                                                 1 
-##                        ALLIANCE DEFENDING FREEDOM 
-##                                                 1 
-##                                 ALLIANCEBERNSTEIN 
-##                                                 1 
-##                                          ALLSTATE 
-##                                                 1 
-##                                       ALPHASIGHTS 
-##                                                 3 
-##                                          ALTO IRA 
-##                                                 1 
-##                                       ALTUS GROUP 
-##                                                 1 
-##                                  ALVAREZ &amp; MARSAL 
-##                                                 1 
-##                                ALVAREZ AND MARSAL 
-##                                                 2 
-##                                            AMAZON 
-##                                                12 
-##                               AMAZON WEB SERVICES 
-##                                                 1 
-##                             AMERICAN CUTTING EDGE 
-##                                                 1 
-##                                    AMERICAN EAGLE 
-##                                                 1 
-##                         AMERICAN EAGLE OUTFITTERS 
-##                                                 4 
-##                   AMERICAN EAGLE OUTFITTERS, INC. 
-##                                                 2 
-##                           AMERICAN ELECTRIC POWER 
-##                                                 1 
-##                     AMERICAN ELECTRIC POWER (AEP) 
-##                                                 1 
-##                AMERICAN INTERNATIONAL GROUP (AIG) 
-##                                                 1 
-##                                        AMERICORPS 
-##                                                 1 
-##   AMERIPRISE FINANCIAL - REDSTONE WEALTH ADVISORS 
-##                                                 1 
-##                     AMERIPRISE FINANCIAL SERVICES 
-##                                                 1 
-##                                   AML RIGHTSOURCE 
-##                                                 1 
-##                                    ANALYSIS GROUP 
-##                                                 1 
-##                                          ANDERSEN 
-##                                                 1 
-##                                      ANDERSEN TAX 
-##                                                 1 
-##                                    ANHEUSER-BUSCH 
-##                                                 1 
-##                                            ANKURA 
-##                                                 1 
-##                                 ANKURA CONSULTING 
-##                                                 1 
-##                                        ANTHEM INC 
-##                                                 1 
-##                                               AON 
-##                                                 5 
-##                                           ARCBEST 
-##                                                 1 
-##                                         ARKMALIBU 
-##                                                 1 
-##                                  ARRIVE LOGISTICS 
-##                                                19 
-##                               ARTHUR J. GALLAGHER 
-##                                                 1 
-##                              ASSET CAMPUS HOUSING 
-##                                                 1 
-##                                   ASSOCIATED BANK 
-##                                                 1 
-##                                              AT&amp;T 
-##                                                 2 
-##                                   AUDITOR OF OHIO 
-##                                                 1 
-##                                          AUTOZONE 
-##                                                 1 
-##                              AVALUTION CONSULTING 
-##                                                 1 
-##                                    AVERY DENNISON 
-##                                                 3 
-##                         AVIENT (FORMERLY POLYONE) 
-##                                                 3 
-##                                           AVIONOS 
-##                                                 1 
-##                              AVTEX SOLUTIONS, LLC 
-##                                                 1 
-##                                      AXA ADVISING 
-##                                                 1 
-##                                              AYCO 
-##                                                 1 
-##                     AYCO, A GOLDMAN SACHS COMPANY 
-##                                                 1</code></pre>
-<pre class="r"><code>A_and_F_mapping = c(&quot;ABERCROMBIE &amp; FITCH&quot; = &quot;ABERCROMBIE&quot;)
+A_and_F_mapping = c(&quot;ABERCROMBIE &amp; FITCH&quot; = &quot;ABERCROMBIE&quot;)
+
 ##ARRIVE LOGISTICS MAPPING NOT NEEDED</code></pre>
-<pre class="r"><code>jobs_j = FSB_job[grep(&#39;^J&#39;, FSB_job$survey_company),]
-table(jobs_j$survey_company)</code></pre>
-<pre><code>## 
-##                      J M SMUCKERS           J.C. BAKER &amp; ASSOCIATES 
-##                                 1                                 1 
-##                        J.P MORGAN                       J.P. MORGAN 
-##                                 1                                 2 
-##     J.P. MORGAN U.S. PRIVATE BANK          JESSUP WEALTH MANAGEMENT 
-##                                 1                                 1 
-##                               JLL                       JMJ PHILLIP 
-##                                 1                                 1 
-##                      JOBPLEX, INC                           JOBVITE 
-##                                 1                                 1 
-##                        JOHN DEERE                 JOHNSON &amp; JOHNSON 
-##                                 1                                 3 
-## JOHNSON &amp; JOHNSON - DEPUY SYNTHES               JONES LANGE LASALLE 
-##                                 1                                 1 
-##                         JP MORGAN               JP MORGAN AND CHASE 
-##                                 9                                 1 
-##                   JP MORGAN CHASE                    JPMORGAN CHASE 
-##                                24                                 2 
-##              JPMORGAN CHASE &amp; CO. 
-##                                 3</code></pre>
-<pre class="r"><code>JP_Morgan_Chase_mapping = c(&quot;J.P. MORGAN U.S. PRIVATE BANK&quot; = &quot;JP MORGAN&quot;,
+<pre class="r"><code>## JP MORGAN CHASE MAPPINF
+JP_Morgan_Chase_mapping = c(&quot;J.P. MORGAN U.S. PRIVATE BANK&quot; = &quot;JP MORGAN&quot;,
                        &quot;JPMORGAN CHASE&quot; = &quot;JP MORGAN&quot;,
                        &quot;J.P MORGAN&quot; = &quot;JP MORGAN&quot;, 
                        &quot;JP MORGAN &amp; CO.&quot; = &quot;JP MORGAN&quot;,
@@ -3788,197 +3315,14 @@ table(jobs_j$survey_company)</code></pre>
                        &quot;JP MORGAN AND CHASE&quot; = &quot;JP MORGAN&quot;,
                        &quot;JP MORGAN CHASE&quot; = &quot;JP MORGAN&quot;)</code></pre>
 <pre class="r"><code>## COYOTE LOGISTICS MAPPING
-jobs_c = FSB_job[grep(&#39;^C&#39;, FSB_job$survey_company),]
-table(jobs_c$survey_company)</code></pre>
-<pre><code>## 
-##                       C.H. ROBINSON                               CAPCO 
-##                                   2                                   1 
-##                           CAPGEMINI                    CAPGEMINI INVENT 
-##                                   2                                  11 
-##                       CAPITAL GROUP                         CAPITAL ONE 
-##                                   1                                   3 
-##                   CAPITAL ONE, INC.                        CARD CONNECT 
-##                                   1                                   1 
-##                     CARDINAL HEALTH                 CAREW INTERNATIONAL 
-##                                   9                                   1 
-##                             CARGILL     CARSON-DELLOSA PUBLISHING GROUP 
-##                                   1                                   1 
-##                         CATERPILLAR                                CBRE 
-##                                   1                                   2 
-##                         CBT COMPANY                           CDM MEDIA 
-##                                   1                                   1 
-##                                 CDW    CEDAR FAIR ENTERTAINMENT COMPANY 
-##                                  17                                   2 
-##                             CENGAGE                    CENGAGE LEARNING 
-##                                   1                                   1 
-##           CENTRAL GARDEN AND PET CO                              CENTRO 
-##                                   1                                   1 
-##                              CERNER                                 CGI 
-##                                   1                                   2 
-##                          CHALLENGER             CHAMBERLAIN GROUP, INC. 
-##                                   2                                   1 
-##                      CHARLES SCHWAB              CHARTER COMMUNICATIONS 
-##                                   4                                   1 
-##                                CHEP                     CHUBB INSURANCE 
-##                                   1                                   1 
-##                                CIBC                             CIBC US 
-##                                   3                                   3 
-##                               CIGNA                     CINCINNATI BELL 
-##                                   1                                   1 
-##             CINCINNATI INCORPORATED                CINCINNATI INSURANCE 
-##                                   1                                   1 
-##        CINCINNATI INSURANCE COMPANY CINCINNATI ZOO AND BOTANICAL GARDEN 
-##                                   1                                   1 
-##                              CINTAS                          CISION INC 
-##                                  11                                   1 
-##                           CITI BANK                           CITIGROUP 
-##                                   1                                   1 
-##              CLARK SCHAEFER HACKETT                        CLEARSULTING 
-##                                   1                                   2 
-##                    CLEVELAND CLIFFS                    CLEVELAND CLINIC 
-##                                   2                                   1 
-##          CLEVELAND RESEARCH COMPANY                       CNA INSURANCE 
-##                                   3                                   1 
-##                               COACH        COBBLESTONE COMMUNITY CHURCH 
-##                                   1                                   1 
-##                     CODWELL BANKERS                             COHATCH 
-##                                   1                                   2 
-##                     COHEN &amp; COMPANY                   COHEN AND COMPANY 
-##                                   1                                   2 
-##             COLLABORATIVE SOLUTIONS          COLUMBUS SPORTS COMMISSION 
-##                                   5                                   1 
-##                             COMCAST                     COMCAST EFFECTV 
-##                                   1                                   1 
-##                  CONMED CORPORATION                   CONNELLY ELECTRIC 
-##                                   1                                   1 
-##                    CONSTRUCTCONNECT            CORTLAND CAPITAL MARKETS 
-##                                   1                                   1 
-##                         COVERMYMEDS                            COVETRUS 
-##                                   1                                   1 
-##                               COWEN                     COWEN &amp; COMPANY 
-##                                   1                                   1 
-##                              COYOTE                    COYOTE LOGISTICS 
-##                                   1                                  22 
-##                     COYOTELOGISITCS                     CRAMER-KRASSELT 
-##                                   1                                   2 
-##                      CRATE &amp; BARREL                          CROW WORKS 
-##                                   1                                   1 
-##                               CROWE                           CROWE LLP 
-##                                   9                                  13 
-##                                 CRU                    CRUMBS MARKETING 
-##                                   1                                   1 
-##                               CUBEX                             CUMMINS 
-##                                   1                                   1 
-##                       CUMMINS, INC.                            CURALEAF 
-##                                   1                                   1 
-##                            CUROLOGY               CUSTODY DIGITAL GROUP 
-##                                   1                                   1 
-##                          CVS HEALTH 
-##                                   1</code></pre>
-<pre class="r"><code>coyote_mapping = c(&quot;COYOTE LOGISTICS&quot; = &quot;COYOTE&quot;)
+coyote_mapping = c(&quot;COYOTE LOGISTICS&quot; = &quot;COYOTE&quot;)
+
 ## CDW MAPPING NOT NEEDED
 
 ##CROWE LLP MAPPING
 Crowe_mapping = c(&quot;CROWE LLP&quot; = &quot;CROWE&quot;)</code></pre>
 <pre class="r"><code>## FIFTH THIRD BANK MAPPING
-jobs_f = FSB_job[grep(&#39;^F&#39;, FSB_job$survey_company),]
-table(jobs_f$survey_company)</code></pre>
-<pre><code>## 
-##                           F&amp;W PROPERTIES 
-##                                        1 
-##                   FACE FORWARD ASTHETICS 
-##                                        1 
-##                         FAIRWAY MORTGAGE 
-##                                        1 
-##                               FANNIE MAE 
-##                                        1 
-##                  FARM CREDIT MID AMERICA 
-##                                        1 
-##                                   FARMER 
-##                                        1 
-##                      FAST MARKET OPTIONS 
-##                                        1 
-##                                   FASTLY 
-##                                        1 
-##                              FCB CHICAGO 
-##                                        1 
-##                                     FDIC 
-##                                        3 
-##          FEDERAL BUREAU OF INVESTIGATION 
-##                                        2 
-##        FEDERAL HOME LOAN BANK OF CHICAGO 
-##                                        1 
-##                                 FERGUSON 
-##                                        1 
-##                     FERGUSON ENTERPRISES 
-##                                        3 
-##                          FETCH MARKETING 
-##                                        1 
-##                                 FIDELITY 
-##                                        2 
-##                     FIDELITY INVESTMENTS 
-##                                        4 
-##                         FIFTH-THIRD BANK 
-##                                        1 
-##                         FIFTH THIRD BANK 
-##                                       16 
-##                                 FINASTRA 
-##                                        1 
-##    FINGER LAKES MUSICAL THEATRE FESTIVAL 
-##                                        1 
-##                 FIREBRAND COMMUNICATIONS 
-##                                        1 
-## FIRST FEDERAL SAVINGS &amp; LOAN ASSOCIATION 
-##                                        1 
-##                             FIRST PERSON 
-##                                        1 
-##                     FIRST RESOURCE, INC. 
-##                                        1 
-##                                FIRSTCOMM 
-##                                        1 
-##                                      FIS 
-##                                        6 
-##                  FIS (FORMERLY WORLDPAY) 
-##                                        3 
-##                               FIS GLOBAL 
-##                                        2 
-##                                   FISERV 
-##                                        1 
-##                       FISHER INVESTMENTS 
-##                                        2 
-##                            FITCH RATINGS 
-##                                        1 
-##                            FLOCK FREIGHT 
-##                                        1 
-##                         FLORENCE EISEMAN 
-##                                        1 
-##               FLORIDA FINANCIAL ADVISORS 
-##                                        1 
-##                         FLORIDA PANTHERS 
-##                                        1 
-##                       FOOD MOTOR COMPANY 
-##                                        1 
-##                                 FORESIDE 
-##                                        1 
-##                                FOURKITES 
-##                                        1 
-##       FOURTH STREET PERFORMANCE PARTNERS 
-##                                        2 
-##                       FRANKLIN TEMPLETON 
-##                                        1 
-##                              FREDDIE MAC 
-##                                        2 
-##                                FRITO-LAY 
-##                                        1 
-##                                FRITO LAY 
-##                                        3 
-##                           FTI CONSULTING 
-##                                        2 
-##                           FTJ FUNDCHOICE 
-##                                        1 
-##                              FUTUREBRAND 
-##                                        1</code></pre>
-<pre class="r"><code>Fifth_Third_Bank_mapping = c(&quot;FIFTH-THIRD BANK&quot; = &quot;FIFTH THIRD BANK&quot;)</code></pre>
+Fifth_Third_Bank_mapping = c(&quot;FIFTH-THIRD BANK&quot; = &quot;FIFTH THIRD BANK&quot;)</code></pre>
 <p>Now that we have created mapping variables for all of the companies
 that needed standardizing, it is time to commit the desired changes to
 our data set. We will do this by replacing all of the other spellings to
@@ -4047,68 +3391,19 @@ from our survey. First we idenify the top 20 cities to focus on.</p>
 ## 282 Levels: ADDISON AKRON ALBANY ALEXANDRIA ALPHARETTA ANN ARBOR ... ZIONSVILLE</code></pre>
 <p>We then create mapping for our standardization.</p>
 <pre class="r"><code>## CINCINNATI MAPPING
-city_c = FSB_job[grep(&#39;^C&#39;, FSB_job$survey_city),]
-table(city_c$survey_city)</code></pre>
-<pre><code>## 
-##            CAMAS        CAMBRIDGE           CANTON           CARMEL 
-##                1                1                1                3 
-##    CHAGRIN FALLS         CHANDLER          CHARDON       CHARLESTON 
-##                1                1                1                1 
-##        CHARLOTTE  CHARLOTTESVILLE     CHESTERFIELD          CHICAGO 
-##               18                1                1              504 
-##       CINCINATTI       CINCINNATI   CINCINNATI, OH      CINCINNNATI 
-##                4              235                1                1 
-##        CLEVELAND COLORADO SPRINGS         COLUBMUS         COLUMBUS 
-##              131                1                1              189 
-##        CORNELIUS        COVINGTON 
-##                1                5</code></pre>
-<pre class="r"><code>Cincinnati_mapping = c(&quot;CINCINATTI&quot; = &quot;CINCINNATI&quot;,
+Cincinnati_mapping = c(&quot;CINCINATTI&quot; = &quot;CINCINNATI&quot;,
                        &quot;CINCINNATI, OH&quot; = &quot;CINCINNATI&quot;,
                        &quot;CINCINNNATI&quot; = &quot;CINCINNATI&quot;)
+
 ## COLUMBUS MAPPING
 Columbus_mapping = c(&quot;COLUBMUS&quot; = &quot;COLUMBUS&quot;)</code></pre>
 <pre class="r"><code>## NEW YORK MAPPING
-city_n = FSB_job[grep(&#39;^N&#39;, FSB_job$survey_city),]
-table(city_n$survey_city)</code></pre>
-<pre><code>## 
-##                N/A                 NA         NAPERVILLE          NASHVILLE 
-##                  1                  7                  4                  4 
-##         NEW ALBANY        NEW ORLEANS           NEW YORK      NEW YORK CITY 
-##                  7                  1                 45                 18 
-##            NEWPORT           NEWVILLE NORTH CANTON, OHIO      NORTH RANDALL 
-##                  2                  1                  1                  1 
-##         NORTHBROOK         NORTHFIELD            NORWALK            NOVELTY 
-##                  1                  1                  2                  1 
-##                NYC 
-##                  2</code></pre>
-<pre class="r"><code>New_York_mapping = c(&quot;NEW YORK CITY&quot; = &quot;NEW YORK&quot;,
+New_York_mapping = c(&quot;NEW YORK CITY&quot; = &quot;NEW YORK&quot;,
                      &quot;NYC&quot; = &quot;NEW YORK&quot;)</code></pre>
 <pre class="r"><code>## INDIANAPOLIS MAPPING
-city_i = FSB_job[grep(&#39;^I&#39;, FSB_job$survey_city),]
-table(city_i$survey_city)</code></pre>
-<pre><code>## 
-##      INDIANA INDIANAPOLIS  INDIANPOLIS       IRVINE       IRVING     ISTANBUL 
-##            1           33            1            2            2            1 
-##       ITASCA 
-##            2</code></pre>
-<pre class="r"><code>Indianapolis_mapping = c(&quot;INDIANPOLIS&quot; = &quot;INDIANAPOLIS&quot;)</code></pre>
+Indianapolis_mapping = c(&quot;INDIANPOLIS&quot; = &quot;INDIANAPOLIS&quot;)</code></pre>
 <pre class="r"><code>## MILLWAUKEE MAPPING
-city_m = FSB_job[grep(&#39;^M&#39;, FSB_job$survey_city),]
-table(city_m$survey_city)</code></pre>
-<pre><code>## 
-##          MACLEAN          MADISON       MAINEVILLE        MANHATTAN 
-##                1                7                1                2 
-##        MANSFIELD         MARIETTA MARYLAND HEIGHTS       MARYSVILLE 
-##                1                3                1                5 
-##            MASON         MAYFIELD MAYFIELD HEIGHTS           MCLEAN 
-##                8                1                3                6 
-##          MEMPHIS           MENTOR            MIAMI       MIAMISBURG 
-##                1                3                4                2 
-##       MIDDLETOWN       MILLINGTON        MILWAUKEE       MILWAUKWEE 
-##                3                1               13                1 
-##      MINNEAPOLIS          MODESTO      MT. HEALTHY 
-##               16                2                1</code></pre>
-<pre class="r"><code>Milwaukee_mapping = c(&quot;MILWAUKWEE&quot; = &quot;MILWAUKEE&quot;)</code></pre>
+Milwaukee_mapping = c(&quot;MILWAUKWEE&quot; = &quot;MILWAUKEE&quot;)</code></pre>
 <p>Now we update our main data set with our newly created standardized
 mapping.</p>
 <pre class="r"><code>## Updating Data set with standardized cities
@@ -4257,6 +3552,9 @@ of setting the data up the way we did is that now any visualizations we
 create will be easily understandable in context, and will have to most
 relevant data contributing to their creation. We attempted to limit
 ambiguity and interference</p>
+<pre class="r"><code>str(FSB_job$year.x)</code></pre>
+<pre><code>##  chr [1:2366] &quot;2019&quot; &quot;2021&quot; &quot;2020&quot; &quot;2019&quot; &quot;2020&quot; &quot;2019&quot; &quot;2021&quot; &quot;2019&quot; ...</code></pre>
+<pre class="r"><code>#write.csv(FSB_job, &#39;FSB_job.csv&#39;, row.names = FALSE)</code></pre>
 </div>
 </div>
 </div>
@@ -4298,7 +3596,7 @@ ambiguity and interference</p>
 </div>
 </div>
 
-<div id="rmd-source-code">LS0tDQp0aXRsZTogIkZTQiBEYXRhIEFuYWx5c2lzIEdyb3VwIDE4Ig0KYXV0aG9yOiAiSmFrZSBIb2xyb3lkLCBCcmVuZGFuIEJlYXR0aWUiDQpkYXRlOiAiYHIgU3lzLkRhdGUoKWAiDQpvdXRwdXQ6DQogIGh0bWxfZG9jdW1lbnQ6DQogICAgY29kZV9mb2xkaW5nOiBzaG93DQogICAgZGZfcHJpbnQ6IHBhZ2VkDQogICAgbnVtYmVyX3NlY3Rpb25zOiB5ZXMNCiAgICB0aGVtZTogcmVhZGFibGUNCiAgICB0b2M6IHllcw0KICAgIHRvY19mbG9hdDogeWVzDQogICAgY29kZV9kb3dubG9hZDogeWVzDQogIHdvcmRfZG9jdW1lbnQ6DQogICAgdG9jOiBubw0KLS0tDQoNCi0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLQ0KDQpgYGB7ciBzZXR1cCwgaW5jbHVkZT1GQUxTRX0NCmtuaXRyOjpvcHRzX2NodW5rJHNldChlY2hvID0gVFJVRSkNCmBgYA0KDQojIEZTQiBEYXRhIEFuYWx5c2lzOiBHcm91cCAxOCB7LnVubnVtYmVyZWR9DQoNCiMgUmVzZWFyY2ggUXVlc3Rpb24gey51bm51bWJlcmVkfQ0KDQoqKiJXaGF0IGFyZSB0aGUgbWFjcm8gcGxhY2VtZW50IGFuZCBzYWxheSB0cmVuZHMgRlNCIGlzIHNlZWluZyBvdmVyIHRoZSBwYXN0IHRocmVlIHllYXJzIioqDQoNCi0gICBBcmUgb3VyIHBsYWNlbWVudCByZXN1bHRzIGdvaW5nIHVwIC8gZG93biAvIHN0ZWFkeT8NCi0gICBTYWxhcnkgdHJlbmRzPw0KLSAgIEtpcmsgd291bGQgbGlrZSB0byBzZWUgdGhpcyBmb3IgRlNCIG92ZXJhbGwgYXMgd2VsbCBhcyBieSBtYWpvcg0KDQojIEJ1c2luZXNzIFZhbHVlIFByb3Bvc2l0aW9uIHsudW5udW1iZXJlZH0NCg0KV2UgaGF2ZSBjcmVhdGVkIGEgYnVzaW5lc3MgdmFsdWUgcHJvcG9zaXRpb24gZm9yIHRoZSBGU0IgQ2FyZWVyIFNlcnZpY2VzIHRoYXQgcmVwb3J0cyB0byBLaXJrIEJvZ2FyZCwgdGhlIEFzc29jaWF0ZSBWaWNlIFByZXNpZGVudCBmb3IgRGV2ZWxvcG1lbnQgYW5kIEV4dGVybmFsIFJlbGF0aW9ucyBpbiBGU0IuVGhleSBhcmUgaW50ZXJlc3RlZCBpbiBob3cgdGhlIEZTQiBDYXJlZXIgU2VydmljZXMgYWR2aXNpbmcgdGVhbSBjYW4gbW9yZSBlZmZlY3RpdmVseSBkaXJlY3QgdGhlaXIgZWZmb3J0cyB0byBwcm9wZXJseSBzZXJ2ZSB0aGUgYWxtb3N0IDUsMDAwIHN0dWRlbnRzIGluIEZTQi4NCg0KDQojIyBWaXN1YWxpemF0aW9uIHsudW5udW1iZXJlZH0NCg0KIVtdKERhdGEvaW1hZ2VzL0ZTQkRhdGFCVlAucG5nKQ0KDQojIyBUZXh0IHsudW5udW1iZXJlZH0NCg0KKioxLiBEZWZpbmUgdGhlIGNsaWVudCBvciBhdWRpZW5jZSBmb3IgeW91ciBkYXRhIGFuYWx5c2lzIHNvbHV0aW9uLioqDQoNCi0gVGhlIEZTQiBDYXJlZXIgU2VydmljZXMgdGVhbSB0aGF0IHJlcG9ydHMgdG8gS2lyayBCb2dhcmQsIEFzc29jaWF0ZSBWaWNlIFByZXNpZGVudCBmb3IgRGV2ZWxvcG1lbnQgYW5kIEV4dGVybmFsIFJlbGF0aW9ucyBpbiBGU0IuDQoNCi0gV2UgYXJlIHRhc2tlZCB3aXRoIGFzc2lzdGluZyB3aXRoIHRoZWlyIGR1dGllcyBieSBwcm92aWRpbmcgaW5zaWdodCBhbmQgcmVjb21tZW5kYXRpb25zIG9uIGhvdyBDYXJlZXJzIFNlcnZpY2VzIGNhbiBiZXN0IGFkdmlzZSBGU0IgdW5kZXJncmFkdWF0ZSBzdHVkZW50cy4NCg0KLSBJbiBjb250ZXh0LCB3ZSBoYXZlIGJlZW4gYXNrZWQgdG8gZXhwbG9yZSB0aGUgbWFjcm8gcGxhY2VtZW50IGFuZCBzYWxhcnkgdHJlbmRzIEZTQiBoYXMgc2VlbiBvdmVyIHRoZSBwYXN0IHRocmVlIHllYXJzLg0KDQoNCg0KKioyLiBEZWZpbmUgdGhlIGNsaWVudCBqb2JzLiBXaGF0IGpvYnMgYXJlIHlvdXIgY2xpZW50cyB0cnlpbmcgdG8gZ2V0IGRvbmU/IFVzZSBhIHNlcGFyYXRlIGJ1bGxldCBwb2ludCBmb3IgZWFjaCBqb2IgeW91IGludGVuZCB0byBoZWxwIHlvdXIgY3VzdG9tZXIgZ2V0IGRvbmUuIEJlIHNwZWNpZmljLioqDQoNCi0gQWRqdXN0aW5nIGFkdmlzaW5nIGVmZm9ydHMgdG8gcmVmbGVjdCBwbGFjZW1lbnQgYW5kIHNhbGFyeSB0cmVuZHMuDQoNCi0gRWZmZWN0aXZlbHkgYWlkIHN0dWRlbnRzIGluIHRoZWlyIHB1cnN1aXQgb2YgY2FyZWVycy4NCg0KLSBVbmRlcnN0YW5kIGhvdyBzdHVkZW50cyBvZiB2YXJpb3VzIG1ham9ycyBkaWZmZXIgaW4gam9iIHBsYWNlbWVudCBhbmQgZXhwZWN0ZWQgc2FsYXJ5Lg0KDQotIERldmVsb3Agc29sdXRpb25zIHRoYXQgZXF1aXAgRlNCIHN0dWRlbnRzIHRvIHBsYWNlIHdlbGwgYW5kIGVhcm4gaGlnaC4NCg0KDQoqKjMuIEFkZCBwYWlucy4gV2hhdCBhcmUgdGhlIHBhaW5zIGJlZm9yZSwgZHVyaW5nLCBhbmQgYWZ0ZXIgeW91ciBjdXN0b21lciBpcyB0cnlpbmcgdG8gZ2V0IHRoZWlyIGpvYnMgZG9uZT8gQ3JlYXRlIGEgYnVsbGV0IHBvaW50IGZvciBldmVyeSBzcGVjaWZpYyBwYWluLioqDQoNCi0gVGhlcmUgYXJlIGFib3V0IDUsMDAwIHN0dWRlbnRzIGluIEZTQiBhbmQgdGhlIHN0YWZmIHRhc2tlZCB3aXRoIGFkdmlzaW5nIHRoZW0gaXMgc2lnbmlmaWNhbnRseSBzbWFsbGVyICg0KSBzbyBpdCBpcyBpbXBvc3NpYmxlIHRvIGFkZXF1YXRlbHkgYW5kIHRob3JvdWdobHkgYWR2aXNlIGFsbCA1LDAwMCBzdHVkZW50cy4NCg0KLSBTb21lIG1ham9ycyBtYXkgaGF2ZSBhbiBlYXNpZXIgdGltZSBwbGFjaW5nIGluIGpvYnMgb3IgZWFybmluZyBoaWdoZXIgc2FsYXJpZXMuIENhcmVlciBTZXJ2aWNlcyB3b3VsZCBsaWtlIHRvIGtub3cgd2hpY2ggb25lcywgb3IgZWxzZSB0aGV5IGNhbuKAmXQgZm9jdXMgb24gdGhvc2UgaW4gdGhlIG1vc3QgbmVlZC4gDQoNCi0gQ2FyZWVyIFNlcnZpY2VzIGNhbuKAmXQgcHJlcGFyZSBzdHVkZW50cyB3aG8gbWF5IGhhdmUgYSBtb3JlIGRpZmZpY3VsdCB0aW1lIGluIHRoZWlyIGpvYiBzZWFyY2ggb3IgaW5mb3JtIHN0dWRlbnRzIHdpdGggYWNjdXJhdGUgc2FsYXJ5IGV4cGVjdGF0aW9ucyBpZiB0aGV5IGRvbuKAmXQga25vdyB3aGljaCBtYWpvcnMgYXJlIGV4cGVyaWVuY2luZyBoaXJpbmcgc3VyZ2VzIG9yIGhpcmluZyBkZWNyZWFzZXMgYmFzZWQgb24gcmVjZW50IHRyZW5kcy4gDQoNCg0KKio0LiBEZXNjcmliZSB5b3VyIGludGVuZGVkIHNvbHV0aW9uLiBHaXZlIGEgYnVsbGV0IHBvaW50IGZvciBlYWNoIG1ham9yIGVsZW1lbnQgb2YgeW91ciBwcm9kdWN0IG9yIHNvbHV0aW9uLioqDQoNCi0gQ29tcGFyZSB0aGUgZGF0YSBvZiBib3RoIGpvYiBwbGFjZW1lbnQgdHJlbmRzIGFuZCBzYWxhcnkgdHJlbmRzIG92ZXIgdGhlIHRocmVlIHllYXIgdGltZSBwZXJpb2QgcHJvdmlkZWQuDQoNCi0gRGVsaXZlciBhbiBhbmFseXNpcyB0byBzaG93IGpvYiBwbGFjZW1lbnQgYW5kIHNhbGFyeSB0cmVuZHMgb3ZlciB0aW1lIGFjcm9zcyB0aGUgZW50aXJldHkgb2YgRlNCLCBhcyB3ZWxsIGFzIGRyaWxsaW5nIGRvd24gdG8gZXhwbG9yZSByZXN1bHRzIGJ5IG1ham9yLg0KDQotIENyZWF0ZSB2aXN1YWxpemF0aW9ucyB0aGF0IGlsbHVzdHJhdGUgdGhlc2UgdHJlbmRzIGluIGFuIHVuZGVyc3RhbmRhYmxlIGFuZCBkaWdlc3RpYmxlIHdheSB0byBzaG93IGNoYW5nZXMgaW4gdHJlbmRzIGJ5IG1ham9yIGFuZCBiZSBhYmxlIHRvIGVhc2lseSBjb21wYXJlIHRoZSBtb3N0IHJlY2VudCBkaWZmZXJlbmNlcyBpbiB0aGUgZGVwYXJ0bWVudC4NCg0KDQoqKjUuIFdoYXQgYXJlIHRoZSBwYWlua2lsbGVycyBmcm9tIHlvdXIgc29sdXRpb24/IExpc3Qgb3V0IHRob3NlIHRoaW5ncyBpbiB5b3VyIHNvbHV0aW9uIHRoYXQgY2FuIGtpbGwgdGhlIHBhaW4gcG9pbnRzIG9mIHlvdXIgY2xpZW50LioqDQoNCi0gQ3JlYXRpbmcgdW5kZXJzdGFuZGFibGUgYW5kIGVhc2lseSBjb21wYXJhYmxlIHZpc3VhbGl6YXRpb25zIGFsbG93cyB0aGUgc21hbGwgdGVhbSBvZiBjYXJlZXIgYWR2aXNvcnMgdG8gbW9yZSBlZmZlY3RpdmVseSBhbmQgZWZmaWNpZW50bHkgZGlyZWN0IHRoZWlyIGVmZm9ydHMgYWNyb3NzIHRoZSB2YXN0IHN0dWRlbnQgYm9keSBzbyB0aGV5IGNhbiBmb2N1cyBvbiB0aG9zZSBpbiB0aGUgbW9zdCBuZWVkLg0KDQotIERlbGl2ZXIgYSBzb3VuZCB1bmRlcnN0YW5kaW5nIG9mIHBsYWNlbWVudCByZXN1bHQgdHJlbmRzIGJ5IG1ham9yIHRocm91Z2ggdGhlIGNyZWF0aW9uIG9mIHZpc3VhbGl6YXRpb25zIHRoYXQgY29tcGFyZSBjaGFuZ2VzIGFuZCByZXZlYWwgdHJlbmRzIG92ZXIgdGhlIHRocmVlIHllYXJzLCBpbmZvcm1pbmcgQ2FyZWVyIFNlcnZpY2VzIG9mIHdoaWNoIG1ham9ycyBhcmUgbW9zdCBpbiBuZWVkIG9mIGFkdmlzaW5nLiANCg0KLSBCZSBhYmxlIHRvIHByb3ZpZGUgQ2FyZWVyIFNlcnZpY2VzIHdpdGggcmVsZXZhbnQgam9iIG1hcmtldCBpbmZvcm1hdGlvbiBiYXNlZCBvbiB0cmVuZHMgaWRlbnRpZmllZCBpbiB0aGUgcGFzdCB0aHJlZSB5ZWFycyB0byBhbGxvdyB0aGVtIHRvIGhlbHAgc3R1ZGVudHMgdW5kZXJzdGFuZCBwZXJzb25hbCBtYXJrZXQgdmFsdWUgYmFzZWQgb24gdGhlaXIgbWFqb3IgYW5kIGVkdWNhdGlvbiBhdCBGU0IuDQoNCioqNi4gQWRkIGdhaW5zLiBXaGF0IGFyZSB0aGUgZ2FpbnMgdGhhdCB5b3VyIGN1c3RvbWVyIGV4cGVjdHMgdG8gZ2V0IG9yIHdpbGwgYmUgc3VycHJpc2VkIHRvIGJlbmVmaXQgZnJvbSB5b3VyIHNvbHV0aW9uPyoqDQoNCi0gVGhlIENhcmVlciBTZXJ2aWNlcyB0ZWFtIHdpbGwgYmUgYWJsZSB0byBlcXVpcCBzdHVkZW50cyB3aXRoIHRoZSBuZWNlc3NhcnkgaW5zaWdodHMgYW5kIGluZm9ybWF0aW9uIHRvIHByZXBhcmUgdGhlbSBmb3IgdGhlaXIgam9iIHNlYXJjaC4NCg0KLSBDYXJlZXIgU2VydmljZXMgd2lsbCBiZSBhYmxlIHRvIGVmZmVjdGl2ZWx5IHRhcmdldCBhZHZpc2luZyBlZmZvcnRzIHRvd2FyZCBzdHVkZW50cyBpbiB0aGUgbW9zdCBuZWVkLg0KDQotIENhcmVlciBTZXJ2aWNlcyB3aWxsIGJlIGFibGUgdG8gcHJvdmlkZSBzdHVkZW50cyB3aXRoIGV4cGVjdGF0aW9ucyB0aGF0IHdpbGwgYmUgbW9yZSBhY2N1cmF0ZSB0byByZWFsaXR5IHJlZ2FyZGluZyBjYXJlZXIgc2VhcmNoLCBpZGVhbGx5IHJlc3VsdGluZyBpbiBsZXNzIHJlbGlhbmNlIG9uIHRoZSBhZHZpc2luZyB0ZWFtLCBhbGxvd2luZyB0aGVtIHRpbWUgdG8gaGVscCBldmVuIG1vcmUgc3R1ZGVudHMuDQoNCg0KKio3LiBXaGF0IGFyZSB0aGUgZ2FpbiBjcmVhdG9ycz8gTGlzdCBvdXQgdGhlIGl0ZW1zIHRoYXQgd2lsbCBhZGQgYWRkaXRpb25hbCB2YWx1ZSB0byB5b3VyIGN1c3RvbWVyLCBhYm92ZSBhbmQgYmV5b25kIGFkZHJlc3NpbmcgdGhlaXIgY3VycmVudCBwYWluIHBvaW50cy4qKg0KDQotIFRoZSBhbmFseXNpcyBvdmVyIHRpbWUgYW5kIHN1YnNlcXVlbnQgdmlzdWFsaXphdGlvbnMgd2lsbCBiZSBlYXNpbHkgcmVwcm9kdWNpYmxlLiBDYXJlZXIgU2VydmljZXMgd2lsbCBiZSBhYmxlIHRvIHJvdXRpbmVseSB1cGRhdGUgdGhlbSB5ZWFyIGFmdGVyIHllYXIgd2l0aCBmcmVzaCBkYXRhIHRvIHRyYWNrIHRoZSBwbGFjZW1lbnQgYW5kIHNhbGFyeSB0cmVuZHMgd2VsbCBpbnRvIHRoZSBmdXR1cmUgYXMgbmVlZGVkLg0KDQotIFRoZSBhbmFseXNpcyBvdmVyIHRpbWUgYW5kIHZpc3VhbGl6YXRpb25zIHdpbGwgYWxsb3cgQ2FyZWVyIFNlcnZpY2VzIHRvIHRyYWNrIHRoZWlyIG93biBwcm9ncmVzcyBpbiB0aGVpciBlZmZvcnRzLCBwcm92aWRpbmcgZmVlZGJhY2sgaWYgdXNlZCBvdmVyIHRpbWUgb24gaG93IHRoZWlyIG5ld2x5IGRpcmVjdGVkIGVmZm9ydHMgaGF2ZSBpbXBhY3RlZCBwbGFjZW1lbnQgYW5kIHNhbGFyeSB0cmVuZHMuDQoNCiMgVGhlIERhdGEgey51bm51bWJlcmVkfQ0KDQojIyBEYXRhIFNvdXJjZXMgey51bm51bWJlcmVkfQ0KDQpXZSBoYXZlIGJlZW4gZ2l2ZW4gdGhyZWUgeWVhcnMgb2YgZGF0YSByZXByZXNlbnRpbmcgRlNCIGdyYWR1YXRlcywgaW5jbHVkaW5nIGdyYWR1YXRlcyBpbiAyMDE5LCAyMDIwLCBhbmQgMjAyMS4gVGhlIGRhdGEgc2V0IHByb3ZpZGVkIGhhZCA0MiB2YXJpYWJsZXMuICBUaGUgc291cmNlIGlzIGVpdGhlciBkZXJpdmVkIGJ5IERyLiBKb25lcy1GYXJtZXIgZHVyaW5nIGRhdGEgY2xlYW5pbmcvbWVyZ2luZywgZnJvbSB0aGUgT3JhY2xlIEJ1c2luZXNzIEludGVsbGlnZW5jZSBFbnRlcnByaXNlIEVkaXRpb24gKE9CSUVFKSBtYWludGFpbmVkIGJ5IE1pYW1pIGFkbWluaXN0cmF0aW9uLCBvciBmcm9tIHRoZSBzZWxmIHJlcG9ydGVkIHNlbmlvciBzdXJ2ZXkuICBEci4gSm9uZXMtRmFybWVyIGhhcyBjbGVhbmVkIGFuZCBtZXJnZWQgdGhlIGZpbGVzIGludG8gb25lIGZpbGUuICANCg0KMS4gIG1ham9yOiBudW1lcmljLGRlcml2ZWQsIHRoZSBudW1iZXIgb2YgbWFqb3JzIA0KMi4gIG1ham9yMTogdGV4dCwgT0JJRUUsIGZpcnN0IG1ham9yDQozLiAgbWFqb3IgMjogdGV4dCwgT0JJRUUsIHNlY29uZCBtYWpvcg0KNC4gIEJCUko6IGJpbmFyeSwgT0JJRUUsIGFuIGF0dHJpYnV0ZSBvZiBhIHN0dWRlbnQsIGJ1dCB3ZSBkbyBub3Qga25vdyB3aGF0IHRoaXMgc3RhbmRzIGZvcg0KNS4gIEJ1c2luZXNzIERpcmVjdCBBZG1pdDogYmluYXJ5LCBPQklFRSwgYSBkaXJlY3QgYWRtaXQgdG8gRlNCIGFzIGEgZmlyc3QgeWVhcg0KNi4gIENvbWJpbmVkIENhY2MgYW5kIE1hc3RlcnM6IGJpbmFyeSwgT0JJRUUsIGNvbWJpbmVkIGRlZ3JlZSBzdHVkZW50DQo3LiAgRGVhbidzIExpc3Q6IGJpbmFyeSwgT0JJRUUsIGFjaGlldmUgZGVhbidzIGxpc3Qgc3RhdHVzIGF0IGxlYXN0IG9uY2UNCjguICBGaXJzdCBHZW5lcmF0aW9uIENvbGxlZ2UgU3RkbnQ6IGJpbmFyeSwgT0JJRUUsIGZpcnN0IGdlbmVyYXRpb24gc3R1ZGVudCBzdGF0dXMNCjkuICAgRlNCIFNjaG9sYXJzOiBiaW5hcnksIE9CSUVFLCBGU0Igc2Nob2xhcnMgcHJvZ3JhbQ0KMTAuICBIb25vcnMgUHJvZ3JhbTogYmluYXJ5LCBPQklFRSwgbWVtYmVyIG9mIFVuaXZlcnNpdHkgaG9ub3JzIHByb2dyYW0NCjExLiAgUHJlc2lkZW50J3MgbGlzdDogYmluYXJ5LCBPQklFRSwgYWNoaWV2ZWQgcHJlc2lkZW50J3MgbGlzdCBhdCBsZWFzdCBvbmNlDQoxMi4gIFN0dWR5IEFicm91ZCBDb3VydGVzeSBBY2NvdW50OiBiaW5hcnksIE9CSUVFLCBkbyBub3Qga25vdyBtZWFuaW5nDQoxMy4gIFRyYW5zZmVyIFdvcms6IGJpbmFyeSwgT0JJRUUsIGRvIG5vdCBrbm93IGV4YWN0IG1lYW5pbmcNCjE0LiAgQ3VtIExhdWRlOiBiaW5hcnksIE9CSUVFLCBncmFkdWF0ZWQgQ3VtIExhdWRlDQoxNS4gIE1hZ25hIEN1bSBMYXVkZTogYmluYXJ5LCBPQklFRSwgZ3JhZHVhdGVkIE1hZ25hIEN1bSBMYXVkZQ0KMTYuICBTdW1tYSBDdW0gTGF1ZGU6IGJpbmFyeSwgT0JJRUUsIGdyYWR1YXRlZCBTdW1tYSBDdW0gTGF1ZGUNCjE3LiAgVW5pdmVyc2l0eSBIb25vcnM6IGJpbmFyeSwgT0JJRUUsIGdyYWR1YXRlZCB3aXRoIFVuaXZlcnNpdHkgSG9ub3JzDQoxOC4gIFVuaXZlcnNpdHkgSG9ub3JzIHcvRGlzdGluY3Rpb246IGJpbmFyeSwgT0JJRUUsIGdyYWR1YXRlZCB3aXRoIFVuaXZlcnNpdHkgSG9ub3JzIHdpdGggRGlzdGluY3Rpb24NCjE5LiAgbWlub3IxOiB0ZXh0LCBPQklFRSwgZmlyc3QgbGlzdGVkIG1pbm9yDQoyMC4gIG1pbm9yMjogdGV4dCwgT0JJRUUsIHNlY29uZCBsaXN0ZWQgbWlub3INCjIxLiAgSVBFRFMuUmFjZS5FdGhuaWNpdHk6IHRleHQsIE9CSUVFLCByYWNlL2V0aG5pY2l0eQ0KMjIuICBHZW5kZXI6IHRleHQsIE9CSUVFLCBzZXgNCjIzLiAgR1BBLlJhbmdlOiB0ZXh0LCBPQklFRSwgR1BBIHdpdGhpbiBhIC41IHJhbmdlDQoyNC4gIFRlcm0uQ29kZTogbnVtYmVyaWMsIE9CSUVFLCBGaXJzdCBmb3VyIGRpZ2l0cyBhcmUgdGhlIHBoeXNjYWwgeWVhciAoYmVnaW5uaW5nIGluIEp1bHksIGUuZy4gSnVseSAyMDIwIGlzIEZZIDIwMjEpLiAgTGFzdCB0d28gZGlnaXRzIGlzIHRoZSB0ZXJtICgxMD1mYWxsLCAxNT13aW50ZXIsIDIwPXNwcmluZywgMzA9c3VtbWVyKS4NCjI1LiAgWWVhci54OiB0ZXh0LCBkZXJpdmVkLCBmaXJzdCBmb3VyIGRpZ2l0cyBvZiBUZXJtLkNvZGUgc3RvcmVkIGFzIGEgY2hhcmFjdGVyIHZhcmlhYmxlDQoyNi4gIGxhdGluX2hvbm9yczogdGV4dCwgc3VydmV5LCBsYXRpbiBob25vcnMgZGVzaWduYXRpb24NCjI3LiAgc3VydmV5X2NpdHk6IHRleHQsIHN1cnZleSwgc3R1ZGVudCByZXBvcnRlZCBjaXR5IGluIHdoaWNoIHRoZWlyIGpvYiBpcyBsb2NhdGVkDQoyOC4gIHN1cnZleV9jb21wYW55OiB0ZXh0LCBzdXJ2ZXksIHN0dWRlbnQgcmVwb3J0ZWQgY29tcGFueSBpbiB3aGljaCB0aGV5IGFjY2VwdGVkIGEgam9iDQoyOS4gIHN1cnZleV9kZXB0ZnVuYzogdGV4dCwgc3VydmV5LCBzdHVkZW50IHJlcG9ydGVkIGpvYiBmdW5jdGlvbg0KMzAuICBzdXJ2ZXlfZ3JhZHByb2dyYW06IHRleHQsIHN1cnZleSwgc3R1ZGVudCByZXBvcnRlZCBncmFkdWF0ZSBwcm9ncmFtIHRoZXkgd2lsbCBiZSBhdHRlbmRpbmcNCjMxLiAgc3VydmV5X2dyYWRzY2hvb2w6IHRleHQsIHN1cnZleSwgc3R1ZW50IHJlcG9ydGVkIGdyYWR1YXRlIHNjaG9vbCB0aGV5IHdpbGwgYmUgYXR0ZW5kaW5nDQozMi4gIHN1cnZleV9pbnRlcm5mb3VyOiB0ZXh0LCBzdXJ2ZXksIHN0dWRlbnQgcmVwb3J0ZWQgZm91cnRoIGludGVybnNoaXAgdGhleSBoZWxkIGR1cmluZyBjb2xsZWdlDQozMy4gIHN1cnZleV9pbnRlcm50aHJlZTogdGV4dCwgc3VydmV5LCBzdHVkZW50IHJlcG9ydGVkIHRoaXJkIGludGVybnNoaXAgdGhleSBoZWxkIGR1cmluZyBjb2xsZWdlDQozNC4gIHN1cnZleV9pbnRlcm50d286IHRleHQsIHN1cnZleSwgc3R1ZGVudCByZXBvcnRlZCBzZWNvbmQgaW50ZXJuc2hpcCB0aGV5IGhlbGQgZHVyaW5nIGNvbGxlZ2UNCjM1LiAgc3VydmV5X2ludGVybm9uZTogdGV4dCwgc3VydmV5LCBzdHVkZW50IHJlcG9ydGVkIGZpcnN0IGludGVybnNoaXAgdGhleSBoZWxkIGR1cmluZyBjb2xsZWdlDQozNi4gIFN1cnZleV9pbnRlcm5zaGlwczogdGV4dCwgc3VydmV5LCBTdHVkZW50IHJlcG9ydGVkIG51bWJlciBvZiBpbnRlcm5zaGlwcyB0aGV5IGhlbGQgZHVyaW5nIGNvbGxlZ2UNCjM3LiAgc3VydmV5X29mZmVyczogdGV4dCwgc3VydmV5LCBzdHVkZW50IHJlcG9ydGVkIG51bWJlciBvZiBvZmZlcnMgZm9yIGZ1bGwgdGltZSBlbXBsb3ltZW50IHJlY2VpdmVkDQozOC4gIHN1cnZleV9wbGFuczogdGV4dCwgc3VydmV5LCBzdHVkZW50IHJlcG9ydGVkIHBsYW5zIGFmdGVyIGdyYWR1YXRpb24NCjM5LiAgc3VydmV5X3ByZWZfZmllbGQ6IHRleHQsIHN1cnZleSwgc3R1ZGVudCByZXBvcnRlZCB3aGV0aGVyIHdvcmtpbmcgaW4gcHJlZmVycmVkIGZpZWxkDQo0MC4gIHN1cnZleV9wcmVmX2xvYzogdGV4dCwgc3VydmV5LCBzdHVkZW50IHJlcG9ydGVkIHdoZXRoZXIgd29ya2luZyBpbiBwcmVmZXJyZWQgbG9jYXRpb24NCjQxLiAgc3VydmV5X3NhbGFyeTogbnVtZXJpYywgc3VydmV5LCBzdHVkZW50IHJlcG9ydGVkIHNhbGFyeQ0KNDIuICBzdXJ2ZXlfc3RhdGU6IHRleHQsIHN1cnZleSwgc3R1ZGVudCByZXBvcnRlZCBzdGF0ZSBpbiB3aGljaCBqb2IgaXMgbG9jYXRlZA0KDQoNCiMjIERhdGEgQ2xlYW5pbmcgey51bm51bWJlcmVkfQ0KDQpgYGB7cn0NCiMjIExPQURJTkcgREFUQSMjDQpGU0IgID0gcmVhZFJEUygiRlNCX0JJX1N1cnZleV8yMDE5XzIwMjEucmRzIikNCg0KaGVhZChGU0IpDQpgYGANCg0KRm9yIHRoZSBwdXJwb3NlcyBvZiBvdXIgYW5hbHlzaXMsIHdlIGFyZSBsb29raW5nIGF0IHRoZSBqb2IgcGxhY2VtZW50IGFuZCBzYWxhcnkgdHJlbmRzIGZvciBGU0IgZ3JhZHVhdGVzIGFzIGEgd2hvbGUgYW5kIGJ5IG1ham9yLiBGb3IgdGhpcywgd2Ugc2hvdWxkIG9ubHkgYmUgbG9va2luZyBhdCBzdHVkZW50cyB3aG8gYXJlIGludGVuZGluZyB0byBlbnRlciB0aGUgd29ya2ZvcmNlIGFuZCBleGNsdWRlIHRob3NlIHdobydzIHBsYW5zIGRldmlhdGUgZnJvbSB0aGF0IGNvdXJzZSAoaS5lLiBjb250aW51aW5nIHRoZWlyIGVkdWNhdGlvbikuIA0KDQpgYGB7cn0NCnVuaXF1ZShGU0Ikc3VydmV5X3BsYW5zKQ0KYGBgDQoNCiMjIyBFeHBsb3JpbmcgQ29udGV4dCB7LnVubnVtYmVyZWR9DQpXZSB3YW50IHRvIGxvb2sgYXQgdmFyaW91cyByZXNwb25zZSB0byBldmFsdWF0ZSB3aGF0IGNvbnRleHQgdGhleSBwcm92aWRlIHRvIG91ciBhbmFseXNpcyBhbmQgd2hldGhlciB0aGV5IHdvdWxkIGJlIHVzZWZ1bCB0byBrZWVwIGluIHRoZSBmaW5hbCBkYXRhIHNldCB3ZSB1c2UuDQoNClByaW1hcmlseSwgd2Ugd2FudCB0byBsb29rIGF0IHJlc3BvbnNlcyBpbiB0aGUgc3VydmV5X3BsYW5zIGZpZWxkIGJlY2F1c2Ugd2UgYmVsaWV2ZSB0aGF0IHdpbGwgYmUgYSBzdHJvbmcgd2F5IHRvIGZpbHRlciBvdXQgb2JzZXJ2YXRpb25zIHRoYXQgaGF2ZSBubyBjb3JyZWxhdGlvbiB0byB0aGUgam9iIHBsYWNlbWVudCBhbmQgc2FsYXJ5IHRyZW5kcy4gDQoNCkZvciBleGFtcGxlOiAic2Vla2luZyBjb250aW51aW5nIGVkdWNhdGlvbiIsICJjb250aW51aW5nIGVkdWNhdGlvbiIsICJub3Qgc2Vla2luZyBlbXBsb3ltZW50IiwgTkEgYXJlIGFzc3VtZWQgbm90IHJlbGV2YW50IHRvIG91ciBwdXJwb3Nlcy4gSWYgYW4gaW5kaXZpZHVhbCBpcyBub3QgYWN0aXZlbHkgdHJ5aW5nIHRvIGdldCBhIGpvYiBvciBhY2NlcHRpbmcgYSBqb2IsIHRoZW4gdGhlIGRhdGEgdGhleSBwcm92aWRlIHdpbGwgbm90IGJlIHVzZWZ1bCBpbiBkZXRlcm1pbmluZyBqb2IgcGxhY2VtZW50IGFuZCBzYWxhcnkgdHJlbmRzLg0KDQpDb250cmFyaWx5OiAic2Vla2luZyBlbXBsb3ltZW50IiwgImFjY2VwdGVkIHBhcnR0aW1lIGpvYiIgYW5kICJhY2NlcHRlZCBmdWxsdGltZSBqb2IiIGFyZSBhc3N1bWVkIHJlbGV2YW50IHRvIG91ciBwdXJwb3NlcyBhbmQgd2lsbCBiZSBpbmNsdWRlZCBpbiB0aGUgYW5hbHlzaXMuIFRoZSBkYXRhIHRoZXkgcHJvdmlkZSB3aWxsIGdyYW50IHVzIGluc2lnaHQgb24gam9iIHBsYWNlbWVudCBhbmQgc2FsYXJ5IHRyZW5kcyBiZWNhdXNlIHRoZXkgYXJlIGFjdGl2ZWx5IGF0dGVtcHRpbmcgdG8gc2VjdXJlIGpvYnMuIFdlIHdpbGwgbmVlZCB0byBpbXB1dGUgbWlzc2luZyB2YWx1ZXMgYW5kIGNsZWFuIGFueSBub24tc3RhbmRhcmRpemVkIHJlc3BvbnNlcyAoaS5lLiB0aGUgY29tcGFueSBvciBjaXR5IGZpZWxkcyB0aGF0IGhhdmUgdmFyaW91cyBjYXBpdGlsYXphdGlvbiBhbmQgc3BlbGxpbmcgZGlmZmVyZW5jZXMpDQpgYGB7cn0NCiMjIEV4cGxvcmluZyByZXNwb25zZXMgdG8gZXZhbHVhdGUgY29udGV4dCAjIw0KDQpGU0Jfc2VsZiA9IEZTQiB8PiBkcGx5cjo6ZmlsdGVyKEZTQiRzdXJ2ZXlfcGxhbnMgPT0gInNlbGYgZW1wbG95ZWQiKSANCiMgRG9lcyBub3QgYXBwZWFyIHJlbGV2YW50IGZvciBvdXIgcHVycG9zZXMuIE9ubHkgb25lIHJlc3BvbnNlIHdpdGggdGhpcyBkZXNpZ25hdGlvbiBhbmQgaXQgZG9lcyBub3QgaW5jbHVkZSB2YWx1ZXMgaW4gdGhlIGZpZWxkcyBuZWNlc3NhcnkgZm9yIG91ciBhbmFseXNpcy4NCg0KRlNCX290aGVyID0gRlNCIHw+IGRwbHlyOjpmaWx0ZXIoRlNCJHN1cnZleV9wbGFucyA9PSAib3RoZXIiKSANCiMgRG9lcyBub3QgYXBwZWFyIHJlbGV2YW50IGZvciBvdXIgcHVycG9zZXMuIE5vIHZhbHVlcyBmb3IgcHJlZmVycmVkIGZpZWxkLCBsb2NhdGlvbiwgc2FsYXJ5LCBldGMuDQoNCkZTQl9taWwgPSBGU0IgfD4gZHBseXI6OmZpbHRlcihGU0Ikc3VydmV5X3BsYW5zID09ICJtaWxpdGFyeSBzZXJ2aWNlIikNCiMgRG9lcyBub3QgYXBwZWFyIHJlbGV2YW50IGZvciBvdXIgcHVycG9zZXMuIE5vIHZhbHVlcyBmb3IgcHJlZmVycmVkIGZpZWxkLCBsb2NhdGlvbiwgc2FsYXJ5LCBhbmQgdGhvdWdoIHRoZXkgdGVjaG5pY2FsbHkgd29yayBmb3IgdGhlIG1pbGl0YXJ5IHRoZXkgaGF2ZSB2ZXJ5IGxpbWl0ZWQgcmVzcG9uc2VzIGluIHRoZSBjb21wYW55IGZpZWxkDQoNCiMgcmVtb3ZlIHVubmVjZXNzYXJ5IGRmcw0KcmVtb3ZlKEZTQl9vdGhlcikNCnJlbW92ZShGU0Jfc2VsZikNCnJlbW92ZShGU0JfbWlsKQ0KDQpgYGANCg0KTm93IHRoYXQgd2UgaGF2ZSBvdXIgbGlzdCBvZiByZXNwb25zZSB2YWx1ZXMgd2Ugd291bGQgbGlrZSB0byBmaWx0ZXIgb24sIHdlIHdpbGwgbm93IGNyZWF0ZSBvdXIgbmV3IGRhdGEgc2V0DQoNCmBgYHtyfQ0KIyBjcmVhdGUgYSBuZXcgZGF0YSBzZXQgdGhhdCBmaWx0ZXJzIG91dCBpcnJlbGV2YW50IG9ic2VydmF0aW9ucw0KRlNCX2pvYiA9IEZTQiB8PiBkcGx5cjo6ZmlsdGVyKEZTQiRzdXJ2ZXlfcGxhbnMgJWluJQ0KICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgYygic2Vla2luZyBlbXBsb3ltZW50IiwgImFjY2VwdGVkIHBhcnR0aW1lIGpvYiIsDQogICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICJhY2NlcHRlZCBmdWxsdGltZSBqb2IiKSkNCmBgYA0KDQoNCg0KDQojIyMgQ291bnRpbmcgTWlzc2luZyBieSBWYXJpYWJsZSB7LnVubnVtYmVyZWR9DQpgYGB7cn0NCnNhcHBseShGU0Jfam9iLCBmdW5jdGlvbih4KSBzdW0oaXMubmEoeCkpKQ0KYGBgDQpJdCBzZWVtcyBjbGVhciB0aGF0IHRoZSBzdXJ2ZXkgcmVzcG9uc2VzIGNvbnRhaW4gYSBzdWJzdGFudGlhbCBhbW91bnQgb2Ygb2JzZXJ2YXRpb25zIHdpdGggbWlzc2luZyB2YWx1ZXMgYWNyb3NzIHRoZSBlbnRpcmV0eSBvZiB0aGUgc3VydmV5IGZpZWxkcy4gSXQgaXMgb3VyIGNvbmNsdXNpb24gdGhhdCB0byBvbWl0IHJlc3BvbnNlcyB3aXRoIG1pc3NpbmcgdmFsdWVzIHdvdWxkIGRlc3Ryb3kgYW55IGNoYW5jZSBvZiBwdWxsaW5nIGFueSBtZWFuaW5nZnVsIGFuYWx5c2lzIGZyb20gdGhlIGRhdGEuIFdpdGggdGhhdCBhc3N1bXB0aW9uLCB3ZSB3aWxsIGluc3RlYWQgY2xlYW4gYW5kIGltcHV0ZSBtaXNzaW5nIHZhbHVlcyBmb3IgZmllbGRzIG5lY2Vzc2FyeSBmb3Igb3VyIGFuYWx5c2lzLg0KDQoNCiMjIyBDbGVhbmluZyBOb24tc3RhbmRhcmQgcmVzcG9uc2VzIHsudW5udW1iZXJlZH0NCg0KQmVmb3JlIHdlIG1ha2Ugc3RhbmRhcmRpemUgb3VyIGNpdHkgYW5kIGNvbXBhbnkgdmFyaWFibGVzLCB3ZSBuZWVkIHRvIGNsZWFuIHRoZW0uIEZpcnN0IHdlIG1hZGUgYWxsIG9mIHRoZSByZXNwb25zZXMgYWxsIGNhcGl0YWxpemVkLiBUaGlzIHdpbGwgdGFrZSBvdXQgdGhlIG5lZWQgdG8gY29ycmVjdCBjYXBpdGFsaXphdGlvbiBpc3N1ZXMgd2hlbiB3ZSBzdGFuZGFyZGl6ZSB0aGUgZGF0YS4gTmV4dCB3ZSB3aWxsIHNvcnQgdGhlIHJlc3BvbnNlcyBieSBmcmVxdWVuY3kgYW5kIGNvbGxlY3QgdGhlIHRvcCAyMC4gVGhlc2UgbGlzdHMgb2YgMjAgd2lsbCBiZSB0aGUgdmFyaWFibGVzIHdlIHdpbGwgZm9jdXMgaW4gb3VyIGRhdGEgc2V0Lg0KYGBge3J9DQpGU0Jfam9iJHN1cnZleV9jb21wYW55ID0gdG91cHBlcihGU0Jfam9iJHN1cnZleV9jb21wYW55KQ0KDQpjb21wYW55ID0gRlNCX2pvYiRzdXJ2ZXlfY29tcGFueQ0KdG9wMjBjb21wYW55ID0gYXMuZGF0YS5mcmFtZSh0YWJsZShjb21wYW55KSkNCmNvbXBhbnlzb3J0ZWQgPSB0b3AyMGNvbXBhbnlbb3JkZXIoLXRvcDIwY29tcGFueSRGcmVxKSwgXQ0KdG9wMjBfY29tcGFueV9uYW1lcyA9IGNvbXBhbnlzb3J0ZWQkY29tcGFueVsxOjIwXQ0KDQojIFZpZXcgdGhlIHZlY3RvciBvciBsaXN0IG9mIHRvcCAyMCBjb21wYW55IG5hbWVzDQpwcmludCh0b3AyMF9jb21wYW55X25hbWVzKQ0KYGBgDQoNCmBgYHtyfQ0KRlNCX2pvYiRzdXJ2ZXlfY2l0eSA9IHRvdXBwZXIoRlNCX2pvYiRzdXJ2ZXlfY2l0eSkNCg0KY2l0eSA9IEZTQl9qb2Ikc3VydmV5X2NpdHkNCnRvcDIwY2l0eSA9IGFzLmRhdGEuZnJhbWUodGFibGUoY2l0eSkpDQpjaXR5c29ydGVkID0gdG9wMjBjaXR5W29yZGVyKC10b3AyMGNpdHkkRnJlcSksIF0NCnRvcDIwX2NpdHlfbmFtZXMgPSBjaXR5c29ydGVkJGNpdHlbMToyMF0NCg0KIyBWaWV3IHRoZSB2ZWN0b3Igb3IgbGlzdCBvZiB0b3AgMjAgY29tcGFueSBuYW1lcw0KcHJpbnQodG9wMjBfY2l0eV9uYW1lcykNCmBgYA0KDQoNCiMjIyMgU3RhbmRhcmRpemF0aW9uIChDb21wYW5pZXMpIHsudW5udW1iZXJlZH0NCk9uZSBvZiB0aGUgbWFqb3Igcm9hZGJsb2NrcyB3ZSBpZGVudGlmaWVkIHdpdGggdGhlIHJlc3BvbnNlIGRhdGEgaXMgaG93IG9mdGVuIHN0dWRlbnRzIGVudGVyZWQgZGlmZmVyZW50IHNwZWxsaW5ncyBvZiB0aGUgc2FtZSB3b3Jkcy4gVG8gc29sdmUgdGhpcyBpc3N1ZSB3ZSBuZWVkIHRvIHN0YW5kYXJkaXplIG91ciBkYXRhIHRvIGVuc3VyZSB0aGF0IGFsbCBvZiB0aGUgZGF0YSBpcyBzdGFuZGFyZGl6ZWQuIFdlIGRlY2lkZWQgdG8gZm9jdXMgb24gdGhlIDIwIG1vc3QgcG9wdWxhciBjaXRpZXMgYW5kIGNvbXBhbmllcyB0byBzdGFuZGFyZGl6ZS4gRmlyc3Qgd2Ugd2FudCB0byBzZWUgd2hhdCB0aGUgdG9wIDIwIGNvbXBhbmllcyBhcmUgc28gd2Uga25vdyB3aGljaCBjb21wYW5pZXMgdG8gc3RhbmRhcmRpemUuDQoNCmBgYHtyfQ0KcHJpbnQodG9wMjBfY29tcGFueV9uYW1lcykNCmBgYA0KDQpOb3cgdGhhdCB3ZSBrbm93IHdoaWNoIGNvbXBhbmllcyB3ZSBhcmUgZ29pbmcgdG8gZm9jdXMgb24sIGl0IGlzIHRpbWUgdG8gc3RhbmRhcmRpemUgb3VyIGRhdGEuIFRvIGRvIHRoaXMgd2Ugd2lsbCBiZSBwcmludGluZyBhbGwgb2YgdGhlIGNvbXBhbmllcyBmcm9tIG91dCBkYXRhIHNldCB0aGF0IHN0YXJ0IHdpdGggdGhlIGxldHRlciBvZiB0aGUgY29tcGFueSBpbiBxdWVzdGlvbi4gTmV4dCB3ZSB3aWxsIG9ic2VydmUgYWxsIG9mIHRoZSB2YXJpb3VzIGVudHJpZXMgYW5kIGNoYW5nZSB0aGVuIGFsbCB0byBoYXZlIHRoZSBzYW1lIHNwZWxsaW5nLg0KDQpgYGB7cn0NCiMjRVkgTUFQUElORw0Kam9ic19lID0gRlNCX2pvYltncmVwKCdeRScsIEZTQl9qb2Ikc3VydmV5X2NvbXBhbnkpLF0NCnRhYmxlKGpvYnNfZSRzdXJ2ZXlfY29tcGFueSkNCkVZX21hcCA9IGMoIkVSTlNUICYgWU9VTkcgKEVZKSIgPSAiRVkiLCANCiAgICAgICAgICAgIkVSTlNUIEFORCBZT1VORyIgPSAiRVkiLA0KICAgICAgICAgICAiRVJOU1QgJiBZT1VORyIgPSAiRVkiKQ0KYGBgDQoNCmBgYHtyfQ0KIyNERUxPSVRURSBNQVBQSU5HDQpqb2JzX2QgPSBGU0Jfam9iW2dyZXAoJ15EJywgRlNCX2pvYiRzdXJ2ZXlfY29tcGFueSksXQ0KdGFibGUoam9ic19kJHN1cnZleV9jb21wYW55KQ0KREVMT0lUVEVfbWFwcGluZyA9IGMoIkRFTE9JVFRFIENPTlNVTFRJTkciID0gIkRFTE9JVFRFIiwNCiAgICAgICAgICAgICAgICAgIkRFTE9JVFRFIExMUCI9ICJERUxPSVRURSIsDQogICAgICAgICAgICAgICAgICJERUxPSVRURSBUQVgiPSAiREVMT0lUVEUiLA0KICAgICAgICAgICAgICAgICAiREVMT0lUVEUsIENISU5BIiA9ICJERUxPSVRURSIpDQoNCiMjIERITCBTVVBQTFkgQ0hBSU4gTUFQUElORw0KREhMX1NDX21hcHBpbmcgPSBjKCJESEwgU1VQUExZIENIQUlOIiA9ICJESEwiKQ0KYGBgDQoNCmBgYHtyfQ0KIyNQV0MgTUFQUElORw0Kam9ic19wID0gRlNCX2pvYltncmVwKCdeUCcsIEZTQl9qb2Ikc3VydmV5X2NvbXBhbnkpLF0NCnRhYmxlKGpvYnNfcCRzdXJ2ZXlfY29tcGFueSkNClBXQ19tYXBwaW5nID0gYyggIlBXQyBDT1JQT1JBVEUgRklOQU5DRSI9ICJQV0MiLA0KICAgICAgICAgICAgICJQUklDRVdBVEVSSE9VU0UgQ09PUEVSUyIgPSAiUFdDIiwNCiAgICAgICAgICAgICAiUFdDIENPUlBPUkFURSBGSU5BTkNFIExMQyIgPSAiUFdDIiwgDQogICAgICAgICAgICAgIlBSSUNFV0FURVJIT1VTRUNPT1BFUlMiID0gIlBXQyIpDQoNCiMjIFBFUFNJQ08gTUFQUElORw0KUGVwc2lDb19tYXBwaW5nID0gYygiUEVQU0lDTy1GUklUTyBMQVkiID0gIlBFUFNJQ08iLA0KICAgICAgICAgICAgICAgICAgICAiUEVQU0lDTyBGUklUTy1MQVkiID0gIlBFUFNJQ08iLA0KICAgICAgICAgICAgICAgICAgICAiRlJJVE8gTEFZIiAgPSAiUEVQU0lDTyIsDQogICAgICAgICAgICAgICAgICAgICJGUklUTy1MQVkiID0gIlBFUFNJQ08iKQ0KIyMgUFJPVElWSVRJIE1BUFBJTkcgTk9UIE5FRURFRA0KYGBgDQoNCmBgYHtyfQ0KIyNURVhUUk9OIE1BUFBJTkcNCmpvYnNfdCA9IEZTQl9qb2JbZ3JlcCgnXlQnLCBGU0Jfam9iJHN1cnZleV9jb21wYW55KSxdDQp0YWJsZShqb2JzX3Qkc3VydmV5X2NvbXBhbnkpDQpUZXh0cm9uX21hcHBpbmcgPSBjKCJURVhUUk9OIEFWSUFUSU9OIiA9ICJURVhUUk9OIiwNCiAgICAgICAgICAgICAgICAiVEVYVFJPTiBTWVNURU1TOiBMWUNPTUlORyBFTkdJTkVTIj0gIlRFWFRST04iLA0KICAgICAgICAgICAgICAgICAiVEVYVFJPTiBTUEVDSUFMSVpFRCBWRUhJQ0xFUyIgPSAiVEVYVFJPTiIsDQogICAgICAgICAgICAgICAgIlRFWFRST04gU1lTVEVNUyIgPSAiVEVYVFJPTiINCiAgICAgICAgICAgICAgICApDQojI1RFUklMTElVTSBNQVBQSU5HDQpUZXJpbGxpdW1fbWFwcGluZyA9IGMoIlRFUlJJTElVTSIgPSAiVEVSSUxMSVVNIikNCmBgYA0KDQpgYGB7cn0NCiMjQUJFUkNST01CSUUgJiBGSVRDSCBNQVBQSU5HDQpqb2JzX2EgPSBGU0Jfam9iW2dyZXAoJ15BJywgRlNCX2pvYiRzdXJ2ZXlfY29tcGFueSksXQ0KdGFibGUoam9ic19hJHN1cnZleV9jb21wYW55KQ0KQV9hbmRfRl9tYXBwaW5nID0gYygiQUJFUkNST01CSUUgJiBGSVRDSCIgPSAiQUJFUkNST01CSUUiKQ0KIyNBUlJJVkUgTE9HSVNUSUNTIE1BUFBJTkcgTk9UIE5FRURFRA0KYGBgDQoNCmBgYHtyfQ0Kam9ic19qID0gRlNCX2pvYltncmVwKCdeSicsIEZTQl9qb2Ikc3VydmV5X2NvbXBhbnkpLF0NCnRhYmxlKGpvYnNfaiRzdXJ2ZXlfY29tcGFueSkNCkpQX01vcmdhbl9DaGFzZV9tYXBwaW5nID0gYygiSi5QLiBNT1JHQU4gVS5TLiBQUklWQVRFIEJBTksiID0gIkpQIE1PUkdBTiIsDQogICAgICAgICAgICAgICAgICAgICAgICJKUE1PUkdBTiBDSEFTRSIgPSAiSlAgTU9SR0FOIiwNCiAgICAgICAgICAgICAgICAgICAgICAgIkouUCBNT1JHQU4iID0gIkpQIE1PUkdBTiIsIA0KICAgICAgICAgICAgICAgICAgICAgICAiSlAgTU9SR0FOICYgQ08uIiA9ICJKUCBNT1JHQU4iLA0KICAgICAgICAgICAgICAgICAgICAgICAiSi5QLiBNT1JHQU4iID0gIkpQIE1PUkdBTiIsDQogICAgICAgICAgICAgICAgICAgICAgICJKUCBNT1JHQU4gQU5EIENIQVNFIiA9ICJKUCBNT1JHQU4iLA0KICAgICAgICAgICAgICAgICAgICAgICAiSlAgTU9SR0FOIENIQVNFIiA9ICJKUCBNT1JHQU4iKQ0KDQpgYGANCg0KYGBge3J9DQojIyBDT1lPVEUgTE9HSVNUSUNTIE1BUFBJTkcNCmpvYnNfYyA9IEZTQl9qb2JbZ3JlcCgnXkMnLCBGU0Jfam9iJHN1cnZleV9jb21wYW55KSxdDQp0YWJsZShqb2JzX2Mkc3VydmV5X2NvbXBhbnkpDQpjb3lvdGVfbWFwcGluZyA9IGMoIkNPWU9URSBMT0dJU1RJQ1MiID0gIkNPWU9URSIpDQojIyBDRFcgTUFQUElORyBOT1QgTkVFREVEDQoNCiMjQ1JPV0UgTExQIE1BUFBJTkcNCkNyb3dlX21hcHBpbmcgPSBjKCJDUk9XRSBMTFAiID0gIkNST1dFIikNCmBgYA0KDQpgYGB7cn0NCiMjIEZJRlRIIFRISVJEIEJBTksgTUFQUElORw0Kam9ic19mID0gRlNCX2pvYltncmVwKCdeRicsIEZTQl9qb2Ikc3VydmV5X2NvbXBhbnkpLF0NCnRhYmxlKGpvYnNfZiRzdXJ2ZXlfY29tcGFueSkNCkZpZnRoX1RoaXJkX0JhbmtfbWFwcGluZyA9IGMoIkZJRlRILVRISVJEIEJBTksiID0gIkZJRlRIIFRISVJEIEJBTksiKQ0KYGBgDQoNCk5vdyB0aGF0IHdlIGhhdmUgY3JlYXRlZCBtYXBwaW5nIHZhcmlhYmxlcyBmb3IgYWxsIG9mIHRoZSBjb21wYW5pZXMgdGhhdCBuZWVkZWQgc3RhbmRhcmRpemluZywgaXQgaXMgdGltZSB0byBjb21taXQgdGhlIGRlc2lyZWQgY2hhbmdlcyB0byBvdXIgZGF0YSBzZXQuIFdlIHdpbGwgZG8gdGhpcyBieSByZXBsYWNpbmcgYWxsIG9mIHRoZSBvdGhlciBzcGVsbGluZ3MgdG8gb3VyIGRlc2lyZWQgY2hvaWNlIHRoYXQgd2UgY3JlYXRlZCBpbiBvdXIgbWFwcGluZy4gDQoNCmBgYHtyfQ0KIyMgVXBkYXRpbmcgRGF0YSBzZXQgd2l0aCBzdGFuZGFyZGl6ZWQgY29tcGFuaWVzDQpsaWJyYXJ5KHRpZHl2ZXJzZSkNCkZTQl9qb2Ikc3VydmV5X2NvbXBhbnkgPSBzdHJfcmVwbGFjZV9hbGwoRlNCX2pvYiRzdXJ2ZXlfY29tcGFueSwgQV9hbmRfRl9tYXBwaW5nKQ0KRlNCX2pvYiRzdXJ2ZXlfY29tcGFueSA9IHN0cl9yZXBsYWNlX2FsbChGU0Jfam9iJHN1cnZleV9jb21wYW55LCBjb3lvdGVfbWFwcGluZykNCkZTQl9qb2Ikc3VydmV5X2NvbXBhbnkgPSBzdHJfcmVwbGFjZV9hbGwoRlNCX2pvYiRzdXJ2ZXlfY29tcGFueSwgQ3Jvd2VfbWFwcGluZykNCkZTQl9qb2Ikc3VydmV5X2NvbXBhbnkgPSBzdHJfcmVwbGFjZV9hbGwoRlNCX2pvYiRzdXJ2ZXlfY29tcGFueSwgREVMT0lUVEVfbWFwcGluZykNCkZTQl9qb2Ikc3VydmV5X2NvbXBhbnkgPSBzdHJfcmVwbGFjZV9hbGwoRlNCX2pvYiRzdXJ2ZXlfY29tcGFueSwgREhMX1NDX21hcHBpbmcpDQpGU0Jfam9iJHN1cnZleV9jb21wYW55ID0gc3RyX3JlcGxhY2VfYWxsKEZTQl9qb2Ikc3VydmV5X2NvbXBhbnksIEVZX21hcCkNCkZTQl9qb2Ikc3VydmV5X2NvbXBhbnkgPSBzdHJfcmVwbGFjZV9hbGwoRlNCX2pvYiRzdXJ2ZXlfY29tcGFueSwgRmlmdGhfVGhpcmRfQmFua19tYXBwaW5nKQ0KRlNCX2pvYiRzdXJ2ZXlfY29tcGFueSA9IHN0cl9yZXBsYWNlX2FsbChGU0Jfam9iJHN1cnZleV9jb21wYW55LCBKUF9Nb3JnYW5fQ2hhc2VfbWFwcGluZykNCkZTQl9qb2Ikc3VydmV5X2NvbXBhbnkgPSBzdHJfcmVwbGFjZV9hbGwoRlNCX2pvYiRzdXJ2ZXlfY29tcGFueSwgUGVwc2lDb19tYXBwaW5nKQ0KRlNCX2pvYiRzdXJ2ZXlfY29tcGFueSA9IHN0cl9yZXBsYWNlX2FsbChGU0Jfam9iJHN1cnZleV9jb21wYW55LCBQV0NfbWFwcGluZykNCkZTQl9qb2Ikc3VydmV5X2NvbXBhbnkgPSBzdHJfcmVwbGFjZV9hbGwoRlNCX2pvYiRzdXJ2ZXlfY29tcGFueSwgVGVyaWxsaXVtX21hcHBpbmcpDQpGU0Jfam9iJHN1cnZleV9jb21wYW55ID0gc3RyX3JlcGxhY2VfYWxsKEZTQl9qb2Ikc3VydmV5X2NvbXBhbnksIFRleHRyb25fbWFwcGluZykNCmBgYA0KDQpOZXh0LCB3ZSB3YW50IHRvIGNoYW5nZSBhbGwgb2YgdGhlIGNvbXBhbmllcyB0aGF0IGFyZSBvdXRzaWRlIG9mIG91ciB0b3AgMjAgdG8gIm90aGVyIi4gDQpgYGB7cn0NCg0KdG9wX2NvbXBhbmllcyA9IGMoIkRFTE9JVFRFIiwgIkVZIiwgIlRFWFRST04iLCAiUFdDIiwgIkpQIE1PUkdBTiIsICJLUE1HIiwgIkFCRVJDUk9NQklFIiwgIlBFUFNJQ08iLCAiREhMIiwgIlJTTSIsICJDT1lPVEUiLCAiQVJSSVZFIExPR0lTVElDUyIsICJDRFciLCAiRklGVEggVEhJUkQgQkFOSyIsICJURVJJTExJVU0iLCAiV0VTVCBNT05ST0UgUEFSVE5FUlMiLCAiUFJPVElWSVRJIiwgIkNST1dFIiwgIklOU0lHSFQyUFJPRklUIiwgIktFWUJBTksiKQ0KDQpGU0Jfam9iJHN1cnZleV9jb21wYW55IDwtICBpZmVsc2UoISh0b3VwcGVyKEZTQl9qb2Ikc3VydmV5X2NvbXBhbnkpICVpbiUgdG91cHBlcih0b3BfY29tcGFuaWVzKSksICJPVEhFUiIsIHRvdXBwZXIoRlNCX2pvYiRzdXJ2ZXlfY29tcGFueSApKQ0KdGFibGUoRlNCX2pvYiRzdXJ2ZXlfY29tcGFueSkNCmBgYA0KDQojIyMjIFN0YW5kYXJkaXphdGlvbiAoQ2l0aWVzKSB7LnVubnVtYmVyZWR9DQoNCldlIHdpbGwgcmVwZWF0IHRoZSBzYW1lIHN0YW5kYXJkaXphdGlvbiBwcm9jZXNzIHdpdGggY2l0aWVzIGNvbGxlY3RlZCBmcm9tIG91ciBzdXJ2ZXkuIEZpcnN0IHdlIGlkZW5pZnkgdGhlIHRvcCAyMCBjaXRpZXMgdG8gZm9jdXMgb24uIA0KYGBge3J9DQpwcmludCh0b3AyMF9jaXR5X25hbWVzKQ0KYGBgDQoNCmBgYHtyfQ0KcHJpbnQodG9wMjBfY2l0eV9uYW1lcykNCmBgYA0KDQpXZSB0aGVuIGNyZWF0ZSBtYXBwaW5nIGZvciBvdXIgc3RhbmRhcmRpemF0aW9uLg0KYGBge3J9DQojIyBDSU5DSU5OQVRJIE1BUFBJTkcNCmNpdHlfYyA9IEZTQl9qb2JbZ3JlcCgnXkMnLCBGU0Jfam9iJHN1cnZleV9jaXR5KSxdDQp0YWJsZShjaXR5X2Mkc3VydmV5X2NpdHkpDQoNCkNpbmNpbm5hdGlfbWFwcGluZyA9IGMoIkNJTkNJTkFUVEkiID0gIkNJTkNJTk5BVEkiLA0KICAgICAgICAgICAgICAgICAgICAgICAiQ0lOQ0lOTkFUSSwgT0giID0gIkNJTkNJTk5BVEkiLA0KICAgICAgICAgICAgICAgICAgICAgICAiQ0lOQ0lOTk5BVEkiID0gIkNJTkNJTk5BVEkiKQ0KIyMgQ09MVU1CVVMgTUFQUElORw0KQ29sdW1idXNfbWFwcGluZyA9IGMoIkNPTFVCTVVTIiA9ICJDT0xVTUJVUyIpDQpgYGANCmBgYHtyfQ0KIyMgTkVXIFlPUksgTUFQUElORw0KY2l0eV9uID0gRlNCX2pvYltncmVwKCdeTicsIEZTQl9qb2Ikc3VydmV5X2NpdHkpLF0NCnRhYmxlKGNpdHlfbiRzdXJ2ZXlfY2l0eSkNCg0KTmV3X1lvcmtfbWFwcGluZyA9IGMoIk5FVyBZT1JLIENJVFkiID0gIk5FVyBZT1JLIiwNCiAgICAgICAgICAgICAgICAgICAgICJOWUMiID0gIk5FVyBZT1JLIikNCmBgYA0KYGBge3J9DQojIyBJTkRJQU5BUE9MSVMgTUFQUElORw0KY2l0eV9pID0gRlNCX2pvYltncmVwKCdeSScsIEZTQl9qb2Ikc3VydmV5X2NpdHkpLF0NCnRhYmxlKGNpdHlfaSRzdXJ2ZXlfY2l0eSkNCg0KSW5kaWFuYXBvbGlzX21hcHBpbmcgPSBjKCJJTkRJQU5QT0xJUyIgPSAiSU5ESUFOQVBPTElTIikNCmBgYA0KYGBge3J9DQojIyBNSUxMV0FVS0VFIE1BUFBJTkcNCmNpdHlfbSA9IEZTQl9qb2JbZ3JlcCgnXk0nLCBGU0Jfam9iJHN1cnZleV9jaXR5KSxdDQp0YWJsZShjaXR5X20kc3VydmV5X2NpdHkpDQoNCk1pbHdhdWtlZV9tYXBwaW5nID0gYygiTUlMV0FVS1dFRSIgPSAiTUlMV0FVS0VFIikNCmBgYA0KDQpOb3cgd2UgdXBkYXRlIG91ciBtYWluIGRhdGEgc2V0IHdpdGggb3VyIG5ld2x5IGNyZWF0ZWQgc3RhbmRhcmRpemVkIG1hcHBpbmcuDQpgYGB7cn0NCiMjIFVwZGF0aW5nIERhdGEgc2V0IHdpdGggc3RhbmRhcmRpemVkIGNpdGllcw0KRlNCX2pvYiRzdXJ2ZXlfY2l0eSA9IHN0cl9yZXBsYWNlX2FsbChGU0Jfam9iJHN1cnZleV9jaXR5LCBDaW5jaW5uYXRpX21hcHBpbmcpDQpGU0Jfam9iJHN1cnZleV9jaXR5ID0gc3RyX3JlcGxhY2VfYWxsKEZTQl9qb2Ikc3VydmV5X2NpdHksIENvbHVtYnVzX21hcHBpbmcpDQpGU0Jfam9iJHN1cnZleV9jaXR5ID0gc3RyX3JlcGxhY2VfYWxsKEZTQl9qb2Ikc3VydmV5X2NpdHksIEluZGlhbmFwb2xpc19tYXBwaW5nKQ0KRlNCX2pvYiRzdXJ2ZXlfY2l0eSA9IHN0cl9yZXBsYWNlX2FsbChGU0Jfam9iJHN1cnZleV9jaXR5LCBNaWx3YXVrZWVfbWFwcGluZykNCkZTQl9qb2Ikc3VydmV5X2NpdHkgPSBzdHJfcmVwbGFjZV9hbGwoRlNCX2pvYiRzdXJ2ZXlfY2l0eSwgTmV3X1lvcmtfbWFwcGluZykNCg0KYGBgDQoNClNpbmNlIHdlIGFyZSBvbmx5IGxvb2tpbmcgYXQgdGhlIHRvcCAyMCBjaXRpZXMsIHdlIGRlY2lkZWQgdG8gY2hhbmdlIGFsbCBvZiB0aGUgY2l0aWVzIG91dHNpZGUgb2YgdGhlIHRvcCAyMCB0byBvdGhlci4gDQpgYGB7cn0NCnRvcF9jaXRpZXMgPSBjKCJDSElDQUdPIiwgIkNJTkNJTk5BVEkiLCAiQ09MVU1CVVMiLCAiQ0xFVkVMQU5EIiwgIk5FVyBZT1JLIiwgIklORElBTkFQT0xJUyIsICJERU5WRVIiLCAiQk9TVE9OIiwgIlBJVFRTQlVSR0giLCAiREFZVE9OIiwgIkNIQVJMT1RURSIsICJERVRST0lUIiwgIk1JTk5FQVBPTElTIiwgIlNBTiBGUkFOQ0lTQ08iLCAiRFVCTElOIiwgIk1JTFdBVUtFRSIsICJBS1JPTiIsICJUT0xFRE8iLCAiQVRMQU5UQSIsICJMT1MgQU5HRUxFUyIpDQoNCkZTQl9qb2Ikc3VydmV5X2NpdHkgPC0gIGlmZWxzZSghKHRvdXBwZXIoRlNCX2pvYiRzdXJ2ZXlfY2l0eSkgJWluJSB0b3VwcGVyKHRvcF9jaXRpZXMpKSwgIk9USEVSIiwgdG91cHBlcihGU0Jfam9iJHN1cnZleV9jaXR5ICkpDQp0YWJsZShGU0Jfam9iJHN1cnZleV9jaXR5KQ0KYGBgDQoNCiMjIyBJbXB1dGF0aW9uIHsudW5udW1iZXJlZH0NCg0KDQojIyMjIEltcHV0aW5nIENhdGVnb3JpY2FsIHsudW5udW1iZXJlZH0NCg0KRm9yIHRoZSByZW1haW5kZXIgb2YgcmVsZXZhbnQgdmFyaWFibGVzIHdpdGggbWlzc2luZyB2YWx1ZXMsIHdlIHdpbGwgaW1wdXRlIHRoZSB2YWx1ZSBvZiAiTWlzc2luZyIgdG8gZmlsbCBhbnkgbnVsbCB2YWx1ZXMuDQoNCmBgYHtyfQ0KRlNCX2pvYiA9IEZTQl9qb2IgfD4gDQogIGRwbHlyOjptdXRhdGUoDQogICAgc3VydmV5X2NpdHkgPSBpZmVsc2UoaXMubmEoc3VydmV5X2NpdHkpLCAiTWlzc2luZyIsIHN1cnZleV9jaXR5KSwNCiAgICBzdXJ2ZXlfY29tcGFueSA9IGlmZWxzZShpcy5uYShzdXJ2ZXlfY29tcGFueSksICJNaXNzaW5nIiwgc3VydmV5X2NvbXBhbnkpLA0KICAgIHN1cnZleV9wcmVmX2ZpZWxkID0gaWZlbHNlKGlzLm5hKHN1cnZleV9wcmVmX2ZpZWxkKSwgIk1pc3NpbmciLCBzdXJ2ZXlfcHJlZl9maWVsZCksDQogICAgc3VydmV5X3ByZWZfbG9jID0gaWZlbHNlKGlzLm5hKHN1cnZleV9wcmVmX2xvYyksICJNaXNzaW5nIiwgc3VydmV5X3ByZWZfbG9jKSwNCiAgICBzdXJ2ZXlfc3RhdGUgPSBpZmVsc2UoaXMubmEoc3VydmV5X3N0YXRlKSwgIk1pc3NpbmciLCBzdXJ2ZXlfc3RhdGUpDQogICAgKQ0KDQojIGNoZWNrIG1pc3NpbmcNCnNhcHBseShGU0Jfam9iLCBmdW5jdGlvbih4KSBzdW0oaXMubmEoeCkpKQ0KYGBgDQoNCg0KIyMjIyBNZWFuIFNhbGFyeSBieSBNYWpvciB7LnVubnVtYmVyZWR9DQoNCkFmdGVyIGV4YW1pbmluZyB0aGUgbWlzc2luZyB2YWx1ZSBjb3VudHMsIHdlIG5vdGljZWQgdGhhdCBzdXJ2ZXlfc2FsYXJ5IGhhZCBhIHNpZ25pZmljYW50IHBvcnRpb24gb2YgbWlzc2luZyB2YWx1ZXMuIFdpdGggdGhpcyBiZWluZyBzdWNoIGFuIGltcG9ydGFudCBwYXJ0IG9mIG91ciBhbmFseXNpcywgd2UgZmVsdCBpdCB3b3VsZCBiZSBpbmFwcHJvcHJpYXRlIHRvIHJlbW92ZSB0aGUgb2JzZXJ2YXRpb25zIHdpdGggbWlzc2luZyBzYWxhcnkgZGF0YS4gV2Uga25vdyB0aGF0IGNvbW1vbiBwcmFjdGljZSBpcyB0byBpbXB1dGUgdGhlIG1lYW4gb2YgbnVtZXJpY2FsIHZhcmlhYmxlcyBhbmQgc28gd2Ugd2lsbCBpbXB1dGUgc2FsYXJ5IGJhc2VkIG9uIHRoZSBtZWFuIHNhbGFyeSByZXBvcnRlZCBieSBtYWpvciBvZiB0aGUgc3R1ZGVudC4gV2UgY2hvc2UgdG8gaW1wdXRlIGJ5IG1ham9yIHRvIGFjY291bnQgZm9yIHRoZSB2YXJpYXRpb24gaW4gc2FsYXJ5IGluZmx1ZW5jZWQgYnkgbWFqb3IgKHNvbWUgbWFqb3JzIG1heSBoYXZlIGEgaGlnaGVyIGF2ZXJhZ2Ugc2FsYXJ5KS4NCg0KDQpgYGB7cn0NCnBhY21hbjo6cF9sb2FkKCJkcGx5ciIpDQpGU0Jfam9iID0gRlNCX2pvYiB8PiANCiAgZ3JvdXBfYnkobWFqb3IxKSB8PiANCiAgZHBseXI6Om11dGF0ZSggc3VydmV5X3NhbGFyeSA9IGlmZWxzZShpcy5uYShzdXJ2ZXlfc2FsYXJ5KSwgbWVhbihzdXJ2ZXlfc2FsYXJ5LCBuYS5ybSA9IFRSVUUpLCBzdXJ2ZXlfc2FsYXJ5KSkgfD4gDQogIHVuZ3JvdXAoKQ0KYGBgDQoNCk5vdywgc2luY2Ugd2UgaW5jbHVkZWQgdGhlIHJlcG9ydGVkIHBsYW4gdmFsdWUgb2YgInNlZWtpbmcgZW1wbG95bWVudCwgYW55IG9ic2VydmF0aW9uIHdpdGggdGhhdCBwbGFuIHZhbHVlIHdpbGwgaGF2ZSBhIG51bGwgdmFsdWUgZm9yIHNhbGFyeS4gU2luY2UgdGhlc2UgaW5kaXZpZHVhbHMgZG8gbm90IGhhdmUgam9icywgd2Ugd2lsbCBpbXB1dGUgJDAgYXMgdGhlaXIgc2FsYXJ5Lg0KDQpgYGB7cn0NCkZTQl9qb2IgPSBGU0Jfam9iIHw+IA0KICBkcGx5cjo6bXV0YXRlKCBzdXJ2ZXlfc2FsYXJ5ID0gaWZlbHNlKHN1cnZleV9wbGFucyA9PSAic2Vla2luZyBlbXBsb3ltZW50IiwgMCwgc3VydmV5X3NhbGFyeSkpDQpgYGANCg0KV2Ugd2lsbCBjaGVjayBvdXIgbWlzc2luZyBjb3VudCBmb3Igc2FsYXJ5IG9uY2UgYWdhaW4NCg0KYGBge3J9DQpzdW0oaXMubmEoRlNCX2pvYiRzdXJ2ZXlfc2FsYXJ5KSkNCmBgYA0KDQpUaGVyZSBpcyBzdGlsbCBvbmUgbWlzc2luZyB2YWx1ZSBpbiB0aGlzIGNvbHVtbi4gV2Ugd2lsbCBzdWJzZXQgdG8gZmluZCB0aGlzIG9ic2VydmF0aW9uDQoNCmBgYHtyfQ0KcHJpbnQoRlNCX2pvYlt3aGljaChpcy5uYShGU0Jfam9iJHN1cnZleV9zYWxhcnkpKSwgXSkNCmBgYA0KYGBge3J9DQojIHZpZXcgYSBjb2xsZWN0aW9uIG9mIG9ic2VydmF0aW9ucyB3aXRoIHRoaXMgc3BlY2lmaWMgbWFqb3IxIHZhbHVlDQpNYW5kTyA9IEZTQl9qb2IgfD4gZHBseXI6OmZpbHRlcihGU0Jfam9iJG1ham9yMSA9PSAiTWFuYWdlbWVudCBhbmQgT3JnYW5pemF0aW9ucyIpIA0KYGBgDQoNCkl0IGFwcGVhcnMgdGhhdCB0aGUgbWlzc2luZyB2YWx1ZSB0aGF0IHJlbWFpbnMgaXMgZHVlIHRvIHRoZSBmYWN0IHRoYXQgb25seSBvbmUgb2JzZXJ2YXRpb24gd2l0aCB0aGlzIGdpdmVuIG1ham9yMSB2YWx1ZSBpcyByZWNvcmRlZCwgYW5kIHRoZXkgZmFpbGVkIHRvIHJlcG9ydCB0aGVpciBzYWxhcnkuIFRoaXMgbWVhbnMgdGhhdCBtZWFuIGltcHV0YXRpb24gYnkgbWFqb3Igd2lsbCBub3QgYmUgYWJsZSB0byBmaWxsIGluIHRoZWlyIHNhbGFyeSBhbmQgdGhlcmVmb3JlIHRoZSBkYXRhIHRoaXMgb2JzZXJ2YXRpb24gcHJvdmlkZXMgaXMgbm90IHJlbGV2YW50IHRvIG91ciBwdXJwb3Nlcy4gV2Ugd2lsbCByZW1vdmUgdGhpcyBvYnNlcnZhdGlvbi4NCg0KYGBge3J9DQojIHJlbW92ZSB1bm5lY2Vzc2FyeSBkZg0KcmVtb3ZlKE1hbmRPKQ0KDQojIGRyb3AgdGhlIG9ic2VydmF0aW9uDQpGU0Jfam9iID0gIEZTQl9qb2JbLSh3aGljaChpcy5uYShGU0Jfam9iJHN1cnZleV9zYWxhcnkpKSksIF0NCg0KIyBjaGVjayBtaXNzaW5nDQpzdW0oaXMubmEoRlNCX2pvYiRzdXJ2ZXlfc2FsYXJ5KSkNCmBgYA0KTm93IG91ciBkYXRhIGlzIGNsZWFuIGFuZCByZWFkeSBmb3IgdXNlIGluIHRoZSBhbmFseXNpcy4gVGhlIHB1cnBvc2Ugb2Ygc2V0dGluZyB0aGUgZGF0YSB1cCB0aGUgd2F5IHdlIGRpZCBpcyB0aGF0IG5vdyBhbnkgdmlzdWFsaXphdGlvbnMgd2UgY3JlYXRlIHdpbGwgYmUgZWFzaWx5IHVuZGVyc3RhbmRhYmxlIGluIGNvbnRleHQsIGFuZCB3aWxsIGhhdmUgdG8gbW9zdCByZWxldmFudCBkYXRhIGNvbnRyaWJ1dGluZyB0byB0aGVpciBjcmVhdGlvbi4gV2UgYXR0ZW1wdGVkIHRvIGxpbWl0IGFtYmlndWl0eSBhbmQgaW50ZXJmZXJlbmNlIA0KDQoNCiMjIFByaW50aW5nIG91ciBzZXNzaW9uIGluZm9ybWF0aW9uIHsudW5udW1iZXJlZH0NCmBgYHtyfQ0Kc2Vzc2lvbkluZm8oKQ0KYGBgDQoNCg==</div>
+<div id="rmd-source-code">LS0tDQp0aXRsZTogIkZTQiBEYXRhIEFuYWx5c2lzIEdyb3VwIDE4Ig0KYXV0aG9yOiAiSmFrZSBIb2xyb3lkLCBCcmVuZGFuIEJlYXR0aWUiDQpkYXRlOiAiYHIgU3lzLkRhdGUoKWAiDQpvdXRwdXQ6DQogIGh0bWxfZG9jdW1lbnQ6DQogICAgY29kZV9mb2xkaW5nOiBzaG93DQogICAgZGZfcHJpbnQ6IHBhZ2VkDQogICAgbnVtYmVyX3NlY3Rpb25zOiB5ZXMNCiAgICB0aGVtZTogcmVhZGFibGUNCiAgICB0b2M6IHllcw0KICAgIHRvY19mbG9hdDogeWVzDQogICAgY29kZV9kb3dubG9hZDogeWVzDQogIHdvcmRfZG9jdW1lbnQ6DQogICAgdG9jOiBubw0KLS0tDQoNCi0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLQ0KDQpgYGB7ciBzZXR1cCwgaW5jbHVkZT1GQUxTRX0NCmtuaXRyOjpvcHRzX2NodW5rJHNldChlY2hvID0gVFJVRSkNCmBgYA0KDQojIEZTQiBEYXRhIEFuYWx5c2lzOiBHcm91cCAxOCB7LnVubnVtYmVyZWR9DQoNCiMgUmVzZWFyY2ggUXVlc3Rpb24gey51bm51bWJlcmVkfQ0KDQoqKiJXaGF0IGFyZSB0aGUgbWFjcm8gcGxhY2VtZW50IGFuZCBzYWxheSB0cmVuZHMgRlNCIGlzIHNlZWluZyBvdmVyIHRoZSBwYXN0IHRocmVlIHllYXJzIioqDQoNCi0gICBBcmUgb3VyIHBsYWNlbWVudCByZXN1bHRzIGdvaW5nIHVwIC8gZG93biAvIHN0ZWFkeT8NCi0gICBTYWxhcnkgdHJlbmRzPw0KLSAgIEtpcmsgd291bGQgbGlrZSB0byBzZWUgdGhpcyBmb3IgRlNCIG92ZXJhbGwgYXMgd2VsbCBhcyBieSBtYWpvcg0KDQojIEJ1c2luZXNzIFZhbHVlIFByb3Bvc2l0aW9uIHsudW5udW1iZXJlZH0NCg0KV2UgaGF2ZSBjcmVhdGVkIGEgYnVzaW5lc3MgdmFsdWUgcHJvcG9zaXRpb24gZm9yIHRoZSBGU0IgQ2FyZWVyIFNlcnZpY2VzIHRoYXQgcmVwb3J0cyB0byBLaXJrIEJvZ2FyZCwgdGhlIEFzc29jaWF0ZSBWaWNlIFByZXNpZGVudCBmb3IgRGV2ZWxvcG1lbnQgYW5kIEV4dGVybmFsIFJlbGF0aW9ucyBpbiBGU0IuVGhleSBhcmUgaW50ZXJlc3RlZCBpbiBob3cgdGhlIEZTQiBDYXJlZXIgU2VydmljZXMgYWR2aXNpbmcgdGVhbSBjYW4gbW9yZSBlZmZlY3RpdmVseSBkaXJlY3QgdGhlaXIgZWZmb3J0cyB0byBwcm9wZXJseSBzZXJ2ZSB0aGUgYWxtb3N0IDUsMDAwIHN0dWRlbnRzIGluIEZTQi4NCg0KDQojIyBWaXN1YWxpemF0aW9uIHsudW5udW1iZXJlZH0NCg0KIVtdKERhdGEvaW1hZ2VzL0ZTQkRhdGFCVlAucG5nKQ0KDQojIyBUZXh0IHsudW5udW1iZXJlZH0NCg0KKioxLiBEZWZpbmUgdGhlIGNsaWVudCBvciBhdWRpZW5jZSBmb3IgeW91ciBkYXRhIGFuYWx5c2lzIHNvbHV0aW9uLioqDQoNCi0gVGhlIEZTQiBDYXJlZXIgU2VydmljZXMgdGVhbSB0aGF0IHJlcG9ydHMgdG8gS2lyayBCb2dhcmQsIEFzc29jaWF0ZSBWaWNlIFByZXNpZGVudCBmb3IgRGV2ZWxvcG1lbnQgYW5kIEV4dGVybmFsIFJlbGF0aW9ucyBpbiBGU0IuDQoNCi0gV2UgYXJlIHRhc2tlZCB3aXRoIGFzc2lzdGluZyB3aXRoIHRoZWlyIGR1dGllcyBieSBwcm92aWRpbmcgaW5zaWdodCBhbmQgcmVjb21tZW5kYXRpb25zIG9uIGhvdyBDYXJlZXJzIFNlcnZpY2VzIGNhbiBiZXN0IGFkdmlzZSBGU0IgdW5kZXJncmFkdWF0ZSBzdHVkZW50cy4NCg0KLSBJbiBjb250ZXh0LCB3ZSBoYXZlIGJlZW4gYXNrZWQgdG8gZXhwbG9yZSB0aGUgbWFjcm8gcGxhY2VtZW50IGFuZCBzYWxhcnkgdHJlbmRzIEZTQiBoYXMgc2VlbiBvdmVyIHRoZSBwYXN0IHRocmVlIHllYXJzLg0KDQoNCg0KKioyLiBEZWZpbmUgdGhlIGNsaWVudCBqb2JzLiBXaGF0IGpvYnMgYXJlIHlvdXIgY2xpZW50cyB0cnlpbmcgdG8gZ2V0IGRvbmU/IFVzZSBhIHNlcGFyYXRlIGJ1bGxldCBwb2ludCBmb3IgZWFjaCBqb2IgeW91IGludGVuZCB0byBoZWxwIHlvdXIgY3VzdG9tZXIgZ2V0IGRvbmUuIEJlIHNwZWNpZmljLioqDQoNCi0gQWRqdXN0aW5nIGFkdmlzaW5nIGVmZm9ydHMgdG8gcmVmbGVjdCBwbGFjZW1lbnQgYW5kIHNhbGFyeSB0cmVuZHMuDQoNCi0gRWZmZWN0aXZlbHkgYWlkIHN0dWRlbnRzIGluIHRoZWlyIHB1cnN1aXQgb2YgY2FyZWVycy4NCg0KLSBVbmRlcnN0YW5kIGhvdyBzdHVkZW50cyBvZiB2YXJpb3VzIG1ham9ycyBkaWZmZXIgaW4gam9iIHBsYWNlbWVudCBhbmQgZXhwZWN0ZWQgc2FsYXJ5Lg0KDQotIERldmVsb3Agc29sdXRpb25zIHRoYXQgZXF1aXAgRlNCIHN0dWRlbnRzIHRvIHBsYWNlIHdlbGwgYW5kIGVhcm4gaGlnaC4NCg0KDQoqKjMuIEFkZCBwYWlucy4gV2hhdCBhcmUgdGhlIHBhaW5zIGJlZm9yZSwgZHVyaW5nLCBhbmQgYWZ0ZXIgeW91ciBjdXN0b21lciBpcyB0cnlpbmcgdG8gZ2V0IHRoZWlyIGpvYnMgZG9uZT8gQ3JlYXRlIGEgYnVsbGV0IHBvaW50IGZvciBldmVyeSBzcGVjaWZpYyBwYWluLioqDQoNCi0gVGhlcmUgYXJlIGFib3V0IDUsMDAwIHN0dWRlbnRzIGluIEZTQiBhbmQgdGhlIHN0YWZmIHRhc2tlZCB3aXRoIGFkdmlzaW5nIHRoZW0gaXMgc2lnbmlmaWNhbnRseSBzbWFsbGVyICg0KSBzbyBpdCBpcyBpbXBvc3NpYmxlIHRvIGFkZXF1YXRlbHkgYW5kIHRob3JvdWdobHkgYWR2aXNlIGFsbCA1LDAwMCBzdHVkZW50cy4NCg0KLSBTb21lIG1ham9ycyBtYXkgaGF2ZSBhbiBlYXNpZXIgdGltZSBwbGFjaW5nIGluIGpvYnMgb3IgZWFybmluZyBoaWdoZXIgc2FsYXJpZXMuIENhcmVlciBTZXJ2aWNlcyB3b3VsZCBsaWtlIHRvIGtub3cgd2hpY2ggb25lcywgb3IgZWxzZSB0aGV5IGNhbuKAmXQgZm9jdXMgb24gdGhvc2UgaW4gdGhlIG1vc3QgbmVlZC4gDQoNCi0gQ2FyZWVyIFNlcnZpY2VzIGNhbuKAmXQgcHJlcGFyZSBzdHVkZW50cyB3aG8gbWF5IGhhdmUgYSBtb3JlIGRpZmZpY3VsdCB0aW1lIGluIHRoZWlyIGpvYiBzZWFyY2ggb3IgaW5mb3JtIHN0dWRlbnRzIHdpdGggYWNjdXJhdGUgc2FsYXJ5IGV4cGVjdGF0aW9ucyBpZiB0aGV5IGRvbuKAmXQga25vdyB3aGljaCBtYWpvcnMgYXJlIGV4cGVyaWVuY2luZyBoaXJpbmcgc3VyZ2VzIG9yIGhpcmluZyBkZWNyZWFzZXMgYmFzZWQgb24gcmVjZW50IHRyZW5kcy4gDQoNCg0KKio0LiBEZXNjcmliZSB5b3VyIGludGVuZGVkIHNvbHV0aW9uLiBHaXZlIGEgYnVsbGV0IHBvaW50IGZvciBlYWNoIG1ham9yIGVsZW1lbnQgb2YgeW91ciBwcm9kdWN0IG9yIHNvbHV0aW9uLioqDQoNCi0gQ29tcGFyZSB0aGUgZGF0YSBvZiBib3RoIGpvYiBwbGFjZW1lbnQgdHJlbmRzIGFuZCBzYWxhcnkgdHJlbmRzIG92ZXIgdGhlIHRocmVlIHllYXIgdGltZSBwZXJpb2QgcHJvdmlkZWQuDQoNCi0gRGVsaXZlciBhbiBhbmFseXNpcyB0byBzaG93IGpvYiBwbGFjZW1lbnQgYW5kIHNhbGFyeSB0cmVuZHMgb3ZlciB0aW1lIGFjcm9zcyB0aGUgZW50aXJldHkgb2YgRlNCLCBhcyB3ZWxsIGFzIGRyaWxsaW5nIGRvd24gdG8gZXhwbG9yZSByZXN1bHRzIGJ5IG1ham9yLg0KDQotIENyZWF0ZSB2aXN1YWxpemF0aW9ucyB0aGF0IGlsbHVzdHJhdGUgdGhlc2UgdHJlbmRzIGluIGFuIHVuZGVyc3RhbmRhYmxlIGFuZCBkaWdlc3RpYmxlIHdheSB0byBzaG93IGNoYW5nZXMgaW4gdHJlbmRzIGJ5IG1ham9yIGFuZCBiZSBhYmxlIHRvIGVhc2lseSBjb21wYXJlIHRoZSBtb3N0IHJlY2VudCBkaWZmZXJlbmNlcyBpbiB0aGUgZGVwYXJ0bWVudC4NCg0KDQoqKjUuIFdoYXQgYXJlIHRoZSBwYWlua2lsbGVycyBmcm9tIHlvdXIgc29sdXRpb24/IExpc3Qgb3V0IHRob3NlIHRoaW5ncyBpbiB5b3VyIHNvbHV0aW9uIHRoYXQgY2FuIGtpbGwgdGhlIHBhaW4gcG9pbnRzIG9mIHlvdXIgY2xpZW50LioqDQoNCi0gQ3JlYXRpbmcgdW5kZXJzdGFuZGFibGUgYW5kIGVhc2lseSBjb21wYXJhYmxlIHZpc3VhbGl6YXRpb25zIGFsbG93cyB0aGUgc21hbGwgdGVhbSBvZiBjYXJlZXIgYWR2aXNvcnMgdG8gbW9yZSBlZmZlY3RpdmVseSBhbmQgZWZmaWNpZW50bHkgZGlyZWN0IHRoZWlyIGVmZm9ydHMgYWNyb3NzIHRoZSB2YXN0IHN0dWRlbnQgYm9keSBzbyB0aGV5IGNhbiBmb2N1cyBvbiB0aG9zZSBpbiB0aGUgbW9zdCBuZWVkLg0KDQotIERlbGl2ZXIgYSBzb3VuZCB1bmRlcnN0YW5kaW5nIG9mIHBsYWNlbWVudCByZXN1bHQgdHJlbmRzIGJ5IG1ham9yIHRocm91Z2ggdGhlIGNyZWF0aW9uIG9mIHZpc3VhbGl6YXRpb25zIHRoYXQgY29tcGFyZSBjaGFuZ2VzIGFuZCByZXZlYWwgdHJlbmRzIG92ZXIgdGhlIHRocmVlIHllYXJzLCBpbmZvcm1pbmcgQ2FyZWVyIFNlcnZpY2VzIG9mIHdoaWNoIG1ham9ycyBhcmUgbW9zdCBpbiBuZWVkIG9mIGFkdmlzaW5nLiANCg0KLSBCZSBhYmxlIHRvIHByb3ZpZGUgQ2FyZWVyIFNlcnZpY2VzIHdpdGggcmVsZXZhbnQgam9iIG1hcmtldCBpbmZvcm1hdGlvbiBiYXNlZCBvbiB0cmVuZHMgaWRlbnRpZmllZCBpbiB0aGUgcGFzdCB0aHJlZSB5ZWFycyB0byBhbGxvdyB0aGVtIHRvIGhlbHAgc3R1ZGVudHMgdW5kZXJzdGFuZCBwZXJzb25hbCBtYXJrZXQgdmFsdWUgYmFzZWQgb24gdGhlaXIgbWFqb3IgYW5kIGVkdWNhdGlvbiBhdCBGU0IuDQoNCioqNi4gQWRkIGdhaW5zLiBXaGF0IGFyZSB0aGUgZ2FpbnMgdGhhdCB5b3VyIGN1c3RvbWVyIGV4cGVjdHMgdG8gZ2V0IG9yIHdpbGwgYmUgc3VycHJpc2VkIHRvIGJlbmVmaXQgZnJvbSB5b3VyIHNvbHV0aW9uPyoqDQoNCi0gVGhlIENhcmVlciBTZXJ2aWNlcyB0ZWFtIHdpbGwgYmUgYWJsZSB0byBlcXVpcCBzdHVkZW50cyB3aXRoIHRoZSBuZWNlc3NhcnkgaW5zaWdodHMgYW5kIGluZm9ybWF0aW9uIHRvIHByZXBhcmUgdGhlbSBmb3IgdGhlaXIgam9iIHNlYXJjaC4NCg0KLSBDYXJlZXIgU2VydmljZXMgd2lsbCBiZSBhYmxlIHRvIGVmZmVjdGl2ZWx5IHRhcmdldCBhZHZpc2luZyBlZmZvcnRzIHRvd2FyZCBzdHVkZW50cyBpbiB0aGUgbW9zdCBuZWVkLg0KDQotIENhcmVlciBTZXJ2aWNlcyB3aWxsIGJlIGFibGUgdG8gcHJvdmlkZSBzdHVkZW50cyB3aXRoIGV4cGVjdGF0aW9ucyB0aGF0IHdpbGwgYmUgbW9yZSBhY2N1cmF0ZSB0byByZWFsaXR5IHJlZ2FyZGluZyBjYXJlZXIgc2VhcmNoLCBpZGVhbGx5IHJlc3VsdGluZyBpbiBsZXNzIHJlbGlhbmNlIG9uIHRoZSBhZHZpc2luZyB0ZWFtLCBhbGxvd2luZyB0aGVtIHRpbWUgdG8gaGVscCBldmVuIG1vcmUgc3R1ZGVudHMuDQoNCg0KKio3LiBXaGF0IGFyZSB0aGUgZ2FpbiBjcmVhdG9ycz8gTGlzdCBvdXQgdGhlIGl0ZW1zIHRoYXQgd2lsbCBhZGQgYWRkaXRpb25hbCB2YWx1ZSB0byB5b3VyIGN1c3RvbWVyLCBhYm92ZSBhbmQgYmV5b25kIGFkZHJlc3NpbmcgdGhlaXIgY3VycmVudCBwYWluIHBvaW50cy4qKg0KDQotIFRoZSBhbmFseXNpcyBvdmVyIHRpbWUgYW5kIHN1YnNlcXVlbnQgdmlzdWFsaXphdGlvbnMgd2lsbCBiZSBlYXNpbHkgcmVwcm9kdWNpYmxlLiBDYXJlZXIgU2VydmljZXMgd2lsbCBiZSBhYmxlIHRvIHJvdXRpbmVseSB1cGRhdGUgdGhlbSB5ZWFyIGFmdGVyIHllYXIgd2l0aCBmcmVzaCBkYXRhIHRvIHRyYWNrIHRoZSBwbGFjZW1lbnQgYW5kIHNhbGFyeSB0cmVuZHMgd2VsbCBpbnRvIHRoZSBmdXR1cmUgYXMgbmVlZGVkLg0KDQotIFRoZSBhbmFseXNpcyBvdmVyIHRpbWUgYW5kIHZpc3VhbGl6YXRpb25zIHdpbGwgYWxsb3cgQ2FyZWVyIFNlcnZpY2VzIHRvIHRyYWNrIHRoZWlyIG93biBwcm9ncmVzcyBpbiB0aGVpciBlZmZvcnRzLCBwcm92aWRpbmcgZmVlZGJhY2sgaWYgdXNlZCBvdmVyIHRpbWUgb24gaG93IHRoZWlyIG5ld2x5IGRpcmVjdGVkIGVmZm9ydHMgaGF2ZSBpbXBhY3RlZCBwbGFjZW1lbnQgYW5kIHNhbGFyeSB0cmVuZHMuDQoNCiMgVGhlIERhdGEgey51bm51bWJlcmVkfQ0KDQojIyBEYXRhIFNvdXJjZXMgey51bm51bWJlcmVkfQ0KDQpXZSBoYXZlIGJlZW4gZ2l2ZW4gdGhyZWUgeWVhcnMgb2YgZGF0YSByZXByZXNlbnRpbmcgRlNCIGdyYWR1YXRlcywgaW5jbHVkaW5nIGdyYWR1YXRlcyBpbiAyMDE5LCAyMDIwLCBhbmQgMjAyMS4gVGhlIGRhdGEgc2V0IHByb3ZpZGVkIGhhZCA0MiB2YXJpYWJsZXMuICBUaGUgc291cmNlIGlzIGVpdGhlciBkZXJpdmVkIGJ5IERyLiBKb25lcy1GYXJtZXIgZHVyaW5nIGRhdGEgY2xlYW5pbmcvbWVyZ2luZywgZnJvbSB0aGUgT3JhY2xlIEJ1c2luZXNzIEludGVsbGlnZW5jZSBFbnRlcnByaXNlIEVkaXRpb24gKE9CSUVFKSBtYWludGFpbmVkIGJ5IE1pYW1pIGFkbWluaXN0cmF0aW9uLCBvciBmcm9tIHRoZSBzZWxmIHJlcG9ydGVkIHNlbmlvciBzdXJ2ZXkuICBEci4gSm9uZXMtRmFybWVyIGhhcyBjbGVhbmVkIGFuZCBtZXJnZWQgdGhlIGZpbGVzIGludG8gb25lIGZpbGUuICANCg0KMS4gIG1ham9yOiBudW1lcmljLGRlcml2ZWQsIHRoZSBudW1iZXIgb2YgbWFqb3JzIA0KMi4gIG1ham9yMTogdGV4dCwgT0JJRUUsIGZpcnN0IG1ham9yDQozLiAgbWFqb3IgMjogdGV4dCwgT0JJRUUsIHNlY29uZCBtYWpvcg0KNC4gIEJCUko6IGJpbmFyeSwgT0JJRUUsIGFuIGF0dHJpYnV0ZSBvZiBhIHN0dWRlbnQsIGJ1dCB3ZSBkbyBub3Qga25vdyB3aGF0IHRoaXMgc3RhbmRzIGZvcg0KNS4gIEJ1c2luZXNzIERpcmVjdCBBZG1pdDogYmluYXJ5LCBPQklFRSwgYSBkaXJlY3QgYWRtaXQgdG8gRlNCIGFzIGEgZmlyc3QgeWVhcg0KNi4gIENvbWJpbmVkIENhY2MgYW5kIE1hc3RlcnM6IGJpbmFyeSwgT0JJRUUsIGNvbWJpbmVkIGRlZ3JlZSBzdHVkZW50DQo3LiAgRGVhbidzIExpc3Q6IGJpbmFyeSwgT0JJRUUsIGFjaGlldmUgZGVhbidzIGxpc3Qgc3RhdHVzIGF0IGxlYXN0IG9uY2UNCjguICBGaXJzdCBHZW5lcmF0aW9uIENvbGxlZ2UgU3RkbnQ6IGJpbmFyeSwgT0JJRUUsIGZpcnN0IGdlbmVyYXRpb24gc3R1ZGVudCBzdGF0dXMNCjkuICAgRlNCIFNjaG9sYXJzOiBiaW5hcnksIE9CSUVFLCBGU0Igc2Nob2xhcnMgcHJvZ3JhbQ0KMTAuICBIb25vcnMgUHJvZ3JhbTogYmluYXJ5LCBPQklFRSwgbWVtYmVyIG9mIFVuaXZlcnNpdHkgaG9ub3JzIHByb2dyYW0NCjExLiAgUHJlc2lkZW50J3MgbGlzdDogYmluYXJ5LCBPQklFRSwgYWNoaWV2ZWQgcHJlc2lkZW50J3MgbGlzdCBhdCBsZWFzdCBvbmNlDQoxMi4gIFN0dWR5IEFicm91ZCBDb3VydGVzeSBBY2NvdW50OiBiaW5hcnksIE9CSUVFLCBkbyBub3Qga25vdyBtZWFuaW5nDQoxMy4gIFRyYW5zZmVyIFdvcms6IGJpbmFyeSwgT0JJRUUsIGRvIG5vdCBrbm93IGV4YWN0IG1lYW5pbmcNCjE0LiAgQ3VtIExhdWRlOiBiaW5hcnksIE9CSUVFLCBncmFkdWF0ZWQgQ3VtIExhdWRlDQoxNS4gIE1hZ25hIEN1bSBMYXVkZTogYmluYXJ5LCBPQklFRSwgZ3JhZHVhdGVkIE1hZ25hIEN1bSBMYXVkZQ0KMTYuICBTdW1tYSBDdW0gTGF1ZGU6IGJpbmFyeSwgT0JJRUUsIGdyYWR1YXRlZCBTdW1tYSBDdW0gTGF1ZGUNCjE3LiAgVW5pdmVyc2l0eSBIb25vcnM6IGJpbmFyeSwgT0JJRUUsIGdyYWR1YXRlZCB3aXRoIFVuaXZlcnNpdHkgSG9ub3JzDQoxOC4gIFVuaXZlcnNpdHkgSG9ub3JzIHcvRGlzdGluY3Rpb246IGJpbmFyeSwgT0JJRUUsIGdyYWR1YXRlZCB3aXRoIFVuaXZlcnNpdHkgSG9ub3JzIHdpdGggRGlzdGluY3Rpb24NCjE5LiAgbWlub3IxOiB0ZXh0LCBPQklFRSwgZmlyc3QgbGlzdGVkIG1pbm9yDQoyMC4gIG1pbm9yMjogdGV4dCwgT0JJRUUsIHNlY29uZCBsaXN0ZWQgbWlub3INCjIxLiAgSVBFRFMuUmFjZS5FdGhuaWNpdHk6IHRleHQsIE9CSUVFLCByYWNlL2V0aG5pY2l0eQ0KMjIuICBHZW5kZXI6IHRleHQsIE9CSUVFLCBzZXgNCjIzLiAgR1BBLlJhbmdlOiB0ZXh0LCBPQklFRSwgR1BBIHdpdGhpbiBhIC41IHJhbmdlDQoyNC4gIFRlcm0uQ29kZTogbnVtYmVyaWMsIE9CSUVFLCBGaXJzdCBmb3VyIGRpZ2l0cyBhcmUgdGhlIHBoeXNjYWwgeWVhciAoYmVnaW5uaW5nIGluIEp1bHksIGUuZy4gSnVseSAyMDIwIGlzIEZZIDIwMjEpLiAgTGFzdCB0d28gZGlnaXRzIGlzIHRoZSB0ZXJtICgxMD1mYWxsLCAxNT13aW50ZXIsIDIwPXNwcmluZywgMzA9c3VtbWVyKS4NCjI1LiAgWWVhci54OiB0ZXh0LCBkZXJpdmVkLCBmaXJzdCBmb3VyIGRpZ2l0cyBvZiBUZXJtLkNvZGUgc3RvcmVkIGFzIGEgY2hhcmFjdGVyIHZhcmlhYmxlDQoyNi4gIGxhdGluX2hvbm9yczogdGV4dCwgc3VydmV5LCBsYXRpbiBob25vcnMgZGVzaWduYXRpb24NCjI3LiAgc3VydmV5X2NpdHk6IHRleHQsIHN1cnZleSwgc3R1ZGVudCByZXBvcnRlZCBjaXR5IGluIHdoaWNoIHRoZWlyIGpvYiBpcyBsb2NhdGVkDQoyOC4gIHN1cnZleV9jb21wYW55OiB0ZXh0LCBzdXJ2ZXksIHN0dWRlbnQgcmVwb3J0ZWQgY29tcGFueSBpbiB3aGljaCB0aGV5IGFjY2VwdGVkIGEgam9iDQoyOS4gIHN1cnZleV9kZXB0ZnVuYzogdGV4dCwgc3VydmV5LCBzdHVkZW50IHJlcG9ydGVkIGpvYiBmdW5jdGlvbg0KMzAuICBzdXJ2ZXlfZ3JhZHByb2dyYW06IHRleHQsIHN1cnZleSwgc3R1ZGVudCByZXBvcnRlZCBncmFkdWF0ZSBwcm9ncmFtIHRoZXkgd2lsbCBiZSBhdHRlbmRpbmcNCjMxLiAgc3VydmV5X2dyYWRzY2hvb2w6IHRleHQsIHN1cnZleSwgc3R1ZW50IHJlcG9ydGVkIGdyYWR1YXRlIHNjaG9vbCB0aGV5IHdpbGwgYmUgYXR0ZW5kaW5nDQozMi4gIHN1cnZleV9pbnRlcm5mb3VyOiB0ZXh0LCBzdXJ2ZXksIHN0dWRlbnQgcmVwb3J0ZWQgZm91cnRoIGludGVybnNoaXAgdGhleSBoZWxkIGR1cmluZyBjb2xsZWdlDQozMy4gIHN1cnZleV9pbnRlcm50aHJlZTogdGV4dCwgc3VydmV5LCBzdHVkZW50IHJlcG9ydGVkIHRoaXJkIGludGVybnNoaXAgdGhleSBoZWxkIGR1cmluZyBjb2xsZWdlDQozNC4gIHN1cnZleV9pbnRlcm50d286IHRleHQsIHN1cnZleSwgc3R1ZGVudCByZXBvcnRlZCBzZWNvbmQgaW50ZXJuc2hpcCB0aGV5IGhlbGQgZHVyaW5nIGNvbGxlZ2UNCjM1LiAgc3VydmV5X2ludGVybm9uZTogdGV4dCwgc3VydmV5LCBzdHVkZW50IHJlcG9ydGVkIGZpcnN0IGludGVybnNoaXAgdGhleSBoZWxkIGR1cmluZyBjb2xsZWdlDQozNi4gIFN1cnZleV9pbnRlcm5zaGlwczogdGV4dCwgc3VydmV5LCBTdHVkZW50IHJlcG9ydGVkIG51bWJlciBvZiBpbnRlcm5zaGlwcyB0aGV5IGhlbGQgZHVyaW5nIGNvbGxlZ2UNCjM3LiAgc3VydmV5X29mZmVyczogdGV4dCwgc3VydmV5LCBzdHVkZW50IHJlcG9ydGVkIG51bWJlciBvZiBvZmZlcnMgZm9yIGZ1bGwgdGltZSBlbXBsb3ltZW50IHJlY2VpdmVkDQozOC4gIHN1cnZleV9wbGFuczogdGV4dCwgc3VydmV5LCBzdHVkZW50IHJlcG9ydGVkIHBsYW5zIGFmdGVyIGdyYWR1YXRpb24NCjM5LiAgc3VydmV5X3ByZWZfZmllbGQ6IHRleHQsIHN1cnZleSwgc3R1ZGVudCByZXBvcnRlZCB3aGV0aGVyIHdvcmtpbmcgaW4gcHJlZmVycmVkIGZpZWxkDQo0MC4gIHN1cnZleV9wcmVmX2xvYzogdGV4dCwgc3VydmV5LCBzdHVkZW50IHJlcG9ydGVkIHdoZXRoZXIgd29ya2luZyBpbiBwcmVmZXJyZWQgbG9jYXRpb24NCjQxLiAgc3VydmV5X3NhbGFyeTogbnVtZXJpYywgc3VydmV5LCBzdHVkZW50IHJlcG9ydGVkIHNhbGFyeQ0KNDIuICBzdXJ2ZXlfc3RhdGU6IHRleHQsIHN1cnZleSwgc3R1ZGVudCByZXBvcnRlZCBzdGF0ZSBpbiB3aGljaCBqb2IgaXMgbG9jYXRlZA0KDQoNCiMjIERhdGEgQ2xlYW5pbmcgey51bm51bWJlcmVkfQ0KDQpgYGB7cn0NCiMjIExPQURJTkcgREFUQSMjDQpGU0IgID0gcmVhZFJEUygiRlNCX0JJX1N1cnZleV8yMDE5XzIwMjEucmRzIikNCg0KaGVhZChGU0IpDQpgYGANCg0KRm9yIHRoZSBwdXJwb3NlcyBvZiBvdXIgYW5hbHlzaXMsIHdlIGFyZSBsb29raW5nIGF0IHRoZSBqb2IgcGxhY2VtZW50IGFuZCBzYWxhcnkgdHJlbmRzIGZvciBGU0IgZ3JhZHVhdGVzIGFzIGEgd2hvbGUgYW5kIGJ5IG1ham9yLiBGb3IgdGhpcywgd2Ugc2hvdWxkIG9ubHkgYmUgbG9va2luZyBhdCBzdHVkZW50cyB3aG8gYXJlIGludGVuZGluZyB0byBlbnRlciB0aGUgd29ya2ZvcmNlIGFuZCBleGNsdWRlIHRob3NlIHdobydzIHBsYW5zIGRldmlhdGUgZnJvbSB0aGF0IGNvdXJzZSAoaS5lLiBjb250aW51aW5nIHRoZWlyIGVkdWNhdGlvbikuIA0KDQpgYGB7cn0NCnVuaXF1ZShGU0Ikc3VydmV5X3BsYW5zKQ0KYGBgDQoNCiMjIyBFeHBsb3JpbmcgQ29udGV4dCB7LnVubnVtYmVyZWR9DQpXZSB3YW50IHRvIGxvb2sgYXQgdmFyaW91cyByZXNwb25zZSB0byBldmFsdWF0ZSB3aGF0IGNvbnRleHQgdGhleSBwcm92aWRlIHRvIG91ciBhbmFseXNpcyBhbmQgd2hldGhlciB0aGV5IHdvdWxkIGJlIHVzZWZ1bCB0byBrZWVwIGluIHRoZSBmaW5hbCBkYXRhIHNldCB3ZSB1c2UuDQoNClByaW1hcmlseSwgd2Ugd2FudCB0byBsb29rIGF0IHJlc3BvbnNlcyBpbiB0aGUgc3VydmV5X3BsYW5zIGZpZWxkIGJlY2F1c2Ugd2UgYmVsaWV2ZSB0aGF0IHdpbGwgYmUgYSBzdHJvbmcgd2F5IHRvIGZpbHRlciBvdXQgb2JzZXJ2YXRpb25zIHRoYXQgaGF2ZSBubyBjb3JyZWxhdGlvbiB0byB0aGUgam9iIHBsYWNlbWVudCBhbmQgc2FsYXJ5IHRyZW5kcy4gDQoNCkZvciBleGFtcGxlOiAic2Vla2luZyBjb250aW51aW5nIGVkdWNhdGlvbiIsICJjb250aW51aW5nIGVkdWNhdGlvbiIsICJub3Qgc2Vla2luZyBlbXBsb3ltZW50IiwgTkEgYXJlIGFzc3VtZWQgbm90IHJlbGV2YW50IHRvIG91ciBwdXJwb3Nlcy4gSWYgYW4gaW5kaXZpZHVhbCBpcyBub3QgYWN0aXZlbHkgdHJ5aW5nIHRvIGdldCBhIGpvYiBvciBhY2NlcHRpbmcgYSBqb2IsIHRoZW4gdGhlIGRhdGEgdGhleSBwcm92aWRlIHdpbGwgbm90IGJlIHVzZWZ1bCBpbiBkZXRlcm1pbmluZyBqb2IgcGxhY2VtZW50IGFuZCBzYWxhcnkgdHJlbmRzLg0KDQpDb250cmFyaWx5OiAic2Vla2luZyBlbXBsb3ltZW50IiwgImFjY2VwdGVkIHBhcnR0aW1lIGpvYiIgYW5kICJhY2NlcHRlZCBmdWxsdGltZSBqb2IiIGFyZSBhc3N1bWVkIHJlbGV2YW50IHRvIG91ciBwdXJwb3NlcyBhbmQgd2lsbCBiZSBpbmNsdWRlZCBpbiB0aGUgYW5hbHlzaXMuIFRoZSBkYXRhIHRoZXkgcHJvdmlkZSB3aWxsIGdyYW50IHVzIGluc2lnaHQgb24gam9iIHBsYWNlbWVudCBhbmQgc2FsYXJ5IHRyZW5kcyBiZWNhdXNlIHRoZXkgYXJlIGFjdGl2ZWx5IGF0dGVtcHRpbmcgdG8gc2VjdXJlIGpvYnMuIFdlIHdpbGwgbmVlZCB0byBpbXB1dGUgbWlzc2luZyB2YWx1ZXMgYW5kIGNsZWFuIGFueSBub24tc3RhbmRhcmRpemVkIHJlc3BvbnNlcyAoaS5lLiB0aGUgY29tcGFueSBvciBjaXR5IGZpZWxkcyB0aGF0IGhhdmUgdmFyaW91cyBjYXBpdGlsYXphdGlvbiBhbmQgc3BlbGxpbmcgZGlmZmVyZW5jZXMpDQpgYGB7cn0NCiMjIEV4cGxvcmluZyByZXNwb25zZXMgdG8gZXZhbHVhdGUgY29udGV4dCAjIw0KDQpGU0Jfc2VsZiA9IEZTQiB8PiBkcGx5cjo6ZmlsdGVyKEZTQiRzdXJ2ZXlfcGxhbnMgPT0gInNlbGYgZW1wbG95ZWQiKSANCiMgRG9lcyBub3QgYXBwZWFyIHJlbGV2YW50IGZvciBvdXIgcHVycG9zZXMuIE9ubHkgb25lIHJlc3BvbnNlIHdpdGggdGhpcyBkZXNpZ25hdGlvbiBhbmQgaXQgZG9lcyBub3QgaW5jbHVkZSB2YWx1ZXMgaW4gdGhlIGZpZWxkcyBuZWNlc3NhcnkgZm9yIG91ciBhbmFseXNpcy4NCg0KRlNCX290aGVyID0gRlNCIHw+IGRwbHlyOjpmaWx0ZXIoRlNCJHN1cnZleV9wbGFucyA9PSAib3RoZXIiKSANCiMgRG9lcyBub3QgYXBwZWFyIHJlbGV2YW50IGZvciBvdXIgcHVycG9zZXMuIE5vIHZhbHVlcyBmb3IgcHJlZmVycmVkIGZpZWxkLCBsb2NhdGlvbiwgc2FsYXJ5LCBldGMuDQoNCkZTQl9taWwgPSBGU0IgfD4gZHBseXI6OmZpbHRlcihGU0Ikc3VydmV5X3BsYW5zID09ICJtaWxpdGFyeSBzZXJ2aWNlIikNCiMgRG9lcyBub3QgYXBwZWFyIHJlbGV2YW50IGZvciBvdXIgcHVycG9zZXMuIE5vIHZhbHVlcyBmb3IgcHJlZmVycmVkIGZpZWxkLCBsb2NhdGlvbiwgc2FsYXJ5LCBhbmQgdGhvdWdoIHRoZXkgdGVjaG5pY2FsbHkgd29yayBmb3IgdGhlIG1pbGl0YXJ5IHRoZXkgaGF2ZSB2ZXJ5IGxpbWl0ZWQgcmVzcG9uc2VzIGluIHRoZSBjb21wYW55IGZpZWxkDQoNCiMgcmVtb3ZlIHVubmVjZXNzYXJ5IGRmcw0KcmVtb3ZlKEZTQl9vdGhlcikNCnJlbW92ZShGU0Jfc2VsZikNCnJlbW92ZShGU0JfbWlsKQ0KYGBgDQoNCk5vdyB0aGF0IHdlIGhhdmUgb3VyIGxpc3Qgb2YgcmVzcG9uc2UgdmFsdWVzIHdlIHdvdWxkIGxpa2UgdG8gZmlsdGVyIG9uLCB3ZSB3aWxsIG5vdyBjcmVhdGUgb3VyIG5ldyBkYXRhIHNldA0KDQpgYGB7cn0NCiMgY3JlYXRlIGEgbmV3IGRhdGEgc2V0IHRoYXQgZmlsdGVycyBvdXQgaXJyZWxldmFudCBvYnNlcnZhdGlvbnMNCkZTQl9qb2IgPSBGU0IgfD4gZHBseXI6OmZpbHRlcihGU0Ikc3VydmV5X3BsYW5zICVpbiUNCiAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgIGMoInNlZWtpbmcgZW1wbG95bWVudCIsICJhY2NlcHRlZCBwYXJ0dGltZSBqb2IiLA0KICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAiYWNjZXB0ZWQgZnVsbHRpbWUgam9iIikpDQpgYGANCg0KDQoNCg0KIyMjIENvdW50aW5nIE1pc3NpbmcgYnkgVmFyaWFibGUgey51bm51bWJlcmVkfQ0KYGBge3J9DQpzYXBwbHkoRlNCX2pvYiwgZnVuY3Rpb24oeCkgc3VtKGlzLm5hKHgpKSkNCmBgYA0KSXQgc2VlbXMgY2xlYXIgdGhhdCB0aGUgc3VydmV5IHJlc3BvbnNlcyBjb250YWluIGEgc3Vic3RhbnRpYWwgYW1vdW50IG9mIG9ic2VydmF0aW9ucyB3aXRoIG1pc3NpbmcgdmFsdWVzIGFjcm9zcyB0aGUgZW50aXJldHkgb2YgdGhlIHN1cnZleSBmaWVsZHMuIEl0IGlzIG91ciBjb25jbHVzaW9uIHRoYXQgdG8gb21pdCByZXNwb25zZXMgd2l0aCBtaXNzaW5nIHZhbHVlcyB3b3VsZCBkZXN0cm95IGFueSBjaGFuY2Ugb2YgcHVsbGluZyBhbnkgbWVhbmluZ2Z1bCBhbmFseXNpcyBmcm9tIHRoZSBkYXRhLiBXaXRoIHRoYXQgYXNzdW1wdGlvbiwgd2Ugd2lsbCBpbnN0ZWFkIGNsZWFuIGFuZCBpbXB1dGUgbWlzc2luZyB2YWx1ZXMgZm9yIGZpZWxkcyBuZWNlc3NhcnkgZm9yIG91ciBhbmFseXNpcy4NCg0KDQojIyMgQ2xlYW5pbmcgTm9uLXN0YW5kYXJkIHJlc3BvbnNlcyB7LnVubnVtYmVyZWR9DQoNCkJlZm9yZSB3ZSBtYWtlIHN0YW5kYXJkaXplIG91ciBjaXR5IGFuZCBjb21wYW55IHZhcmlhYmxlcywgd2UgbmVlZCB0byBjbGVhbiB0aGVtLiBGaXJzdCB3ZSBtYWRlIGFsbCBvZiB0aGUgcmVzcG9uc2VzIGFsbCBjYXBpdGFsaXplZC4gVGhpcyB3aWxsIHRha2Ugb3V0IHRoZSBuZWVkIHRvIGNvcnJlY3QgY2FwaXRhbGl6YXRpb24gaXNzdWVzIHdoZW4gd2Ugc3RhbmRhcmRpemUgdGhlIGRhdGEuIE5leHQgd2Ugd2lsbCBzb3J0IHRoZSByZXNwb25zZXMgYnkgZnJlcXVlbmN5IGFuZCBjb2xsZWN0IHRoZSB0b3AgMjAuIFRoZXNlIGxpc3RzIG9mIDIwIHdpbGwgYmUgdGhlIHZhcmlhYmxlcyB3ZSB3aWxsIGZvY3VzIGluIG91ciBkYXRhIHNldC4NCmBgYHtyfQ0KRlNCX2pvYiRzdXJ2ZXlfY29tcGFueSA9IHRvdXBwZXIoRlNCX2pvYiRzdXJ2ZXlfY29tcGFueSkNCg0KY29tcGFueSA9IEZTQl9qb2Ikc3VydmV5X2NvbXBhbnkNCnRvcDIwY29tcGFueSA9IGFzLmRhdGEuZnJhbWUodGFibGUoY29tcGFueSkpDQpjb21wYW55c29ydGVkID0gdG9wMjBjb21wYW55W29yZGVyKC10b3AyMGNvbXBhbnkkRnJlcSksIF0NCnRvcDIwX2NvbXBhbnlfbmFtZXMgPSBjb21wYW55c29ydGVkJGNvbXBhbnlbMToyMF0NCg0KIyBWaWV3IHRoZSB2ZWN0b3Igb3IgbGlzdCBvZiB0b3AgMjAgY29tcGFueSBuYW1lcw0KcHJpbnQodG9wMjBfY29tcGFueV9uYW1lcykNCmBgYA0KDQpgYGB7cn0NCkZTQl9qb2Ikc3VydmV5X2NpdHkgPSB0b3VwcGVyKEZTQl9qb2Ikc3VydmV5X2NpdHkpDQoNCmNpdHkgPSBGU0Jfam9iJHN1cnZleV9jaXR5DQp0b3AyMGNpdHkgPSBhcy5kYXRhLmZyYW1lKHRhYmxlKGNpdHkpKQ0KY2l0eXNvcnRlZCA9IHRvcDIwY2l0eVtvcmRlcigtdG9wMjBjaXR5JEZyZXEpLCBdDQp0b3AyMF9jaXR5X25hbWVzID0gY2l0eXNvcnRlZCRjaXR5WzE6MjBdDQoNCiMgVmlldyB0aGUgdmVjdG9yIG9yIGxpc3Qgb2YgdG9wIDIwIGNvbXBhbnkgbmFtZXMNCnByaW50KHRvcDIwX2NpdHlfbmFtZXMpDQpgYGANCg0KDQojIyMjIFN0YW5kYXJkaXphdGlvbiAoQ29tcGFuaWVzKSB7LnVubnVtYmVyZWR9DQpPbmUgb2YgdGhlIG1ham9yIHJvYWRibG9ja3Mgd2UgaWRlbnRpZmllZCB3aXRoIHRoZSByZXNwb25zZSBkYXRhIGlzIGhvdyBvZnRlbiBzdHVkZW50cyBlbnRlcmVkIGRpZmZlcmVudCBzcGVsbGluZ3Mgb2YgdGhlIHNhbWUgd29yZHMuIFRvIHNvbHZlIHRoaXMgaXNzdWUgd2UgbmVlZCB0byBzdGFuZGFyZGl6ZSBvdXIgZGF0YSB0byBlbnN1cmUgdGhhdCBhbGwgb2YgdGhlIGRhdGEgaXMgc3RhbmRhcmRpemVkLiBXZSBkZWNpZGVkIHRvIGZvY3VzIG9uIHRoZSAyMCBtb3N0IHBvcHVsYXIgY2l0aWVzIGFuZCBjb21wYW5pZXMgdG8gc3RhbmRhcmRpemUuIEZpcnN0IHdlIHdhbnQgdG8gc2VlIHdoYXQgdGhlIHRvcCAyMCBjb21wYW5pZXMgYXJlIHNvIHdlIGtub3cgd2hpY2ggY29tcGFuaWVzIHRvIHN0YW5kYXJkaXplLg0KDQpgYGB7cn0NCnByaW50KHRvcDIwX2NvbXBhbnlfbmFtZXMpDQpgYGANCg0KTm93IHRoYXQgd2Uga25vdyB3aGljaCBjb21wYW5pZXMgd2UgYXJlIGdvaW5nIHRvIGZvY3VzIG9uLCBpdCBpcyB0aW1lIHRvIHN0YW5kYXJkaXplIG91ciBkYXRhLiBUbyBkbyB0aGlzIHdlIHdpbGwgYmUgcHJpbnRpbmcgYWxsIG9mIHRoZSBjb21wYW5pZXMgZnJvbSBvdXQgZGF0YSBzZXQgdGhhdCBzdGFydCB3aXRoIHRoZSBsZXR0ZXIgb2YgdGhlIGNvbXBhbnkgaW4gcXVlc3Rpb24uIE5leHQgd2Ugd2lsbCBvYnNlcnZlIGFsbCBvZiB0aGUgdmFyaW91cyBlbnRyaWVzIGFuZCBjaGFuZ2UgdGhlbiBhbGwgdG8gaGF2ZSB0aGUgc2FtZSBzcGVsbGluZy4NCg0KYGBge3IsIGVjaG8gPSBGQUxTRSwgaW5jbHVkZSA9IEZBTFNFfQ0KIyMgRVkgTUFQUElORw0Kam9ic19lID0gRlNCX2pvYltncmVwKCdeRScsIEZTQl9qb2Ikc3VydmV5X2NvbXBhbnkpLF0NCnRhYmxlKGpvYnNfZSRzdXJ2ZXlfY29tcGFueSkNCmBgYA0KDQpgYGB7cn0NCiMjIEVZIE1BUFBJTkcNCkVZX21hcCA9IGMoIkVSTlNUICYgWU9VTkcgKEVZKSIgPSAiRVkiLCANCiAgICAgICAgICAgIkVSTlNUIEFORCBZT1VORyIgPSAiRVkiLA0KICAgICAgICAgICAiRVJOU1QgJiBZT1VORyIgPSAiRVkiKQ0KYGBgDQoNCmBgYHtyLCBlY2hvID0gRkFMU0UsIGluY2x1ZGUgPSBGQUxTRX0NCiMjIERFTE9JVFRFIE1BUFBJTkcNCmpvYnNfZCA9IEZTQl9qb2JbZ3JlcCgnXkQnLCBGU0Jfam9iJHN1cnZleV9jb21wYW55KSxdDQp0YWJsZShqb2JzX2Qkc3VydmV5X2NvbXBhbnkpDQpgYGANCg0KYGBge3J9DQojIyBERUxPSVRURSBNQVBQSU5HDQpERUxPSVRURV9tYXBwaW5nID0gYygiREVMT0lUVEUgQ09OU1VMVElORyIgPSAiREVMT0lUVEUiLA0KICAgICAgICAgICAgICAgICAiREVMT0lUVEUgTExQIj0gIkRFTE9JVFRFIiwNCiAgICAgICAgICAgICAgICAgIkRFTE9JVFRFIFRBWCI9ICJERUxPSVRURSIsDQogICAgICAgICAgICAgICAgICJERUxPSVRURSwgQ0hJTkEiID0gIkRFTE9JVFRFIikNCg0KIyMgREhMIFNVUFBMWSBDSEFJTiBNQVBQSU5HDQpESExfU0NfbWFwcGluZyA9IGMoIkRITCBTVVBQTFkgQ0hBSU4iID0gIkRITCIpDQpgYGANCg0KYGBge3IsIGVjaG8gPSBGQUxTRSwgaW5jbHVkZSA9IEZBTFNFfQ0KIyMgUFdDIE1BUFBJTkcNCmpvYnNfcCA9IEZTQl9qb2JbZ3JlcCgnXlAnLCBGU0Jfam9iJHN1cnZleV9jb21wYW55KSxdDQp0YWJsZShqb2JzX3Akc3VydmV5X2NvbXBhbnkpDQpgYGANCg0KYGBge3J9DQojIyBQV0MgTUFQUElORw0KUFdDX21hcHBpbmcgPSBjKCAiUFdDIENPUlBPUkFURSBGSU5BTkNFIj0gIlBXQyIsDQogICAgICAgICAgICAgIlBSSUNFV0FURVJIT1VTRSBDT09QRVJTIiA9ICJQV0MiLA0KICAgICAgICAgICAgICJQV0MgQ09SUE9SQVRFIEZJTkFOQ0UgTExDIiA9ICJQV0MiLCANCiAgICAgICAgICAgICAiUFJJQ0VXQVRFUkhPVVNFQ09PUEVSUyIgPSAiUFdDIikNCg0KIyMgUEVQU0lDTyBNQVBQSU5HDQpQZXBzaUNvX21hcHBpbmcgPSBjKCJQRVBTSUNPLUZSSVRPIExBWSIgPSAiUEVQU0lDTyIsDQogICAgICAgICAgICAgICAgICAgICJQRVBTSUNPIEZSSVRPLUxBWSIgPSAiUEVQU0lDTyIsDQogICAgICAgICAgICAgICAgICAgICJGUklUTyBMQVkiICA9ICJQRVBTSUNPIiwNCiAgICAgICAgICAgICAgICAgICAgIkZSSVRPLUxBWSIgPSAiUEVQU0lDTyIpDQoNCiMjIFBST1RJVklUSSBNQVBQSU5HIE5PVCBORUVERUQNCg0KYGBgDQoNCmBgYHtyLCBlY2hvID0gRkFMU0UsIGluY2x1ZGUgPSBGQUxTRX0NCiMjVEVYVFJPTiBNQVBQSU5HDQpqb2JzX3QgPSBGU0Jfam9iW2dyZXAoJ15UJywgRlNCX2pvYiRzdXJ2ZXlfY29tcGFueSksXQ0KdGFibGUoam9ic190JHN1cnZleV9jb21wYW55KQ0KYGBgDQoNCmBgYHtyfQ0KIyNURVhUUk9OIE1BUFBJTkcNClRleHRyb25fbWFwcGluZyA9IGMoIlRFWFRST04gQVZJQVRJT04iID0gIlRFWFRST04iLA0KICAgICAgICAgICAgICAgICJURVhUUk9OIFNZU1RFTVM6IExZQ09NSU5HIEVOR0lORVMiPSAiVEVYVFJPTiIsDQogICAgICAgICAgICAgICAgICJURVhUUk9OIFNQRUNJQUxJWkVEIFZFSElDTEVTIiA9ICJURVhUUk9OIiwNCiAgICAgICAgICAgICAgICAiVEVYVFJPTiBTWVNURU1TIiA9ICJURVhUUk9OIg0KICAgICAgICAgICAgICAgICkNCg0KDQojI1RFUklMTElVTSBNQVBQSU5HDQpUZXJpbGxpdW1fbWFwcGluZyA9IGMoIlRFUlJJTElVTSIgPSAiVEVSSUxMSVVNIikNCmBgYA0KDQpgYGB7ciwgZWNobyA9IEZBTFNFLCBpbmNsdWRlID0gRkFMU0V9DQojI0FCRVJDUk9NQklFICYgRklUQ0ggTUFQUElORw0Kam9ic19hID0gRlNCX2pvYltncmVwKCdeQScsIEZTQl9qb2Ikc3VydmV5X2NvbXBhbnkpLF0NCnRhYmxlKGpvYnNfYSRzdXJ2ZXlfY29tcGFueSkNCmBgYA0KDQpgYGB7cn0NCiMjQUJFUkNST01CSUUgJiBGSVRDSCBNQVBQSU5HDQpBX2FuZF9GX21hcHBpbmcgPSBjKCJBQkVSQ1JPTUJJRSAmIEZJVENIIiA9ICJBQkVSQ1JPTUJJRSIpDQoNCiMjQVJSSVZFIExPR0lTVElDUyBNQVBQSU5HIE5PVCBORUVERUQNCmBgYA0KDQpgYGB7ciwgZWNobyA9IEZBTFNFLCBpbmNsdWRlID0gRkFMU0V9DQpqb2JzX2ogPSBGU0Jfam9iW2dyZXAoJ15KJywgRlNCX2pvYiRzdXJ2ZXlfY29tcGFueSksXQ0KdGFibGUoam9ic19qJHN1cnZleV9jb21wYW55KQ0KYGBgDQoNCmBgYHtyfQ0KIyMgSlAgTU9SR0FOIENIQVNFIE1BUFBJTkYNCkpQX01vcmdhbl9DaGFzZV9tYXBwaW5nID0gYygiSi5QLiBNT1JHQU4gVS5TLiBQUklWQVRFIEJBTksiID0gIkpQIE1PUkdBTiIsDQogICAgICAgICAgICAgICAgICAgICAgICJKUE1PUkdBTiBDSEFTRSIgPSAiSlAgTU9SR0FOIiwNCiAgICAgICAgICAgICAgICAgICAgICAgIkouUCBNT1JHQU4iID0gIkpQIE1PUkdBTiIsIA0KICAgICAgICAgICAgICAgICAgICAgICAiSlAgTU9SR0FOICYgQ08uIiA9ICJKUCBNT1JHQU4iLA0KICAgICAgICAgICAgICAgICAgICAgICAiSi5QLiBNT1JHQU4iID0gIkpQIE1PUkdBTiIsDQogICAgICAgICAgICAgICAgICAgICAgICJKUCBNT1JHQU4gQU5EIENIQVNFIiA9ICJKUCBNT1JHQU4iLA0KICAgICAgICAgICAgICAgICAgICAgICAiSlAgTU9SR0FOIENIQVNFIiA9ICJKUCBNT1JHQU4iKQ0KDQpgYGANCg0KYGBge3IsIGVjaG8gPSBGQUxTRSwgaW5jbHVkZSA9IEZBTFNFfQ0KIyMgQ09ZT1RFIExPR0lTVElDUyBNQVBQSU5HDQpqb2JzX2MgPSBGU0Jfam9iW2dyZXAoJ15DJywgRlNCX2pvYiRzdXJ2ZXlfY29tcGFueSksXQ0KdGFibGUoam9ic19jJHN1cnZleV9jb21wYW55KQ0KYGBgDQoNCmBgYHtyfQ0KIyMgQ09ZT1RFIExPR0lTVElDUyBNQVBQSU5HDQpjb3lvdGVfbWFwcGluZyA9IGMoIkNPWU9URSBMT0dJU1RJQ1MiID0gIkNPWU9URSIpDQoNCiMjIENEVyBNQVBQSU5HIE5PVCBORUVERUQNCg0KIyNDUk9XRSBMTFAgTUFQUElORw0KQ3Jvd2VfbWFwcGluZyA9IGMoIkNST1dFIExMUCIgPSAiQ1JPV0UiKQ0KYGBgDQoNCmBgYHtyLCBlY2hvID0gRkFMU0UsIGluY2x1ZGUgPSBGQUxTRX0NCiMjIEZJRlRIIFRISVJEIEJBTksgTUFQUElORw0Kam9ic19mID0gRlNCX2pvYltncmVwKCdeRicsIEZTQl9qb2Ikc3VydmV5X2NvbXBhbnkpLF0NCnRhYmxlKGpvYnNfZiRzdXJ2ZXlfY29tcGFueSkNCmBgYA0KDQpgYGB7cn0NCiMjIEZJRlRIIFRISVJEIEJBTksgTUFQUElORw0KRmlmdGhfVGhpcmRfQmFua19tYXBwaW5nID0gYygiRklGVEgtVEhJUkQgQkFOSyIgPSAiRklGVEggVEhJUkQgQkFOSyIpDQpgYGANCg0KTm93IHRoYXQgd2UgaGF2ZSBjcmVhdGVkIG1hcHBpbmcgdmFyaWFibGVzIGZvciBhbGwgb2YgdGhlIGNvbXBhbmllcyB0aGF0IG5lZWRlZCBzdGFuZGFyZGl6aW5nLCBpdCBpcyB0aW1lIHRvIGNvbW1pdCB0aGUgZGVzaXJlZCBjaGFuZ2VzIHRvIG91ciBkYXRhIHNldC4gV2Ugd2lsbCBkbyB0aGlzIGJ5IHJlcGxhY2luZyBhbGwgb2YgdGhlIG90aGVyIHNwZWxsaW5ncyB0byBvdXIgZGVzaXJlZCBjaG9pY2UgdGhhdCB3ZSBjcmVhdGVkIGluIG91ciBtYXBwaW5nLiANCg0KYGBge3J9DQojIyBVcGRhdGluZyBEYXRhIHNldCB3aXRoIHN0YW5kYXJkaXplZCBjb21wYW5pZXMNCmxpYnJhcnkodGlkeXZlcnNlKQ0KRlNCX2pvYiRzdXJ2ZXlfY29tcGFueSA9IHN0cl9yZXBsYWNlX2FsbChGU0Jfam9iJHN1cnZleV9jb21wYW55LCBBX2FuZF9GX21hcHBpbmcpDQpGU0Jfam9iJHN1cnZleV9jb21wYW55ID0gc3RyX3JlcGxhY2VfYWxsKEZTQl9qb2Ikc3VydmV5X2NvbXBhbnksIGNveW90ZV9tYXBwaW5nKQ0KRlNCX2pvYiRzdXJ2ZXlfY29tcGFueSA9IHN0cl9yZXBsYWNlX2FsbChGU0Jfam9iJHN1cnZleV9jb21wYW55LCBDcm93ZV9tYXBwaW5nKQ0KRlNCX2pvYiRzdXJ2ZXlfY29tcGFueSA9IHN0cl9yZXBsYWNlX2FsbChGU0Jfam9iJHN1cnZleV9jb21wYW55LCBERUxPSVRURV9tYXBwaW5nKQ0KRlNCX2pvYiRzdXJ2ZXlfY29tcGFueSA9IHN0cl9yZXBsYWNlX2FsbChGU0Jfam9iJHN1cnZleV9jb21wYW55LCBESExfU0NfbWFwcGluZykNCkZTQl9qb2Ikc3VydmV5X2NvbXBhbnkgPSBzdHJfcmVwbGFjZV9hbGwoRlNCX2pvYiRzdXJ2ZXlfY29tcGFueSwgRVlfbWFwKQ0KRlNCX2pvYiRzdXJ2ZXlfY29tcGFueSA9IHN0cl9yZXBsYWNlX2FsbChGU0Jfam9iJHN1cnZleV9jb21wYW55LCBGaWZ0aF9UaGlyZF9CYW5rX21hcHBpbmcpDQpGU0Jfam9iJHN1cnZleV9jb21wYW55ID0gc3RyX3JlcGxhY2VfYWxsKEZTQl9qb2Ikc3VydmV5X2NvbXBhbnksIEpQX01vcmdhbl9DaGFzZV9tYXBwaW5nKQ0KRlNCX2pvYiRzdXJ2ZXlfY29tcGFueSA9IHN0cl9yZXBsYWNlX2FsbChGU0Jfam9iJHN1cnZleV9jb21wYW55LCBQZXBzaUNvX21hcHBpbmcpDQpGU0Jfam9iJHN1cnZleV9jb21wYW55ID0gc3RyX3JlcGxhY2VfYWxsKEZTQl9qb2Ikc3VydmV5X2NvbXBhbnksIFBXQ19tYXBwaW5nKQ0KRlNCX2pvYiRzdXJ2ZXlfY29tcGFueSA9IHN0cl9yZXBsYWNlX2FsbChGU0Jfam9iJHN1cnZleV9jb21wYW55LCBUZXJpbGxpdW1fbWFwcGluZykNCkZTQl9qb2Ikc3VydmV5X2NvbXBhbnkgPSBzdHJfcmVwbGFjZV9hbGwoRlNCX2pvYiRzdXJ2ZXlfY29tcGFueSwgVGV4dHJvbl9tYXBwaW5nKQ0KYGBgDQoNCk5leHQsIHdlIHdhbnQgdG8gY2hhbmdlIGFsbCBvZiB0aGUgY29tcGFuaWVzIHRoYXQgYXJlIG91dHNpZGUgb2Ygb3VyIHRvcCAyMCB0byAib3RoZXIiLiANCmBgYHtyfQ0KDQp0b3BfY29tcGFuaWVzID0gYygiREVMT0lUVEUiLCAiRVkiLCAiVEVYVFJPTiIsICJQV0MiLCAiSlAgTU9SR0FOIiwgIktQTUciLCAiQUJFUkNST01CSUUiLCAiUEVQU0lDTyIsICJESEwiLCAiUlNNIiwgIkNPWU9URSIsICJBUlJJVkUgTE9HSVNUSUNTIiwgIkNEVyIsICJGSUZUSCBUSElSRCBCQU5LIiwgIlRFUklMTElVTSIsICJXRVNUIE1PTlJPRSBQQVJUTkVSUyIsICJQUk9USVZJVEkiLCAiQ1JPV0UiLCAiSU5TSUdIVDJQUk9GSVQiLCAiS0VZQkFOSyIpDQoNCkZTQl9qb2Ikc3VydmV5X2NvbXBhbnkgPC0gIGlmZWxzZSghKHRvdXBwZXIoRlNCX2pvYiRzdXJ2ZXlfY29tcGFueSkgJWluJSB0b3VwcGVyKHRvcF9jb21wYW5pZXMpKSwgIk9USEVSIiwgdG91cHBlcihGU0Jfam9iJHN1cnZleV9jb21wYW55ICkpDQp0YWJsZShGU0Jfam9iJHN1cnZleV9jb21wYW55KQ0KYGBgDQoNCiMjIyMgU3RhbmRhcmRpemF0aW9uIChDaXRpZXMpIHsudW5udW1iZXJlZH0NCg0KV2Ugd2lsbCByZXBlYXQgdGhlIHNhbWUgc3RhbmRhcmRpemF0aW9uIHByb2Nlc3Mgd2l0aCBjaXRpZXMgY29sbGVjdGVkIGZyb20gb3VyIHN1cnZleS4gRmlyc3Qgd2UgaWRlbmlmeSB0aGUgdG9wIDIwIGNpdGllcyB0byBmb2N1cyBvbi4gDQpgYGB7cn0NCnByaW50KHRvcDIwX2NpdHlfbmFtZXMpDQpgYGANCg0KYGBge3J9DQpwcmludCh0b3AyMF9jaXR5X25hbWVzKQ0KYGBgDQoNCldlIHRoZW4gY3JlYXRlIG1hcHBpbmcgZm9yIG91ciBzdGFuZGFyZGl6YXRpb24uDQpgYGB7ciwgZWNobyA9IEZBTFNFLCBpbmNsdWRlID0gRkFMU0V9DQojIyBDSU5DSU5OQVRJIE1BUFBJTkcNCmNpdHlfYyA9IEZTQl9qb2JbZ3JlcCgnXkMnLCBGU0Jfam9iJHN1cnZleV9jaXR5KSxdDQp0YWJsZShjaXR5X2Mkc3VydmV5X2NpdHkpDQpgYGANCg0KYGBge3J9DQojIyBDSU5DSU5OQVRJIE1BUFBJTkcNCkNpbmNpbm5hdGlfbWFwcGluZyA9IGMoIkNJTkNJTkFUVEkiID0gIkNJTkNJTk5BVEkiLA0KICAgICAgICAgICAgICAgICAgICAgICAiQ0lOQ0lOTkFUSSwgT0giID0gIkNJTkNJTk5BVEkiLA0KICAgICAgICAgICAgICAgICAgICAgICAiQ0lOQ0lOTk5BVEkiID0gIkNJTkNJTk5BVEkiKQ0KDQojIyBDT0xVTUJVUyBNQVBQSU5HDQpDb2x1bWJ1c19tYXBwaW5nID0gYygiQ09MVUJNVVMiID0gIkNPTFVNQlVTIikNCmBgYA0KDQpgYGB7ciwgZWNobyA9IEZBTFNFLCBpbmNsdWRlID0gRkFMU0V9DQojIyBORVcgWU9SSyBNQVBQSU5HDQpjaXR5X24gPSBGU0Jfam9iW2dyZXAoJ15OJywgRlNCX2pvYiRzdXJ2ZXlfY2l0eSksXQ0KdGFibGUoY2l0eV9uJHN1cnZleV9jaXR5KQ0KYGBgDQoNCmBgYHtyfQ0KIyMgTkVXIFlPUksgTUFQUElORw0KTmV3X1lvcmtfbWFwcGluZyA9IGMoIk5FVyBZT1JLIENJVFkiID0gIk5FVyBZT1JLIiwNCiAgICAgICAgICAgICAgICAgICAgICJOWUMiID0gIk5FVyBZT1JLIikNCmBgYA0KDQoNCg0KYGBge3IsIGVjaG8gPSBGQUxTRSwgaW5jbHVkZT1GQUxTRX0NCiMjIElORElBTkFQT0xJUyBNQVBQSU5HDQpjaXR5X2kgPSBGU0Jfam9iW2dyZXAoJ15JJywgRlNCX2pvYiRzdXJ2ZXlfY2l0eSksXQ0KdGFibGUoY2l0eV9pJHN1cnZleV9jaXR5KQ0KYGBgDQoNCmBgYHtyfQ0KIyMgSU5ESUFOQVBPTElTIE1BUFBJTkcNCkluZGlhbmFwb2xpc19tYXBwaW5nID0gYygiSU5ESUFOUE9MSVMiID0gIklORElBTkFQT0xJUyIpDQpgYGANCg0KDQpgYGB7ciwgZWNobyA9IEZBTFNFLCBpbmNsdWRlPUZBTFNFfQ0KIyMgTUlMTFdBVUtFRSBNQVBQSU5HDQpjaXR5X20gPSBGU0Jfam9iW2dyZXAoJ15NJywgRlNCX2pvYiRzdXJ2ZXlfY2l0eSksXQ0KdGFibGUoY2l0eV9tJHN1cnZleV9jaXR5KQ0KYGBgDQoNCmBgYHtyfQ0KIyMgTUlMTFdBVUtFRSBNQVBQSU5HDQpNaWx3YXVrZWVfbWFwcGluZyA9IGMoIk1JTFdBVUtXRUUiID0gIk1JTFdBVUtFRSIpDQpgYGANCg0KTm93IHdlIHVwZGF0ZSBvdXIgbWFpbiBkYXRhIHNldCB3aXRoIG91ciBuZXdseSBjcmVhdGVkIHN0YW5kYXJkaXplZCBtYXBwaW5nLg0KYGBge3J9DQojIyBVcGRhdGluZyBEYXRhIHNldCB3aXRoIHN0YW5kYXJkaXplZCBjaXRpZXMNCkZTQl9qb2Ikc3VydmV5X2NpdHkgPSBzdHJfcmVwbGFjZV9hbGwoRlNCX2pvYiRzdXJ2ZXlfY2l0eSwgQ2luY2lubmF0aV9tYXBwaW5nKQ0KRlNCX2pvYiRzdXJ2ZXlfY2l0eSA9IHN0cl9yZXBsYWNlX2FsbChGU0Jfam9iJHN1cnZleV9jaXR5LCBDb2x1bWJ1c19tYXBwaW5nKQ0KRlNCX2pvYiRzdXJ2ZXlfY2l0eSA9IHN0cl9yZXBsYWNlX2FsbChGU0Jfam9iJHN1cnZleV9jaXR5LCBJbmRpYW5hcG9saXNfbWFwcGluZykNCkZTQl9qb2Ikc3VydmV5X2NpdHkgPSBzdHJfcmVwbGFjZV9hbGwoRlNCX2pvYiRzdXJ2ZXlfY2l0eSwgTWlsd2F1a2VlX21hcHBpbmcpDQpGU0Jfam9iJHN1cnZleV9jaXR5ID0gc3RyX3JlcGxhY2VfYWxsKEZTQl9qb2Ikc3VydmV5X2NpdHksIE5ld19Zb3JrX21hcHBpbmcpDQoNCmBgYA0KDQpTaW5jZSB3ZSBhcmUgb25seSBsb29raW5nIGF0IHRoZSB0b3AgMjAgY2l0aWVzLCB3ZSBkZWNpZGVkIHRvIGNoYW5nZSBhbGwgb2YgdGhlIGNpdGllcyBvdXRzaWRlIG9mIHRoZSB0b3AgMjAgdG8gb3RoZXIuIA0KYGBge3J9DQp0b3BfY2l0aWVzID0gYygiQ0hJQ0FHTyIsICJDSU5DSU5OQVRJIiwgIkNPTFVNQlVTIiwgIkNMRVZFTEFORCIsICJORVcgWU9SSyIsICJJTkRJQU5BUE9MSVMiLCAiREVOVkVSIiwgIkJPU1RPTiIsICJQSVRUU0JVUkdIIiwgIkRBWVRPTiIsICJDSEFSTE9UVEUiLCAiREVUUk9JVCIsICJNSU5ORUFQT0xJUyIsICJTQU4gRlJBTkNJU0NPIiwgIkRVQkxJTiIsICJNSUxXQVVLRUUiLCAiQUtST04iLCAiVE9MRURPIiwgIkFUTEFOVEEiLCAiTE9TIEFOR0VMRVMiKQ0KDQpGU0Jfam9iJHN1cnZleV9jaXR5IDwtICBpZmVsc2UoISh0b3VwcGVyKEZTQl9qb2Ikc3VydmV5X2NpdHkpICVpbiUgdG91cHBlcih0b3BfY2l0aWVzKSksICJPVEhFUiIsIHRvdXBwZXIoRlNCX2pvYiRzdXJ2ZXlfY2l0eSApKQ0KdGFibGUoRlNCX2pvYiRzdXJ2ZXlfY2l0eSkNCmBgYA0KDQpgYGB7ciwgZWNobyA9IEZBTFNFfQ0KIyMgY2xlYXIgZXhjZXNzIG9iamVjdHMgZnJvbSBlbnZpcm9ubWVudA0KDQpyZW1vdmUoQV9hbmRfRl9tYXBwaW5nLCBDaW5jaW5uYXRpX21hcHBpbmcsIGNpdHksIENvbHVtYnVzX21hcHBpbmcsIGNvbXBhbnksIGNveW90ZV9tYXBwaW5nLCBDcm93ZV9tYXBwaW5nLCBERUxPSVRURV9tYXBwaW5nLCBESExfU0NfbWFwcGluZywgRVlfbWFwLCBGaWZ0aF9UaGlyZF9CYW5rX21hcHBpbmcsIEluZGlhbmFwb2xpc19tYXBwaW5nLCBKUF9Nb3JnYW5fQ2hhc2VfbWFwcGluZywgTWlsd2F1a2VlX21hcHBpbmcsIE5ld19Zb3JrX21hcHBpbmcsIFBlcHNpQ29fbWFwcGluZywgUFdDX21hcHBpbmcsIFRlcmlsbGl1bV9tYXBwaW5nLCBUZXh0cm9uX21hcHBpbmcsIHRvcF9jaXRpZXMsIHRvcF9jb21wYW5pZXMsIHRvcDIwX2NpdHlfbmFtZXMsIHRvcDIwX2NvbXBhbnlfbmFtZXMsIGNpdHlfYywgY2l0eV9pLCBjaXR5X20sIGNpdHlfbiwgY2l0eXNvcnRlZCwgY29tcGFueXNvcnRlZCwgam9ic19hLCBqb2JzX2MsIGpvYnNfZCwgam9ic19lLCBqb2JzX2YsIGpvYnNfaiwgam9ic19wLCBqb2JzX3QsIHRvcDIwY2l0eSwgdG9wMjBjb21wYW55KQ0KYGBgDQoNCg0KDQoNCiMjIyBJbXB1dGF0aW9uIHsudW5udW1iZXJlZH0NCg0KDQojIyMjIEltcHV0aW5nIENhdGVnb3JpY2FsIHsudW5udW1iZXJlZH0NCg0KRm9yIHRoZSByZW1haW5kZXIgb2YgcmVsZXZhbnQgdmFyaWFibGVzIHdpdGggbWlzc2luZyB2YWx1ZXMsIHdlIHdpbGwgaW1wdXRlIHRoZSB2YWx1ZSBvZiAiTWlzc2luZyIgdG8gZmlsbCBhbnkgbnVsbCB2YWx1ZXMuDQoNCmBgYHtyfQ0KRlNCX2pvYiA9IEZTQl9qb2IgfD4gDQogIGRwbHlyOjptdXRhdGUoDQogICAgc3VydmV5X2NpdHkgPSBpZmVsc2UoaXMubmEoc3VydmV5X2NpdHkpLCAiTWlzc2luZyIsIHN1cnZleV9jaXR5KSwNCiAgICBzdXJ2ZXlfY29tcGFueSA9IGlmZWxzZShpcy5uYShzdXJ2ZXlfY29tcGFueSksICJNaXNzaW5nIiwgc3VydmV5X2NvbXBhbnkpLA0KICAgIHN1cnZleV9wcmVmX2ZpZWxkID0gaWZlbHNlKGlzLm5hKHN1cnZleV9wcmVmX2ZpZWxkKSwgIk1pc3NpbmciLCBzdXJ2ZXlfcHJlZl9maWVsZCksDQogICAgc3VydmV5X3ByZWZfbG9jID0gaWZlbHNlKGlzLm5hKHN1cnZleV9wcmVmX2xvYyksICJNaXNzaW5nIiwgc3VydmV5X3ByZWZfbG9jKSwNCiAgICBzdXJ2ZXlfc3RhdGUgPSBpZmVsc2UoaXMubmEoc3VydmV5X3N0YXRlKSwgIk1pc3NpbmciLCBzdXJ2ZXlfc3RhdGUpDQogICAgKQ0KDQojIGNoZWNrIG1pc3NpbmcNCnNhcHBseShGU0Jfam9iLCBmdW5jdGlvbih4KSBzdW0oaXMubmEoeCkpKQ0KYGBgDQoNCg0KIyMjIyBNZWFuIFNhbGFyeSBieSBNYWpvciB7LnVubnVtYmVyZWR9DQoNCkFmdGVyIGV4YW1pbmluZyB0aGUgbWlzc2luZyB2YWx1ZSBjb3VudHMsIHdlIG5vdGljZWQgdGhhdCBzdXJ2ZXlfc2FsYXJ5IGhhZCBhIHNpZ25pZmljYW50IHBvcnRpb24gb2YgbWlzc2luZyB2YWx1ZXMuIFdpdGggdGhpcyBiZWluZyBzdWNoIGFuIGltcG9ydGFudCBwYXJ0IG9mIG91ciBhbmFseXNpcywgd2UgZmVsdCBpdCB3b3VsZCBiZSBpbmFwcHJvcHJpYXRlIHRvIHJlbW92ZSB0aGUgb2JzZXJ2YXRpb25zIHdpdGggbWlzc2luZyBzYWxhcnkgZGF0YS4gV2Uga25vdyB0aGF0IGNvbW1vbiBwcmFjdGljZSBpcyB0byBpbXB1dGUgdGhlIG1lYW4gb2YgbnVtZXJpY2FsIHZhcmlhYmxlcyBhbmQgc28gd2Ugd2lsbCBpbXB1dGUgc2FsYXJ5IGJhc2VkIG9uIHRoZSBtZWFuIHNhbGFyeSByZXBvcnRlZCBieSBtYWpvciBvZiB0aGUgc3R1ZGVudC4gV2UgY2hvc2UgdG8gaW1wdXRlIGJ5IG1ham9yIHRvIGFjY291bnQgZm9yIHRoZSB2YXJpYXRpb24gaW4gc2FsYXJ5IGluZmx1ZW5jZWQgYnkgbWFqb3IgKHNvbWUgbWFqb3JzIG1heSBoYXZlIGEgaGlnaGVyIGF2ZXJhZ2Ugc2FsYXJ5KS4NCg0KDQpgYGB7cn0NCnBhY21hbjo6cF9sb2FkKCJkcGx5ciIpDQpGU0Jfam9iID0gRlNCX2pvYiB8PiANCiAgZ3JvdXBfYnkobWFqb3IxKSB8PiANCiAgZHBseXI6Om11dGF0ZSggc3VydmV5X3NhbGFyeSA9IGlmZWxzZShpcy5uYShzdXJ2ZXlfc2FsYXJ5KSwgbWVhbihzdXJ2ZXlfc2FsYXJ5LCBuYS5ybSA9IFRSVUUpLCBzdXJ2ZXlfc2FsYXJ5KSkgfD4gDQogIHVuZ3JvdXAoKQ0KYGBgDQoNCk5vdywgc2luY2Ugd2UgaW5jbHVkZWQgdGhlIHJlcG9ydGVkIHBsYW4gdmFsdWUgb2YgInNlZWtpbmcgZW1wbG95bWVudCwgYW55IG9ic2VydmF0aW9uIHdpdGggdGhhdCBwbGFuIHZhbHVlIHdpbGwgaGF2ZSBhIG51bGwgdmFsdWUgZm9yIHNhbGFyeS4gU2luY2UgdGhlc2UgaW5kaXZpZHVhbHMgZG8gbm90IGhhdmUgam9icywgd2Ugd2lsbCBpbXB1dGUgJDAgYXMgdGhlaXIgc2FsYXJ5Lg0KDQpgYGB7cn0NCkZTQl9qb2IgPSBGU0Jfam9iIHw+IA0KICBkcGx5cjo6bXV0YXRlKCBzdXJ2ZXlfc2FsYXJ5ID0gaWZlbHNlKHN1cnZleV9wbGFucyA9PSAic2Vla2luZyBlbXBsb3ltZW50IiwgMCwgc3VydmV5X3NhbGFyeSkpDQpgYGANCg0KV2Ugd2lsbCBjaGVjayBvdXIgbWlzc2luZyBjb3VudCBmb3Igc2FsYXJ5IG9uY2UgYWdhaW4NCg0KYGBge3J9DQpzdW0oaXMubmEoRlNCX2pvYiRzdXJ2ZXlfc2FsYXJ5KSkNCmBgYA0KDQpUaGVyZSBpcyBzdGlsbCBvbmUgbWlzc2luZyB2YWx1ZSBpbiB0aGlzIGNvbHVtbi4gV2Ugd2lsbCBzdWJzZXQgdG8gZmluZCB0aGlzIG9ic2VydmF0aW9uDQoNCmBgYHtyfQ0KcHJpbnQoRlNCX2pvYlt3aGljaChpcy5uYShGU0Jfam9iJHN1cnZleV9zYWxhcnkpKSwgXSkNCmBgYA0KYGBge3J9DQojIHZpZXcgYSBjb2xsZWN0aW9uIG9mIG9ic2VydmF0aW9ucyB3aXRoIHRoaXMgc3BlY2lmaWMgbWFqb3IxIHZhbHVlDQpNYW5kTyA9IEZTQl9qb2IgfD4gZHBseXI6OmZpbHRlcihGU0Jfam9iJG1ham9yMSA9PSAiTWFuYWdlbWVudCBhbmQgT3JnYW5pemF0aW9ucyIpIA0KYGBgDQoNCkl0IGFwcGVhcnMgdGhhdCB0aGUgbWlzc2luZyB2YWx1ZSB0aGF0IHJlbWFpbnMgaXMgZHVlIHRvIHRoZSBmYWN0IHRoYXQgb25seSBvbmUgb2JzZXJ2YXRpb24gd2l0aCB0aGlzIGdpdmVuIG1ham9yMSB2YWx1ZSBpcyByZWNvcmRlZCwgYW5kIHRoZXkgZmFpbGVkIHRvIHJlcG9ydCB0aGVpciBzYWxhcnkuIFRoaXMgbWVhbnMgdGhhdCBtZWFuIGltcHV0YXRpb24gYnkgbWFqb3Igd2lsbCBub3QgYmUgYWJsZSB0byBmaWxsIGluIHRoZWlyIHNhbGFyeSBhbmQgdGhlcmVmb3JlIHRoZSBkYXRhIHRoaXMgb2JzZXJ2YXRpb24gcHJvdmlkZXMgaXMgbm90IHJlbGV2YW50IHRvIG91ciBwdXJwb3Nlcy4gV2Ugd2lsbCByZW1vdmUgdGhpcyBvYnNlcnZhdGlvbi4NCg0KYGBge3J9DQojIHJlbW92ZSB1bm5lY2Vzc2FyeSBkZg0KcmVtb3ZlKE1hbmRPKQ0KDQojIGRyb3AgdGhlIG9ic2VydmF0aW9uDQpGU0Jfam9iID0gIEZTQl9qb2JbLSh3aGljaChpcy5uYShGU0Jfam9iJHN1cnZleV9zYWxhcnkpKSksIF0NCg0KIyBjaGVjayBtaXNzaW5nDQpzdW0oaXMubmEoRlNCX2pvYiRzdXJ2ZXlfc2FsYXJ5KSkNCmBgYA0KTm93IG91ciBkYXRhIGlzIGNsZWFuIGFuZCByZWFkeSBmb3IgdXNlIGluIHRoZSBhbmFseXNpcy4gVGhlIHB1cnBvc2Ugb2Ygc2V0dGluZyB0aGUgZGF0YSB1cCB0aGUgd2F5IHdlIGRpZCBpcyB0aGF0IG5vdyBhbnkgdmlzdWFsaXphdGlvbnMgd2UgY3JlYXRlIHdpbGwgYmUgZWFzaWx5IHVuZGVyc3RhbmRhYmxlIGluIGNvbnRleHQsIGFuZCB3aWxsIGhhdmUgdG8gbW9zdCByZWxldmFudCBkYXRhIGNvbnRyaWJ1dGluZyB0byB0aGVpciBjcmVhdGlvbi4gV2UgYXR0ZW1wdGVkIHRvIGxpbWl0IGFtYmlndWl0eSBhbmQgaW50ZXJmZXJlbmNlIA0KDQpgYGB7cn0NCnN0cihGU0Jfam9iJHllYXIueCkNCmBgYA0KDQoNCg0KYGBge3J9DQojd3JpdGUuY3N2KEZTQl9qb2IsICdGU0Jfam9iLmNzdicsIHJvdy5uYW1lcyA9IEZBTFNFKQ0KYGBgDQoNCg0KDQojIyBQcmludGluZyBvdXIgc2Vzc2lvbiBpbmZvcm1hdGlvbiB7LnVubnVtYmVyZWR9DQpgYGB7cn0NCnNlc3Npb25JbmZvKCkNCmBgYA==</div>
 
 
 </div>
