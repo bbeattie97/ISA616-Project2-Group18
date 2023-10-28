@@ -15,6 +15,48 @@ The data are anonymized, however it is possible that if we look hard enough, we 
 
 We have been given three years of data representing FSB graduates, including graduates in 2019, 2020, and 2021.  The dataset provided had 42 variables.  The source is either derived by Dr. Farmer during data cleaning/merging, from the Oracle Business Intelligence Enterprise Edition (OBIEE) maintained by Miami adminsitration, or from the self reported senior survey.  Dr. Farmer has cleaned and merged the files into one file.  
 
+## Files Table of Contents
+
+- [Analytics Class Project From Client](#Analytics Class Project From Client)
+- [FSB Data Analysis](#FSB Data Analysis)
+- [](#)
+- [](#)
+- [](#)
+
+## Analytics Class Project From Client
+
+- This document summarizes the clients points of interest for our analysis
+- Group 18 (Jake and Brendan) choose to deliver insights regarding #4
+
+## FSB Data Analysis
+
+This document details our process of defining our question, explains of our business value proposition, and shows the beginning of our work with the data, including, the data sources, data cleaning, and session information.
+
+- Research Question 
+- Business Value Proposition
+ - Visualization
+ - Text
+- The Data
+ - Data Sources 
+ - Data Cleaning
+  - Exploring Context
+  - Counting Missing by Variable
+  - Cleaning Non-standard responses
+  - Imputation
+ - Session Information
+
+## Features
+
+[List of features...]
+
+## Contributing
+
+[Contribution guidelines...]
+
+## License
+
+[License information...]
+
 1.  major: numeric,derived, the number of majors 
 2.  major1: text, OBIEE, first major
 3.  major 2: text, OBIEE, second major
