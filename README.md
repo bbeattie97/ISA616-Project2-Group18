@@ -17,7 +17,7 @@ We have been given three years of data representing FSB graduates, including gra
 
 ## Files Table of Contents
 
-- [Analytics Class Project From Client](#Analytics Class Project From Client)
+- [Analytics Class Project From Client](#`Analytics Class Project From Client.docx`)
 - [Dashboard Markdown](#Dashboard.Rmd)
 - [Dashboard Output](#Dashboard.html)
 - [FSB Data Analysis Markdown](#FSBDataAnalysis.Rmd)
@@ -32,7 +32,7 @@ This document summarizes the clients points of interest for our analysis.
 
 ## Dashboard Markdown
 
-This document is the markdown code file that constructs the final output of visualizations used in our analysis. The graphs created here are displayed in the final output.
+This document is the markdown code file that constructs the final output of visualizations used in our analysis. The graphs created here are displayed in the final output. It is not necessary to run the Analysis Markdown first, as long as the FSB_job.csv is available.
 
 ## Dashboard Output
 
