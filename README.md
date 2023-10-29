@@ -17,13 +17,13 @@ We have been given three years of data representing FSB graduates, including gra
 
 ## Files Table of Contents
 
-- [Analytics Class Project From Client](#`Analytics Class Project From Client.docx`)
-- [Dashboard Markdown](#Dashboard.Rmd)
-- [Dashboard Output](#Dashboard.html)
-- [FSB Data Analysis Markdown](#FSBDataAnalysis.Rmd)
-- [FSB Data Analysis Output](#FSBDataAnalysis.html)
-- [Cleaned Data File](#FSB_job.csv)
-- [R Project Directory](#ISA616-CareerProj.Rproj)
+- Analytics Class Project From Client
+- Dashboard Markdown
+- Dashboard Output
+- FSB Data Analysis Markdown
+- FSB Data Analysis Output
+- Cleaned Data File
+- R Project Directory
 
 ## Analytics Class Project From Client
 
@@ -54,18 +54,6 @@ This document is the markdown code file that follows our process of analysis, fr
   - Cleaning Non-standard responses
   - Imputation
  - Session Information
-
-## Features
-
-[List of features...]
-
-## Contributing
-
-[Contribution guidelines...]
-
-## License
-
-[License information...]
 
 ## FSB Data Analysis Output
 
