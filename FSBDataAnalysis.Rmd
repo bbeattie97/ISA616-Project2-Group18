@@ -251,10 +251,12 @@ print(top20_company_names)
 
 Now that we know which companies we are going to focus on, it is time to standardize our data. To do this we will be printing all of the companies from out data set that start with the letter of the company in question. Next we will observe all of the various entries and change then all to have the same spelling.
 
-```{r, echo = FALSE, include = FALSE}
+```{r}
 ## EY MAPPING
 jobs_e = FSB_job[grep('^E', FSB_job$survey_company),]
 table(jobs_e$survey_company)
+
+## This process will be repeated for each company and city in our list, but the code and respective output in these cells will be omitted from the final output.
 ```
 
 ```{r}
