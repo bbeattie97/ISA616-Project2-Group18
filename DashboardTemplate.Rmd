@@ -1,0 +1,134 @@
+---
+title: "DashboardTemplate"
+author: "Jake Holroyd, Brendan Beattie"
+date: "`r Sys.Date()`"
+output: 
+  flexdashboard::flex_dashboard:
+    orientation: rows
+---
+
+```{r setup, include=FALSE,echo=FALSE}
+knitr::opts_chunk$set(echo = TRUE,message=FALSE,warning=FALSE)
+
+#package intialization
+if(require(pacman)==FALSE) install.packages("pacman")
+pacman::p_load(tidyverse, #for data manipulation
+               plotly, #for interactive plots
+               flexdashboard, #to make a dashboard
+               fontawesome, #for icons
+               DT #for better tables
+               )
+
+#read in data
+```
+
+# Analysis Overview {data-orientation=columns}
+
+Overview of analysis, the question we're trying to answer, and our insights (linked to the pages that contain their respective visualizations)
+  
+## row {data-width=300}
+
+### Overview of Analysis
+
+```{r, echo = FALSE}
+
+```
+
+### Our Research Question
+
+```{r,echo=FALSE}
+
+```   
+ 
+
+## row {data-height=600}
+
+### Insight Description (potentially chopped up into separated boxes by insight)
+
+```{r,echo=FALSE}
+
+```
+
+# Job Placement Trends {data-orientation=columns}
+
+## Column {data-width=400}
+
+### Job Placement Rate across FSB (Bar Chart, Overall placement by year)
+
+```{r,echo=FALSE}
+
+```
+
+### Job Placement Rate by Major (Stacked line chart, Overall placement by year, lines encoded by major)
+
+```{r,echo=FALSE}
+
+```
+
+
+## Column {data-width=600}
+
+### Job Placement Rate by Major (Bar chart, overall placement by year, facet wrap by major, potentially add in extra fill by count of offers)
+
+```{r,echo=FALSE}
+library(ggplot2)
+library(plotly)
+
+sal_by_major_bar = ggplot(FSB_job1, aes(x = year.x, y = survey_salary, fill = year.x))+
+  geom_bar(position="dodge", stat="identity")+ xlab("Year")+ylab("Salary")+ labs(fill = "Year")
+  
+sal_by_major_bar + facet_wrap(~ major1)
+sal_by_major_bar <- ggplotly(sal_by_major_bar)
+```
+
+
+# Salary Trends {data-orientation=columns}
+
+## Column {data-width=400}
+
+### Salary across FSB (Box Plots by of Salary, side-by-side for each year)
+
+```{r,echo=FALSE}
+library(ggplot2)
+library(plotly)
+
+fsb_ovr_box = ggplot(FSB_job, aes(x = year.x, y = survey_salary, color = year.x))+
+  xlab("Year")+ylab("Salary")+ labs(color = "Year")+
+  geom_boxplot()
+
+fsb_ovr_box <- ggplotly(fsb_ovr_box, tooltip = "y")
+
+fsb_ovr_box
+```
+
+
+### Salary by Major (Segmented Bar chart of salary by major)
+
+```{r,echo=FALSE}
+
+FSB_job1 <- subset(FSB_job, !(major1 == "Interdisciplinary Bus Managemt" | major1 == "Management and Organizations"))
+
+## med_sal = median(FSB_job$survey_salary), trying to use either mean or median but wont graph when i do , my understanding is that it is currently using the max
+
+sal_major_bar = ggplot(FSB_job1, aes(fill= year.x, y=survey_salary, x= major1)) + 
+    geom_bar(position="dodge", stat="identity")+xlab("Major")+ylab("Salary")+ labs(fill = "Year")+
+  theme(axis.text.x = element_text(angle = 90))
+
+fsb_ovr_box <- ggplotly(sal_major_bar)
+
+sal_major_bar
+```
+
+
+## Column {data-width=600}
+
+### Salary by Major by Year (Box Plots of Salary, side-by-side for each year, facet wrap by major)
+
+```{r}
+fsb_mjr_sal_box = ggplot(FSB_job1, aes(x = year.x, y = survey_salary, color = year.x))+
+  xlab("Year")+ylab("Salary")+ labs(color = "Year")+
+  geom_boxplot()
+
+fsb_mjr_sal_box + facet_wrap(~ major1)
+```
+
